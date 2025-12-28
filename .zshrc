@@ -12,8 +12,8 @@ export ZSH="$HOME/repos/oh-my-zsh"
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="random"
-# ZSH_THEME="bira"
+# ZSH_THEME="random"
+ZSH_THEME="bira"
 zstyle ':omz:update' mode auto      # update automatically without asking
 zstyle ':omz:update' frequency 14
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting)

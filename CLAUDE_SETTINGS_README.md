@@ -6,7 +6,7 @@ The following files are **symlinked** from `~/.claude/` to this dotfiles repo:
 - `~/.claude/settings.json` → `~/repos/dotfiles/claude-settings.json`
 - `~/.claude/plugins/` → `~/repos/dotfiles/claude-plugins/`
 
-**Always edit the files in `~/repos/dotfiles/`**, not in `~/.claude/`!
+**Always edit the files in `~/repos/dotfiles/`**, not in `~/.claude/`! Except for `~/.claude/settings.local.json` which is machine-specific.
 
 ## File Purposes
 
