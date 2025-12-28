@@ -3,7 +3,9 @@
 * Rectangle (launch on login)
 * Homerow (empirically I haven't been using this)
 * Iterm2 
+   - settings -> keys -> navigation shortcuts: option to select a tab, command to select a split pane.
 * Cursor
+   - settings -> autosave -> on (once a second or something)
 * Claude
 
 # Symlinks:
