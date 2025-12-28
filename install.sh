@@ -59,6 +59,35 @@ else
     echo "✅ Created .zshrc symlink"
 fi
 
+# Create ~/.claude directory if it doesn't exist
+mkdir -p "$HOME/.claude"
+
+# Create symlink for Claude settings.json
+if [ -L "$HOME/.claude/settings.json" ]; then
+    echo "✅ Claude settings.json symlink already exists"
+elif [ -f "$HOME/.claude/settings.json" ]; then
+    echo "⚠️  Backing up existing Claude settings.json"
+    mv "$HOME/.claude/settings.json" "$HOME/.claude/settings.json.backup"
+    ln -s "$HOME/repos/dotfiles/claude-settings.json" "$HOME/.claude/settings.json"
+    echo "✅ Created Claude settings.json symlink"
+else
+    ln -s "$HOME/repos/dotfiles/claude-settings.json" "$HOME/.claude/settings.json"
+    echo "✅ Created Claude settings.json symlink"
+fi
+
+# Create symlink for Claude plugins directory
+if [ -L "$HOME/.claude/plugins" ]; then
+    echo "✅ Claude plugins symlink already exists"
+elif [ -d "$HOME/.claude/plugins" ]; then
+    echo "⚠️  Backing up existing Claude plugins directory"
+    mv "$HOME/.claude/plugins" "$HOME/.claude/plugins.backup"
+    ln -s "$HOME/repos/dotfiles/claude-plugins" "$HOME/.claude/plugins"
+    echo "✅ Created Claude plugins symlink"
+else
+    ln -s "$HOME/repos/dotfiles/claude-plugins" "$HOME/.claude/plugins"
+    echo "✅ Created Claude plugins symlink"
+fi
+
 echo ""
 echo "✨ Installation complete!"
 echo ""
@@ -68,8 +97,11 @@ echo "  2. If you see weird symbols in your prompt, install a powerline font"
 echo "     or change the theme in .zshrc (line 11) to 'robbyrussell' or 'bira'"
 echo ""
 echo "Features enabled:"
-echo "  • Oh My Zsh with agnoster theme"
+echo "  • Oh My Zsh with random theme"
 echo "  • zsh-autosuggestions (press → to accept)"
 echo "  • zsh-syntax-highlighting (green=valid, red=invalid)"
 echo "  • fzf fuzzy search (Ctrl+R for history)"
+echo "  • Claude Code settings synced from dotfiles"
+echo ""
+echo "Note: See CLAUDE_SETTINGS_README.md for info about Claude settings."
 echo ""
