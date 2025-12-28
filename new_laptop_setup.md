@@ -23,14 +23,9 @@ Just run `./install.sh` from the root of this repo.
 ## What happens in install.sh? 
 * Install Homebrew
 * Install fzf
-* Install zsh and add-ons (ie autocomplete suggestions)
+* Install ohmyzsh and add-ons (ie autocomplete suggestions)
+    - this gives nice things like a terminal that has git status and current repo, fuzzy finding old bash commands, etc. 
 * Make .zshrc a symlink to the one in this repo
-* Make 
-Make .zshrc a symlink to the one in this repo
-@Claude please insert command here. 
-
-Have global Claude settings symlink to this repo
-@Claude please insert command here. 
-
-
-# Oh my zsh
+    - So that to update zshrc you can just pull from this repo.
+* Make Claude global settings and plugins symlinks to this repo
+    - Likewise about just pulling to update. Not sure if this works perfectly yet.
