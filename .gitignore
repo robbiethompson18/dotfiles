@@ -1,1 +1,4 @@
 legacy.zshrc
+*.swp
+*.swo
+.zshrc.backup
