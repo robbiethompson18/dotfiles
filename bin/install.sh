@@ -15,6 +15,12 @@ echo "🚀 Starting dotfiles installation..."
 # Install common brew packages
 ./install_common_brew_packages.sh
 
+# Install common applications
+./install_common_applications.sh
+
+# Configure macOS settings
+./configure_macos_settings.sh
+
 # Setup symlinks
 ./setup_symlinks.sh
 
@@ -30,6 +36,10 @@ echo "  • zsh-autosuggestions (press → to accept)"
 echo "  • zsh-syntax-highlighting (green=valid, red=invalid)"
 echo "  • fzf fuzzy search (Ctrl+R for history)"
 echo "  • Claude Code settings synced from dotfiles"
+echo "  • Brew installed"
+echo "  • Common brew packages installed"
+echo "  • Common applications installed (Chrome, Rectangle, iTerm2, Cursor)"
+echo "  • macOS key repeat enabled (press-and-hold disabled)"
 echo ""
 echo "Note: See CLAUDE_SETTINGS_README.md for info about Claude settings."
 echo ""
