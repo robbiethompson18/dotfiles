@@ -1,5 +1,4 @@
 {
-  "allow": ["*"],
   "permissions": {
     "allow": [
       "Bash(:*::*)",
@@ -16,7 +15,15 @@
       "TodoWrite(*)",
       "ExitPlanMode(*)"
     ],
-    "deny": []
+    "deny": [],
+    "defaultMode": "bypassPermissions"
   },
-  "autoUpdates": true
+  "alwaysThinkingEnabled": true,
+  "allow": [
+    "*"
+  ],
+  "autoUpdates": true,
+  "enabledPlugins": {
+    "github@claude-plugins-official": true
+  }
 }
