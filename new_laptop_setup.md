@@ -5,7 +5,7 @@
 * Have doc disappear, move between monitors, make it small 
 
 # 2) Run install.sh, Change App Settings
-Just run `./bin/install.sh` from the root of this repo. 
+Just run `cd bin && sh install.sh` from the root of this repo. 
 
 This will download:
 * Chrome
