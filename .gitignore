@@ -2,3 +2,7 @@ legacy.zshrc
 *.swp
 *.swo
 .zshrc.backup
+
+# Claude plugins - only track config, not downloaded marketplaces
+claude-plugins/marketplaces/
+claude-plugins/repos/
