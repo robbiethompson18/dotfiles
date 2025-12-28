@@ -16,7 +16,11 @@ alias ga="git add ."
 alias gc="git commit -am \"[No commit message]\" "
 alias gd="git diff"
 alias gl="git log"
-alias dbset="cd infra && ./forwardpostgres prod1"
+alias gp="git push"
+alias gm="git merge"
+alias gco="git checkout"
+alias gcm="git checkout main"
+alias gnb="git checkout -b"
 alias g="git"
 
 # print logs - don't love these because we lose coloring in the terminal
