@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "plugins": {
+    "github@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/Users/Robert/.claude/plugins/cache/claude-plugins-official/github/6d3752c000e2",
+        "version": "6d3752c000e2",
+        "installedAt": "2025-12-28T22:12:33.453Z",
+        "lastUpdated": "2025-12-28T22:12:57.856Z",
+        "gitCommitSha": "17f5162f146747f22542ba4f936ab557df6caa52",
+        "isLocal": true
+      }
+    ]
+  }
+}
