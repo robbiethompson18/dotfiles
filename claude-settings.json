@@ -1,24 +1,24 @@
-  {
-    "allow": ["*"],
-    "permissions": {
-      "allow": [
-        "Bash(*:*)",
-        "Edit(*:*)",
-        "Write(*:*)",
-        "Read(*:*)",
-        "Task(*:*)",
-        "WebSearch(*:*)",
-        "WebFetch(*:*)",
-        "Grep(*:*)",
-        "Glob(*:*)",
-        "LS(*:*)",
-        "MultiEdit(*:*)",
-        "NotebookEdit(*:*)",
-        "NotebookRead(*:*)",
-        "TodoWrite(*:*)",
-        "ExitPlanMode(*:*)"
-      ],
-      "deny": []
-    },
-    "autoUpdates": true
-  }
+{
+  "allow": ["*"],
+  "permissions": {
+    "allow": [
+      "Bash(:*::*)",
+      "Edit(**)",
+      "Write(**)",
+      "Read(**)",
+      "Task(*)",
+      "WebSearch",
+      "WebFetch(domain:*)",
+      "Grep(*)",
+      "Glob(**)",
+      "LS(*)",
+      "MultiEdit(**)",
+      "NotebookEdit(**)",
+      "NotebookRead(**)",
+      "TodoWrite(*)",
+      "ExitPlanMode(*)"
+    ],
+    "deny": []
+  },
+  "autoUpdates": true
+}
