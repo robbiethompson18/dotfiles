@@ -7,3 +7,5 @@ echo "  • node"
 brew install node
 echo "  • pnpm"
 brew install pnpm
+echo "  • python"
+brew install python
