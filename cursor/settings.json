@@ -1,0 +1,51 @@
+{
+    "[python]": {
+        "editor.formatOnType": true,
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "[notebook]": {
+        "editor.formatOnType": true,
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+    "python.defaultInterpreterPath": "/usr/local/bin/python3",
+    "python.linting.enabled": true,
+    "python.linting.ruffEnabled": true,
+    "python.formatting.provider": "black",
+    "python.formatting.blackEnabled": true,
+    "python.formatting.blackPath": "/opt/homebrew/bin/black",
+    "python.formatting.blackArgs": [
+        "--line-length",
+        "88"
+    ],
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": false,
+        "javascript": false,
+        "typescript": false
+    },
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit",
+        "source.organizeImports": "explicit"
+    },
+    "python.analysis.useLibraryCodeForTypes": true,
+    "cursor.cpp.disabledLanguages": [
+        "plaintext",
+        "javascript",
+        "typescript"
+    ],
+    "workbench.colorTheme": "Cursor Dark High Contrast",
+    "git.autofetch": true
+    "[markdown]": {
+        "editor.quickSuggestions": false,
+        "editor.suggestOnTriggerCharacters": false
+    },
+    "[plaintext]": {
+        "editor.quickSuggestions": false,
+        "editor.suggestOnTriggerCharacters": false
+    }
+}
