@@ -14,13 +14,8 @@ This will download:
 * Iterm2 
    - settings -> keys -> navigation shortcuts: option to select a tab, command to select a split pane.
    - launch on login and keep in dock
-* Cursor
-   - Symlink settings and keybindings:
-     ```bash
-     ln -sf ~/repos/dotfiles/cursor/settings.json ~/Library/Application\ Support/Cursor/User/settings.json
-     ln -sf ~/repos/dotfiles/cursor/keybindings.json ~/Library/Application\ Support/Cursor/User/keybindings.json
-     ```
-   - Install extensions: `./cursor/install-extensions.sh` 
+* Cursor (settings/keybindings symlinked by install.sh)
+   - Install extensions: `./bin/install-cursor-extensions.sh` 
    
 
 ### What happens in install.sh? 

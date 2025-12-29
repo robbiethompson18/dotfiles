@@ -7,25 +7,25 @@ set -e  # Exit on error
 echo "🚀 Starting dotfiles installation..."
 
 # Install Homebrew
-./install_brew.sh
+./install-brew.sh
 
 # Install CLI tools
-./install_cli_tools.sh
+./install-cli-tools.sh
 
 # Install common brew packages
-./install_common_brew_packages.sh
+./install-common-brew-packages.sh
 
 # Install common applications
-./install_common_applications.sh
+./install-common-applications.sh
 
 # Configure macOS settings
-./configure_macos_settings.sh
+./configure-macos-settings.sh
 
 # Setup symlinks
-./setup_symlinks.sh
+./setup-symlinks.sh
 
 # install cursor extensions
-./install_cursor_extensions.sh
+./install-cursor-extensions.sh
 
 
 echo ""
