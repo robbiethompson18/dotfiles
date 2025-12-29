@@ -1,0 +1,27 @@
+// Place your key bindings in this file to override the defaults
+[
+    {
+        "key": "ctrl+cmd+0",
+        "command": "workbench.action.editorLayoutSingle"
+    },
+    {
+        "key": "ctrl+cmd+9",
+        "command": "-workbench.action.moveEditorToLastGroup"
+    },
+    {
+        "key": "ctrl+cmd+-",
+        "command": "workbench.action.showEditorTab"
+    },
+    {
+        "key": "ctrl+cmd+9",
+        "command": "workbench.action.splitEditorRight"
+    },
+    {
+        "key": "cmd+k cmd+\\",
+        "command": "-workbench.action.splitEditorRight"
+    },
+    {
+        "key": "ctrl+cmd+=",
+        "command": "workbench.action.showMultipleEditorTabs"
+    }
+]

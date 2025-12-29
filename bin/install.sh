@@ -24,6 +24,9 @@ echo "🚀 Starting dotfiles installation..."
 # Setup symlinks
 ./setup_symlinks.sh
 
+# install cursor extensions
+./install_cursor_extensions.sh
+
 
 echo ""
 echo "✨ Installation complete!"

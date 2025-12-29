@@ -15,7 +15,13 @@ This will download:
    - settings -> keys -> navigation shortcuts: option to select a tab, command to select a split pane.
    - launch on login and keep in dock
 * Cursor
-   - settings -> autosave -> on (once a second or something, not sure exactly where this setting lives)
+   - Symlink settings and keybindings:
+     ```bash
+     ln -sf ~/repos/dotfiles/cursor/settings.json ~/Library/Application\ Support/Cursor/User/settings.json
+     ln -sf ~/repos/dotfiles/cursor/keybindings.json ~/Library/Application\ Support/Cursor/User/keybindings.json
+     ```
+   - Install extensions: `./cursor/install-extensions.sh` 
+   
 
 ### What happens in install.sh? 
 * Install Homebrew
