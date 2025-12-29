@@ -50,3 +50,32 @@ else
     ln -s "$HOME/repos/dotfiles/claude-plugins" "$HOME/.claude/plugins"
     echo "✅ Created Claude plugins symlink"
 fi
+
+# Create Cursor User directory if it doesn't exist
+mkdir -p "$HOME/Library/Application Support/Cursor/User"
+
+# Create symlink for Cursor settings.json
+if [ -L "$HOME/Library/Application Support/Cursor/User/settings.json" ]; then
+    echo "✅ Cursor settings.json symlink already exists"
+elif [ -f "$HOME/Library/Application Support/Cursor/User/settings.json" ]; then
+    echo "⚠️  Backing up existing Cursor settings.json"
+    mv "$HOME/Library/Application Support/Cursor/User/settings.json" "$HOME/Library/Application Support/Cursor/User/settings.json.backup"
+    ln -s "$HOME/repos/dotfiles/cursor/settings.json" "$HOME/Library/Application Support/Cursor/User/settings.json"
+    echo "✅ Created Cursor settings.json symlink"
+else
+    ln -s "$HOME/repos/dotfiles/cursor/settings.json" "$HOME/Library/Application Support/Cursor/User/settings.json"
+    echo "✅ Created Cursor settings.json symlink"
+fi
+
+# Create symlink for Cursor keybindings.json
+if [ -L "$HOME/Library/Application Support/Cursor/User/keybindings.json" ]; then
+    echo "✅ Cursor keybindings.json symlink already exists"
+elif [ -f "$HOME/Library/Application Support/Cursor/User/keybindings.json" ]; then
+    echo "⚠️  Backing up existing Cursor keybindings.json"
+    mv "$HOME/Library/Application Support/Cursor/User/keybindings.json" "$HOME/Library/Application Support/Cursor/User/keybindings.json.backup"
+    ln -s "$HOME/repos/dotfiles/cursor/keybindings.json" "$HOME/Library/Application Support/Cursor/User/keybindings.json"
+    echo "✅ Created Cursor keybindings.json symlink"
+else
+    ln -s "$HOME/repos/dotfiles/cursor/keybindings.json" "$HOME/Library/Application Support/Cursor/User/keybindings.json"
+    echo "✅ Created Cursor keybindings.json symlink"
+fi
