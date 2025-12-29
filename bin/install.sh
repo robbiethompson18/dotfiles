@@ -27,6 +27,9 @@ echo "🚀 Starting dotfiles installation..."
 # install cursor extensions
 ./install-cursor-extensions.sh
 
+# setup vim
+./setup-vim.sh
+./setup-vim.sh
 
 echo ""
 echo "✨ Installation complete!"
