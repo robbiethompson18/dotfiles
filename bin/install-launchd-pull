@@ -1,0 +1,21 @@
+#!/bin/bash
+# Installs the dotfiles-pull launchd agent
+
+PLIST_NAME="com.robert.dotfiles-pull.plist"
+REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+SOURCE="$REPO_DIR/$PLIST_NAME"
+DEST="$HOME/Library/LaunchAgents/$PLIST_NAME"
+
+# Unload if already loaded
+launchctl unload "$DEST" 2>/dev/null
+
+# Copy plist to LaunchAgents
+mkdir -p "$HOME/Library/LaunchAgents"
+cp "$SOURCE" "$DEST"
+
+# Load the agent
+launchctl load "$DEST"
+
+echo "Installed and loaded $PLIST_NAME"
+echo "Will pull dotfiles weekly (and on login)"
+echo "Check /tmp/dotfiles-pull.log for output"
