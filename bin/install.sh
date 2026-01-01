@@ -29,7 +29,9 @@ echo "🚀 Starting dotfiles installation..."
 
 # setup vim
 ./setup-vim.sh
-./setup-vim.sh
+
+# Install launchd agent for weekly dotfiles pull
+./install-launchd-pull
 
 echo ""
 echo "✨ Installation complete!"
@@ -46,6 +48,7 @@ echo "  • Brew installed"
 echo "  • Common brew packages installed"
 echo "  • Common applications installed (Chrome, Rectangle, iTerm2, Cursor)"
 echo "  • macOS key repeat enabled (press-and-hold disabled)"
+echo "  • Weekly dotfiles auto-pull (launchd)"
 echo ""
 echo "Note: See CLAUDE_SETTINGS_README.md for info about Claude settings."
 echo ""

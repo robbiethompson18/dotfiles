@@ -1,6 +1,7 @@
 legacy.zshrc
 *.swp
 *.swo
+*.log
 .zshrc.backup
 
 # Claude plugins - only track config, not downloaded/cached data
