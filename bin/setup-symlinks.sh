@@ -1,5 +1,18 @@
 #!/bin/bash
 
+# Create symlink for .vimrc
+if [ -L "$HOME/.vimrc" ]; then
+    echo "✅ .vimrc symlink already exists"
+elif [ -f "$HOME/.vimrc" ]; then
+    echo "⚠️  Backing up existing .vimrc to .vimrc.backup"
+    mv "$HOME/.vimrc" "$HOME/.vimrc.backup"
+    ln -s "$HOME/repos/dotfiles/.vimrc" "$HOME/.vimrc"
+    echo "✅ Created .vimrc symlink"
+else
+    ln -s "$HOME/repos/dotfiles/.vimrc" "$HOME/.vimrc"
+    echo "✅ Created .vimrc symlink"
+fi
+
 # Create symlink for .zshrc
 if [ -L "$HOME/.zshrc" ]; then
     echo "✅ .zshrc symlink already exists"
