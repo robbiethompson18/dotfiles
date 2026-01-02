@@ -30,6 +30,7 @@ create_symlink() {
 # Shell config
 create_symlink "$HOME/repos/dotfiles/.vimrc" "$HOME/.vimrc" ".vimrc"
 create_symlink "$HOME/repos/dotfiles/.zshrc" "$HOME/.zshrc" ".zshrc"
+create_symlink "$HOME/repos/dotfiles/.gitconfig" "$HOME/.gitconfig" ".gitconfig"
 
 # Check that Claude exists, if not install it:
 if ! command -v claude &> /dev/null; then
