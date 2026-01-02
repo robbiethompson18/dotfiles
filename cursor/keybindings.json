@@ -23,5 +23,9 @@
     {
         "key": "ctrl+cmd+=",
         "command": "workbench.action.showMultipleEditorTabs"
+    },
+    {
+        "key": "cmd+i",
+        "command": "composerMode.agent"
     }
 ]

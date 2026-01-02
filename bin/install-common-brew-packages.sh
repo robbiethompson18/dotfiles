@@ -9,3 +9,5 @@ echo "  • pnpm"
 brew install pnpm
 echo "  • python"
 brew install python
+echo "  • ripgrep"
+brew install ripgrep

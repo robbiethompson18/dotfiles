@@ -4,9 +4,6 @@ set -e
 
 echo "🔧 Setting up Vim configuration..."
 
-# Get the directory where this script lives
-DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
 # 1. Install vim-plug
 echo "📦 Installing vim-plug..."
 if [ ! -f ~/.vim/autoload/plug.vim ]; then
@@ -17,22 +14,9 @@ else
     echo "✅ vim-plug already installed"
 fi
 
-# 2. Create symlink to .vimrc
-echo "🔗 Creating symlink to .vimrc..."
-if [ -L ~/.vimrc ]; then
-    echo "⚠️  Symlink already exists at ~/.vimrc"
-    ls -la ~/.vimrc
-elif [ -f ~/.vimrc ]; then
-    echo "⚠️  Regular file exists at ~/.vimrc - backing up to ~/.vimrc.backup"
-    mv ~/.vimrc ~/.vimrc.backup
-    ln -s "$DOTFILES_DIR/.vimrc" ~/.vimrc
-    echo "✅ Symlink created (old file backed up)"
-else
-    ln -s "$DOTFILES_DIR/.vimrc" ~/.vimrc
-    echo "✅ Symlink created"
-fi
+# Note: .vimrc symlink is handled by setup-symlinks.sh
 
-# 3. Check for Node.js (required for coc.nvim)
+# 2. Check for Node.js (required for coc.nvim)
 echo "🔍 Checking for Node.js..."
 if command -v node &> /dev/null; then
     NODE_VERSION=$(node --version)
@@ -42,7 +26,7 @@ else
     echo "   Install it with: brew install node"
 fi
 
-# 4. Install vim plugins
+# 3. Install vim plugins
 echo "📥 Installing Vim plugins..."
 vim +PlugInstall +qall
 
