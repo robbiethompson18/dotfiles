@@ -1,30 +1,35 @@
 #!/bin/bash
 
-# Create symlink for .vimrc
-if [ -L "$HOME/.vimrc" ]; then
-    echo "✅ .vimrc symlink already exists"
-elif [ -f "$HOME/.vimrc" ]; then
-    echo "⚠️  Backing up existing .vimrc to .vimrc.backup"
-    mv "$HOME/.vimrc" "$HOME/.vimrc.backup"
-    ln -s "$HOME/repos/dotfiles/.vimrc" "$HOME/.vimrc"
-    echo "✅ Created .vimrc symlink"
-else
-    ln -s "$HOME/repos/dotfiles/.vimrc" "$HOME/.vimrc"
-    echo "✅ Created .vimrc symlink"
-fi
+# Creates a symlink, handling existing files, broken symlinks, and backups
+# Usage: create_symlink <source> <target> <name>
+create_symlink() {
+    local source="$1"
+    local target="$2"
+    local name="$3"
 
-# Create symlink for .zshrc
-if [ -L "$HOME/.zshrc" ]; then
-    echo "✅ .zshrc symlink already exists"
-elif [ -f "$HOME/.zshrc" ]; then
-    echo "⚠️  Backing up existing .zshrc to .zshrc.backup"
-    mv "$HOME/.zshrc" "$HOME/repos/dotfiles/.zshrc.backup"
-    ln -s "$HOME/repos/dotfiles/.zshrc" "$HOME/.zshrc"
-    echo "✅ Created .zshrc symlink"
-else
-    ln -s "$HOME/repos/dotfiles/.zshrc" "$HOME/.zshrc"
-    echo "✅ Created .zshrc symlink"
-fi
+    if [ -L "$target" ]; then
+        if [ -e "$target" ]; then
+            echo "✅ $name symlink already exists"
+        else
+            echo "⚠️  $name symlink is broken - fixing it"
+            rm "$target"
+            ln -s "$source" "$target"
+            echo "✅ Fixed $name symlink"
+        fi
+    elif [ -e "$target" ]; then
+        echo "⚠️  Backing up existing $name to $name.backup"
+        mv "$target" "$target.backup"
+        ln -s "$source" "$target"
+        echo "✅ Created $name symlink"
+    else
+        ln -s "$source" "$target"
+        echo "✅ Created $name symlink"
+    fi
+}
+
+# Shell config
+create_symlink "$HOME/repos/dotfiles/.vimrc" "$HOME/.vimrc" ".vimrc"
+create_symlink "$HOME/repos/dotfiles/.zshrc" "$HOME/.zshrc" ".zshrc"
 
 # Check that Claude exists, if not install it:
 if ! command -v claude &> /dev/null; then
@@ -35,60 +40,12 @@ if ! command -v claude &> /dev/null; then
     exit 1
 fi
 
-# Create ~/.claude directory if it doesn't exist
+# Claude config
 mkdir -p "$HOME/.claude"
+create_symlink "$HOME/repos/dotfiles/claude-settings.json" "$HOME/.claude/settings.json" "Claude settings.json"
+create_symlink "$HOME/repos/dotfiles/claude-plugins" "$HOME/.claude/plugins" "Claude plugins"
 
-# Create symlink for Claude settings.json
-if [ -L "$HOME/.claude/settings.json" ]; then
-    echo "✅ Claude settings.json symlink already exists"
-elif [ -f "$HOME/.claude/settings.json" ]; then
-    echo "⚠️  Backing up existing Claude settings.json"
-    mv "$HOME/.claude/settings.json" "$HOME/.claude/settings.json.backup"
-    ln -s "$HOME/repos/dotfiles/claude-settings.json" "$HOME/.claude/settings.json"
-    echo "✅ Created Claude settings.json symlink"
-else
-    ln -s "$HOME/repos/dotfiles/claude-settings.json" "$HOME/.claude/settings.json"
-    echo "✅ Created Claude settings.json symlink"
-fi
-
-# Create symlink for Claude plugins directory
-if [ -L "$HOME/.claude/plugins" ]; then
-    echo "✅ Claude plugins symlink already exists"
-elif [ -d "$HOME/.claude/plugins" ]; then
-    echo "⚠️  Backing up existing Claude plugins directory"
-    mv "$HOME/.claude/plugins" "$HOME/.claude/plugins.backup"
-    ln -s "$HOME/repos/dotfiles/claude-plugins" "$HOME/.claude/plugins"
-    echo "✅ Created Claude plugins symlink"
-else
-    ln -s "$HOME/repos/dotfiles/claude-plugins" "$HOME/.claude/plugins"
-    echo "✅ Created Claude plugins symlink"
-fi
-
-# Create Cursor User directory if it doesn't exist
+# Cursor config
 mkdir -p "$HOME/Library/Application Support/Cursor/User"
-
-# Create symlink for Cursor settings.json
-if [ -L "$HOME/Library/Application Support/Cursor/User/settings.json" ]; then
-    echo "✅ Cursor settings.json symlink already exists"
-elif [ -f "$HOME/Library/Application Support/Cursor/User/settings.json" ]; then
-    echo "⚠️  Backing up existing Cursor settings.json"
-    mv "$HOME/Library/Application Support/Cursor/User/settings.json" "$HOME/Library/Application Support/Cursor/User/settings.json.backup"
-    ln -s "$HOME/repos/dotfiles/cursor/settings.json" "$HOME/Library/Application Support/Cursor/User/settings.json"
-    echo "✅ Created Cursor settings.json symlink"
-else
-    ln -s "$HOME/repos/dotfiles/cursor/settings.json" "$HOME/Library/Application Support/Cursor/User/settings.json"
-    echo "✅ Created Cursor settings.json symlink"
-fi
-
-# Create symlink for Cursor keybindings.json
-if [ -L "$HOME/Library/Application Support/Cursor/User/keybindings.json" ]; then
-    echo "✅ Cursor keybindings.json symlink already exists"
-elif [ -f "$HOME/Library/Application Support/Cursor/User/keybindings.json" ]; then
-    echo "⚠️  Backing up existing Cursor keybindings.json"
-    mv "$HOME/Library/Application Support/Cursor/User/keybindings.json" "$HOME/Library/Application Support/Cursor/User/keybindings.json.backup"
-    ln -s "$HOME/repos/dotfiles/cursor/keybindings.json" "$HOME/Library/Application Support/Cursor/User/keybindings.json"
-    echo "✅ Created Cursor keybindings.json symlink"
-else
-    ln -s "$HOME/repos/dotfiles/cursor/keybindings.json" "$HOME/Library/Application Support/Cursor/User/keybindings.json"
-    echo "✅ Created Cursor keybindings.json symlink"
-fi
+create_symlink "$HOME/repos/dotfiles/cursor/settings.json" "$HOME/Library/Application Support/Cursor/User/settings.json" "Cursor settings.json"
+create_symlink "$HOME/repos/dotfiles/cursor/keybindings.json" "$HOME/Library/Application Support/Cursor/User/keybindings.json" "Cursor keybindings.json"

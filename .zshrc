@@ -9,6 +9,9 @@ zstyle ':omz:update' frequency 14
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 
+# Shift+Tab to accept autosuggestions
+bindkey '^[[Z' autosuggest-accept
+
 # ============================================
 # CUSTOM ALIASES
 # ============================================
@@ -39,6 +42,22 @@ alias gco="git checkout"
 alias gcm="git checkout main"
 alias gnb="git checkout -b"
 alias g="git"
+
+# Convert HTTPS GitHub URL to SSH and clone
+gclonessh() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: gclonessh <github-url>"
+    return 1
+  fi
+
+  local url="$1"
+
+  # Convert https://github.com/user/repo to git@github.com:user/repo.git
+  local ssh_url=$(echo "$url" | sed -E 's#https://github\.com/([^/]+)/([^/]+)(\.git)?#git@github.com:\1/\2.git#')
+
+  echo "Cloning: $ssh_url"
+  git clone "$ssh_url"
+}
 
 # Development
 alias prd="rm -f /tmp/dev-output.log && pnpm run dev 2>&1 | tee /tmp/dev-output.log"
