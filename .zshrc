@@ -18,6 +18,7 @@ bindkey '^[[Z' autosuggest-accept
 
 # CLI shortcuts
 alias cl="claude"
+alias src="source"
 
 # Directory navigation
 alias cd1="cd .."
