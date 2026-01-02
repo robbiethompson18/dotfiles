@@ -28,6 +28,9 @@ alias cd4="cd ../../../.."
 alias cd5="cd ../../../../.."
 alias ..="cd .."
 alias .="pwd"
+cdr() { cd ~/repos/"$1"; }
+alias cdrp="cd ~/repos/platform"
+alias cdrd="cd ~/repos/dotfiles"
 
 # Git aliases (extending Oh My Zsh git plugin)
 alias gs="git status"
