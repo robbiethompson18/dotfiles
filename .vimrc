@@ -54,6 +54,11 @@ set autoread
 " show mode in bottom
 set showmode
 
+" Cursor shape: block in normal mode, bar in insert mode
+let &t_SI = "\e[6 q"  " Insert mode: bar
+let &t_EI = "\e[2 q"  " Normal mode: block
+let &t_SR = "\e[4 q"  " Replace mode: underline
+
 " turn off swap files
 set noswapfile
 set nobackup
