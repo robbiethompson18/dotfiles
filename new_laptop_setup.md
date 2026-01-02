@@ -12,7 +12,8 @@ This will download:
 * Rectangle 
    - Launch this, then in the dock, right click on the icon and select "Open at Login"
 * Iterm2 
-   - settings -> keys -> navigation shortcuts: option to select a tab, command to select a split pane.
+   - settings -> keys -> navigation shortcuts: 
+     command to select a tab, option to select a split pane.
    - launch on login and keep in dock
 * Cursor (settings/keybindings symlinked by install.sh)
    - Install extensions: `./bin/install-cursor-extensions.sh` 
