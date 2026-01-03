@@ -43,8 +43,9 @@ fi
 
 # Claude config
 mkdir -p "$HOME/.claude"
-create_symlink "$HOME/repos/dotfiles/claude-settings.json" "$HOME/.claude/settings.json" "Claude settings.json"
-create_symlink "$HOME/repos/dotfiles/claude-plugins" "$HOME/.claude/plugins" "Claude plugins"
+create_symlink "$HOME/repos/dotfiles/claude/settings.json" "$HOME/.claude/settings.json" "Claude settings.json"
+create_symlink "$HOME/repos/dotfiles/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md" "Claude CLAUDE.md"
+create_symlink "$HOME/repos/dotfiles/claude/plugins" "$HOME/.claude/plugins" "Claude plugins"
 
 # Cursor config
 mkdir -p "$HOME/Library/Application Support/Cursor/User"
