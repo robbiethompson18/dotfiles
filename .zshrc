@@ -80,6 +80,10 @@ alias c="claude --dangerously-skip-permissions"
 alias pip="pip3"
 alias python="python3"
 
+# File finding
+fexact() { find . -type f -iname "$1"; }
+ffuzzy() { find . -type f -iname "*$1*"; }
+
 # tmux
 alias ta="tmux attach -t"
 alias td="tmux detach"
