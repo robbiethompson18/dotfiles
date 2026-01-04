@@ -40,7 +40,7 @@ gc() {
 }
 alias gp="git push"
 gtr() {
-  git add . && git commit "${1:-[No commit message]}" && git push
+  git add . && git commit -m "${1:-[No commit message]}" && git push
 }
 alias gd="git diff"
 alias gl="git log"
