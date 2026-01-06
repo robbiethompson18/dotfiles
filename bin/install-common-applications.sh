@@ -39,3 +39,19 @@ if [ ! -d "/Applications/Docker.app" ]; then
 else
     echo "✅ Docker already installed"
 fi
+
+# Install Zoom
+if [ ! -d "/Applications/zoom.us.app" ]; then
+    echo "📦 Installing Zoom..."
+    brew install --cask zoom
+else
+    echo "✅ Zoom already installed"
+fi
+
+# Install Claude Desktop
+if [ ! -d "/Applications/Claude.app" ]; then
+    echo "📦 Installing Claude Desktop..."
+    brew install --cask claude
+else
+    echo "✅ Claude Desktop already installed"
+fi
