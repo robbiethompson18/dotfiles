@@ -31,3 +31,11 @@ if ! brew list fzf &> /dev/null; then
 else
     echo "✅ fzf already installed"
 fi
+
+# Install direnv via Homebrew
+if ! brew list direnv &> /dev/null; then
+    echo "📦 Installing direnv via Homebrew..."
+    brew install direnv
+else
+    echo "✅ direnv already installed"
+fi

@@ -29,6 +29,8 @@ alias cd5="cd ../../../../.."
 alias ..="cd .."
 alias .="pwd"
 cdr() { cd ~/repos/"$1"; }
+_cdr() { _files -W ~/repos -/; }
+compdef _cdr cdr
 alias cdrp="cd ~/repos/platform"
 alias cdrd="cd ~/repos/dotfiles"
 
@@ -51,6 +53,9 @@ alias gco="git checkout"
 alias gcm="git checkout main"
 alias gnb="git checkout -b"
 alias g="git"
+gstashfile() {
+  git stash push -m "${2:-stash}" "$1"
+}
 
 # Convert HTTPS GitHub URL to SSH and clone
 gclonessh() {
@@ -100,3 +105,8 @@ export EDITOR='vim'
 # ============================================
 # Source fzf directly from Homebrew installation
 source <(fzf --zsh)
+
+# ============================================
+# DIRENV (Auto-load .envrc files)
+# ============================================
+eval "$(direnv hook zsh)"
