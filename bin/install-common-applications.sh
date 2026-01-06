@@ -31,3 +31,11 @@ if [ ! -d "/Applications/Cursor.app" ]; then
 else
     echo "✅ Cursor already installed"
 fi
+
+# Install Docker
+if [ ! -d "/Applications/Docker.app" ]; then
+    echo "📦 Installing Docker..."
+    brew install --cask docker
+else
+    echo "✅ Docker already installed"
+fi
