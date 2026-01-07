@@ -6,9 +6,6 @@
 " if config loaded in other way
 set nocompatible
 
-" share clipboard to make copy paste work
-set clipboard=unnamed
-
 " Turn on syntax highlighting.
 syntax on
 
