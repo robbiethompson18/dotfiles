@@ -11,3 +11,9 @@ echo "  • python"
 brew install python
 echo "  • ripgrep"
 brew install ripgrep
+echo "  • postgresql"
+brew install postgresql
+echo "  • pulumi"
+brew install pulumi
+echo "  • awscli"
+brew install awscli
