@@ -84,6 +84,7 @@ alias prd="rm -f /tmp/dev-output.log && pnpm run dev 2>&1 | tee /tmp/dev-output.
 alias claude="claude --dangerously-skip-permissions"
 alias codex="codex --sandbox danger-full-access --ask-for-approval never --search"
 alias c="claude --dangerously-skip-permissions"
+alias cr="claude --resume"
 
 # use nice new versions of python tools:
 alias pip="pip3"
