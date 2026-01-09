@@ -9,8 +9,10 @@ Just run `cd bin && sh install.sh` from the root of this repo.
 
 This will download:
 * Chrome
-* Rectangle 
+* Rectangle
    - Launch this, then in the dock, right click on the icon and select "Open at Login"
+* Maccy (clipboard manager)
+   - Settings: Launch at login, change popup hotkey to Option+Command+C
 * Iterm2 
    - settings -> keys -> navigation shortcuts: 
      command to select a tab, option to select a split pane.

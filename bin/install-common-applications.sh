@@ -55,3 +55,11 @@ if [ ! -d "/Applications/Claude.app" ]; then
 else
     echo "✅ Claude Desktop already installed"
 fi
+
+# Install Maccy (clipboard manager)
+if [ ! -d "/Applications/Maccy.app" ]; then
+    echo "📦 Installing Maccy..."
+    brew install --cask maccy
+else
+    echo "✅ Maccy already installed"
+fi
