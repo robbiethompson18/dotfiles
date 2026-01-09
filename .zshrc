@@ -54,6 +54,7 @@ alias gco="git checkout"
 alias gcm="git checkout main"
 alias gnb="git checkout -b"
 alias g="git"
+alias p="pnpm"
 gstashfile() {
   git stash push -m "${2:-stash}" "$1"
 }
