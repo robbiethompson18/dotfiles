@@ -48,6 +48,7 @@ alias gd="git diff"
 alias gl="git log"
 alias gm="git merge"
 alias gpl="git pull"
+alias gpnr="git pull --no-rebase"
 alias gf="git fetch"
 alias gco="git checkout"
 alias gcm="git checkout main"
@@ -55,6 +56,9 @@ alias gnb="git checkout -b"
 alias g="git"
 gstashfile() {
   git stash push -m "${2:-stash}" "$1"
+}
+gshowdiff() {
+  git show HEAD~$1
 }
 
 # Convert HTTPS GitHub URL to SSH and clone
