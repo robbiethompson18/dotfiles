@@ -32,6 +32,7 @@ cdr() { cd ~/repos/"$1"; }
 _cdr() { _files -W ~/repos -/; }
 compdef _cdr cdr
 alias cdrp="cd ~/repos/platform"
+alias cdrpp="cd ~/repos/platform-2"
 alias cdrd="cd ~/repos/dotfiles"
 
 # Git aliases
