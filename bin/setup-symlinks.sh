@@ -51,3 +51,6 @@ create_symlink "$HOME/repos/dotfiles/claude/plugins" "$HOME/.claude/plugins" "Cl
 mkdir -p "$HOME/Library/Application Support/Cursor/User"
 create_symlink "$HOME/repos/dotfiles/cursor/settings.json" "$HOME/Library/Application Support/Cursor/User/settings.json" "Cursor settings.json"
 create_symlink "$HOME/repos/dotfiles/cursor/keybindings.json" "$HOME/Library/Application Support/Cursor/User/keybindings.json" "Cursor keybindings.json"
+
+# Hammerspoon config
+create_symlink "$HOME/repos/dotfiles/hammerspoon" "$HOME/.hammerspoon" "Hammerspoon"

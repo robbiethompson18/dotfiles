@@ -63,3 +63,11 @@ if [ ! -d "/Applications/Maccy.app" ]; then
 else
     echo "✅ Maccy already installed"
 fi
+
+# Install Hammerspoon (automation/hotkeys)
+if [ ! -d "/Applications/Hammerspoon.app" ]; then
+    echo "📦 Installing Hammerspoon..."
+    brew install --cask hammerspoon
+else
+    echo "✅ Hammerspoon already installed"
+fi
