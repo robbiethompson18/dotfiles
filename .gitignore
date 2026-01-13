@@ -4,9 +4,5 @@ legacy.zshrc
 *.log
 .zshrc.backup
 
-# Claude plugins - only track config, not downloaded/cached data
-claude/plugins/marketplaces/
-claude/plugins/repos/
-claude/plugins/cache/
-claude/plugins/known_marketplaces.json
-claude/plugins/install-counts-cache.json
+# Claude plugins - auto-managed, no need to track
+claude/plugins/
