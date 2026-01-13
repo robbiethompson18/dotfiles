@@ -18,12 +18,14 @@
     "deny": [],
     "defaultMode": "bypassPermissions"
   },
+  "enabledPlugins": {
+    "github@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true
+  },
   "alwaysThinkingEnabled": true,
   "allow": [
     "*"
   ],
-  "autoUpdates": true,
-  "enabledPlugins": {
-    "github@claude-plugins-official": true
-  }
+  "autoUpdates": true
 }
