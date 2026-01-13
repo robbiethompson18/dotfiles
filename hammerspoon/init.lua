@@ -37,99 +37,8 @@ end)
 hs.alert.show("Hammerspoon loaded")
 
 --------------------------------------------------------------------------------
--- WINDOW MANAGEMENT
+-- WINDOW MANAGEMENT (using Rectangle for positioning)
 --------------------------------------------------------------------------------
-
-local function getWindowAndScreen()
-  local win = hs.window.focusedWindow()
-  if not win then return nil, nil end
-  local screen = win:screen()
-  local frame = screen:frame()
-  return win, frame
-end
-
--- Left half
-hyperMode:bind("", "Left", function()
-  local win, frame = getWindowAndScreen()
-  if not win then return end
-  win:setFrame({
-    x = frame.x,
-    y = frame.y,
-    w = frame.w / 2,
-    h = frame.h
-  })
-end)
-
--- Right half
-hyperMode:bind("", "Right", function()
-  local win, frame = getWindowAndScreen()
-  if not win then return end
-  win:setFrame({
-    x = frame.x + frame.w / 2,
-    y = frame.y,
-    w = frame.w / 2,
-    h = frame.h
-  })
-end)
-
--- Top half
-hyperMode:bind("", "Up", function()
-  local win, frame = getWindowAndScreen()
-  if not win then return end
-  win:setFrame({
-    x = frame.x,
-    y = frame.y,
-    w = frame.w,
-    h = frame.h / 2
-  })
-end)
-
--- Bottom half
-hyperMode:bind("", "Down", function()
-  local win, frame = getWindowAndScreen()
-  if not win then return end
-  win:setFrame({
-    x = frame.x,
-    y = frame.y + frame.h / 2,
-    w = frame.w,
-    h = frame.h / 2
-  })
-end)
-
--- Maximize
-hyperMode:bind("", "return", function()
-  local win, frame = getWindowAndScreen()
-  if not win then return end
-  win:setFrame(frame)
-end)
-
--- Also bind M for maximize
-hyperMode:bind("", "M", function()
-  local win, frame = getWindowAndScreen()
-  if not win then return end
-  win:setFrame(frame)
-end)
-
--- Center window (2/3 width)
-hyperMode:bind("", "C", function()
-  local win, frame = getWindowAndScreen()
-  if not win then return end
-  local newW = frame.w * 2 / 3
-  local newH = frame.h * 2 / 3
-  win:setFrame({
-    x = frame.x + (frame.w - newW) / 2,
-    y = frame.y + (frame.h - newH) / 2,
-    w = newW,
-    h = newH
-  })
-end)
-
--- Move to next screen
-hyperMode:bind("", "N", function()
-  local win = hs.window.focusedWindow()
-  if not win then return end
-  win:moveToScreen(win:screen():next())
-end)
 
 --------------------------------------------------------------------------------
 -- WINDOW CYCLING (Vim-style J/K)
@@ -178,15 +87,31 @@ hyperMode:bind("", "K", function()
   cycleAppWindows("prev")
 end)
 
+-- Arrow keys for moving window between monitors
+hyperMode:bind("", "Right", function()
+  local win = hs.window.focusedWindow()
+  if not win then return end
+  win:moveToScreen(win:screen():previous())
+end)
+
+hyperMode:bind("", "Left", function()
+  local win = hs.window.focusedWindow()
+  if not win then return end
+  win:moveToScreen(win:screen():next())
+end)
+
 --------------------------------------------------------------------------------
 -- APP LAUNCHERS
 --------------------------------------------------------------------------------
 
 local appBindings = {
   I = "iTerm",
-  C = "Google Chrome",
-  U = "Cursor",
+  G = "Google Chrome",
+  C = "Cursor",
   S = "Slack",
+  M = "Messages",
+  N = "Notes",
+  W = "WhatsApp",
 }
 
 for key, app in pairs(appBindings) do
@@ -195,11 +120,6 @@ for key, app in pairs(appBindings) do
     hyperMode:exit()
   end)
 end
-
--- P for previous window (same as K)
-hyperMode:bind("", "P", function()
-  cycleAppWindows("prev")
-end)
 
 --------------------------------------------------------------------------------
 -- MONITOR FOCUS (move mouse to monitor)
