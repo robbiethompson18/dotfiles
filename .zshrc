@@ -82,7 +82,14 @@ gclonessh() {
 }
 
 # Development
-alias prd="rm -f /tmp/dev-output.log && pnpm run dev 2>&1 | tee /tmp/dev-output.log"
+unalias prd 2>/dev/null
+prd() {
+  local log_dir="/tmp${PWD#$HOME}"
+  mkdir -p "$log_dir"
+  local log_file="$log_dir/dev-output.log"
+  rm -f "$log_file"
+  pnpm run dev 2>&1 | tee "$log_file"
+}
 
 # CLI tools
 alias claude="claude --dangerously-skip-permissions"
