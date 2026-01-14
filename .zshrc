@@ -34,6 +34,7 @@ _cdr() { _files -W ~/repos -/; }
 compdef _cdr cdr
 alias cdrp="cd ~/repos/platform"
 alias cdrpp="cd ~/repos/platform-2"
+alias cdrp2="cd ~/repos/platform-2"
 alias cdrpf="cd ~/repos/platform-frontend"
 alias cdrd="cd ~/repos/dotfiles"
 
