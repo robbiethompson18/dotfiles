@@ -90,7 +90,7 @@ prd() {
   mkdir -p "$log_dir"
   local log_file="$log_dir/dev-output.log"
   rm -f "$log_file"
-  pnpm run dev 2>&1 | tee "$log_file"
+  FORCE_COLOR=1 pnpm run dev 2>&1 | tee "$log_file"
 }
 
 # CLI tools
