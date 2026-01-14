@@ -116,6 +116,7 @@ alias tl="tmux list-sessions"
 # Global Variables
 # ============================================
 
+export PATH="$HOME/repos/dotfiles/bin:$PATH"
 export EDITOR='vim'
 
 # ============================================

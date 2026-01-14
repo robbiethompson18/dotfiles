@@ -1,0 +1,41 @@
+#!/bin/bash
+# Kill processes running on a specified port with confirmation
+
+set -e
+
+if [[ -z "$1" ]]; then
+  echo "Usage: killport <port>"
+  exit 1
+fi
+
+port="$1"
+
+# Find processes on the port
+pids=$(lsof -ti :"$port" 2>/dev/null || true)
+
+if [[ -z "$pids" ]]; then
+  echo "No processes found on port $port"
+  exit 0
+fi
+
+echo "Processes found on port $port:"
+echo "---"
+
+for pid in $pids; do
+  # Get process details
+  proc_info=$(ps -p "$pid" -o pid=,user=,command= 2>/dev/null || echo "$pid (process info unavailable)")
+  echo "$proc_info"
+done
+
+echo "---"
+echo
+
+for pid in $pids; do
+  proc_name=$(ps -p "$pid" -o command= 2>/dev/null | head -c 50 || echo "unknown")
+  read -rp "Kill PID $pid ($proc_name)? [y/N] " confirm
+  if [[ "$confirm" =~ ^[Yy]$ ]]; then
+    kill -9 "$pid" 2>/dev/null && echo "Killed $pid" || echo "Failed to kill $pid (may have already exited)"
+  else
+    echo "Skipped $pid"
+  fi
+done
