@@ -92,6 +92,7 @@ prd() {
   rm -f "$log_file"
   FORCE_COLOR=1 pnpm run dev 2>&1 | tee "$log_file"
 }
+alias pt="pnpm i & pnpm build"
 
 # CLI tools
 alias claude="claude --dangerously-skip-permissions"
