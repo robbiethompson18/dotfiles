@@ -1,5 +1,9 @@
 # Claude Code Instructions
 
+## Tool restrictions
+
+- Never use `sed` for file editing. Always use the Edit tool instead.
+
 ## Git workflow
 
 - Do not commit or push changes unless explicitly asked.
