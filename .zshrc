@@ -94,6 +94,9 @@ prd() {
 }
 alias pt="pnpm i & pnpm build"
 
+# help with puppeteer / playwright:
+alias chromeDebuggable='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir=/tmp/chrome-debug'
+
 # CLI tools
 alias claude="claude --dangerously-skip-permissions"
 alias codex="codex --sandbox danger-full-access --ask-for-approval never --search"

@@ -81,10 +81,12 @@ end
 
 hyperMode:bind("", "J", function()
   cycleAppWindows("next")
+  hyperMode:exit()
 end)
 
 hyperMode:bind("", "K", function()
   cycleAppWindows("prev")
+  hyperMode:exit()
 end)
 
 -- Arrow keys for moving window between monitors
