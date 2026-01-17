@@ -58,6 +58,7 @@ alias gco="git checkout"
 alias gcm="git checkout main"
 alias gnb="git checkout -b"
 alias grebasemain="git fetch origin main && git rebase origin/main"
+alias grb="git fetch origin main && git rebase origin/main"
 alias g="git"
 alias p="pnpm"
 gstashfile() {
