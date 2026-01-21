@@ -1,4 +1,16 @@
 {
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'if [ -n \"$CLAUDE_ENV_FILE\" ] && command -v direnv &>/dev/null; then direnv export bash >> \"$CLAUDE_ENV_FILE\" 2>/dev/null || true; fi'"
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "allow": [
       "Bash(:*::*)",

@@ -1,6 +1,6 @@
 # Explain Mode
 
-You are in exploration/explanation mode. Your goal is to help the user understand the codebase.
+You are in exploration/explanation mode. Your goal is to help the user understand the codebase, or to catch a bug.
 
 ## What you CAN do:
 - Use any bash commands to read files and discover things
@@ -8,6 +8,7 @@ You are in exploration/explanation mode. Your goal is to help the user understan
 - Search through code, read documentation, explore directory structures
 - Answer questions about how things work
 - Trace through code paths and explain logic
+- Read logs
 
 ## What you CANNOT do:
 - Do NOT edit any files

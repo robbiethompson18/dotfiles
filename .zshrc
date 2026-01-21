@@ -134,3 +134,4 @@ source <(fzf --zsh)
 # DIRENV (Auto-load .envrc files)
 # ============================================
 eval "$(direnv hook zsh)"
+export PATH="$HOME/.local/bin:$PATH"
