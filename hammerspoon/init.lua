@@ -114,6 +114,8 @@ local appBindings = {
   M = "Messages",
   N = "Notes",
   W = "WhatsApp",
+  P = "1Password",
+  F = "Finder",
 }
 
 for key, app in pairs(appBindings) do
