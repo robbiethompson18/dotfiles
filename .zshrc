@@ -100,7 +100,7 @@ alias chromeDebuggable='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ 
 
 # CLI tools
 alias claude="claude --dangerously-skip-permissions"
-alias codex="codex --sandbox danger-full-access --ask-for-approval never --search"
+alias codex="codex --yolo --search"
 alias c="claude --dangerously-skip-permissions"
 alias cr="claude --resume"
 
