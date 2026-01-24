@@ -3,6 +3,8 @@
 echo "Installing common brew packages..."
 echo "  • claude"
 brew install claude
+echo "  • codex"
+brew install codex
 echo "  • node"
 brew install node
 echo "  • pnpm"
