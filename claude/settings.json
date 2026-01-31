@@ -1,16 +1,4 @@
 {
-  "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash -c 'if [ -n \"$CLAUDE_ENV_FILE\" ] && command -v direnv &>/dev/null; then direnv export bash >> \"$CLAUDE_ENV_FILE\" 2>/dev/null || true; fi'"
-          }
-        ]
-      }
-    ]
-  },
   "permissions": {
     "allow": [
       "Bash(:*::*)",
@@ -30,10 +18,43 @@
     "deny": [],
     "defaultMode": "bypassPermissions"
   },
+  "hooks": {
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bd prime"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'if [ -n \"$CLAUDE_ENV_FILE\" ] && command -v direnv &>/dev/null; then direnv export bash >> \"$CLAUDE_ENV_FILE\" 2>/dev/null || true; fi'"
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bd prime"
+          }
+        ]
+      }
+    ]
+  },
   "enabledPlugins": {
-    "github@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
-    "code-simplifier@claude-plugins-official": true
+    "github@claude-plugins-official": true,
+    "beads@beads-marketplace": true
   },
   "alwaysThinkingEnabled": true,
   "allow": [
