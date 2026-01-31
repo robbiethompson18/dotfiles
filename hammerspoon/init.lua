@@ -86,7 +86,6 @@ end)
 
 hyperMode:bind("", "K", function()
   cycleAppWindows("prev")
-  hyperMode:exit()
 end)
 
 -- Arrow keys for moving window between monitors
