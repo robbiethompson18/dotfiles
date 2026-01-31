@@ -135,3 +135,6 @@ source <(fzf --zsh)
 # ============================================
 eval "$(direnv hook zsh)"
 export PATH="$HOME/.local/bin:$PATH"
+
+# Don't save commands starting with a space to history
+setopt HIST_IGNORE_SPACE
