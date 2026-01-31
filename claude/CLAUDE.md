@@ -18,3 +18,9 @@ current changes. Please do not commit and push later on without permission.
 - These are **local dev server logs only**, not production logs. There is no access to production logs from here.
 - You should check these logs when you're helping the user debug local dev issues.
 - To find the log file for the current project, check `/tmp/repos/<project-name>/dev-output.log`.
+
+## Sensitive commands
+
+- `HIST_IGNORE_SPACE` is enabled: commands starting with a space are not saved to zsh history.
+- When running commands with API keys, tokens, or passwords, **prefix with a space** to keep them out of history.
+- Example: ` export API_KEY=sk-secret` (note leading space) — runs normally but isn't logged.
