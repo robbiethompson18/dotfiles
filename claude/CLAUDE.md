@@ -24,3 +24,9 @@ current changes. Please do not commit and push later on without permission.
 - `HIST_IGNORE_SPACE` is enabled: commands starting with a space are not saved to zsh history.
 - When running commands with API keys, tokens, or passwords, **prefix with a space** to keep them out of history.
 - Example: ` export API_KEY=sk-secret` (note leading space) — runs normally but isn't logged.
+
+## Time Zone
+
+Always display times in **California time (Pacific)**. Convert UTC timestamps before showing them.
+- PST (Nov–Mar): UTC-8
+- PDT (Mar–Nov): UTC-7
