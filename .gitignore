@@ -5,4 +5,4 @@ legacy.zshrc
 .zshrc.backup
 
 # Claude plugins - auto-managed, no need to track
-claude/plugins/
+claude-plugins/
