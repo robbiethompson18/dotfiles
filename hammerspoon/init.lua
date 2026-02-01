@@ -106,7 +106,7 @@ end)
 --------------------------------------------------------------------------------
 
 local appBindings = {
-  I = "iTerm",
+  I = "iTerm 2",
   G = "Google Chrome",
   C = "Cursor",
   S = "Slack",
