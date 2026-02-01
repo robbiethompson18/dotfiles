@@ -138,3 +138,9 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # Don't save commands starting with a space to history
 setopt HIST_IGNORE_SPACE
+
+# OpenClaw Completion (cached, skipped if openclaw not installed)
+if command -v openclaw &> /dev/null; then
+  [[ -f ~/.openclaw-completion.zsh ]] || openclaw completion --shell zsh > ~/.openclaw-completion.zsh
+  source ~/.openclaw-completion.zsh
+fi
