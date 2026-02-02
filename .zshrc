@@ -117,6 +117,45 @@ alias ta="tmux attach -t"
 alias td="tmux detach"
 alias tn="tmux new-session"
 alias tl="tmux list-sessions"
+
+# Fly.io
+alias f="fly"
+export FLY_APP="robbies-openclaw"  # default app
+
+# fssh "command" [-a app] - run command on fly machine
+fssh() {
+  local cmd="$1"
+  shift
+  local app="${FLY_APP}"
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -a) app="$2"; shift 2 ;;
+      *) shift ;;
+    esac
+  done
+  fly ssh console -a "$app" -C "$cmd"
+}
+
+# frestart [-a app] - restart fly machine
+frestart() {
+  local app="${FLY_APP}"
+  [[ "$1" == "-a" ]] && app="$2"
+  fly machines restart -a "$app"
+}
+
+# flog [-a app] - tail fly logs
+flog() {
+  local app="${FLY_APP}"
+  [[ "$1" == "-a" ]] && app="$2"
+  fly logs -a "$app"
+}
+
+# fstatus [-a app] - fly app status
+fstatus() {
+  local app="${FLY_APP}"
+  [[ "$1" == "-a" ]] && app="$2"
+  fly status -a "$app"
+}
 # ============================================
 # Global Variables
 # ============================================
