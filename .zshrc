@@ -99,9 +99,9 @@ alias pt="pnpm i & pnpm build"
 alias chromeDebuggable='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir=/tmp/chrome-debug'
 
 # CLI tools
-alias claude="claude --dangerously-skip-permissions"
+alias claude="claude --dangerously-skip-permissions --chrome"
 alias codex="codex --yolo --search"
-alias c="claude --dangerously-skip-permissions"
+alias c="claude --dangerously-skip-permissions --chrome"
 alias cr="claude --resume"
 
 # use nice new versions of python tools:
@@ -183,3 +183,33 @@ if command -v openclaw &> /dev/null; then
   [[ -f ~/.openclaw-completion.zsh ]] || openclaw completion --shell zsh > ~/.openclaw-completion.zsh
   source ~/.openclaw-completion.zsh
 fi
+
+# ============================================
+# CLAUDE LOCAL MD SYNC
+# ============================================
+# Syncs CLAUDE.local.md files to dotfiles for cross-machine sync
+claude-local-init() {
+  local remote=$(git remote get-url origin 2>/dev/null)
+  if [[ -z "$remote" ]]; then
+    echo "Not a git repo or no origin remote"
+    return 1
+  fi
+
+  # Normalize: git@github.com:user/repo.git → github.com/user/repo
+  local path=$(echo "$remote" | sed -E 's#^(git@|https://)##; s#:#/#; s#\.git$##')
+
+  local target=~/repos/dotfiles/claude/local-mds/$path/CLAUDE.local.md
+  mkdir -p "$(dirname "$target")"
+  mkdir -p .claude
+
+  if [[ -f .claude/CLAUDE.local.md && ! -L .claude/CLAUDE.local.md ]]; then
+    # Move existing file to dotfiles
+    mv .claude/CLAUDE.local.md "$target"
+    echo "Moved existing CLAUDE.local.md to $target"
+  elif [[ ! -f "$target" ]]; then
+    touch "$target"
+  fi
+
+  ln -sf "$target" .claude/CLAUDE.local.md
+  echo "Linked .claude/CLAUDE.local.md → $target"
+}
