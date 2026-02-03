@@ -35,3 +35,11 @@ current changes. Please do not commit and push later on without permission.
 Always display times in **California time (Pacific)**. Convert UTC timestamps before showing them.
 - PST (Nov–Mar): UTC-8
 - PDT (Mar–Nov): UTC-7
+
+## Sensitive Things
+
+Always ask the user before: 
+* Using Pulumi
+* Deploying to prod
+* Resetting the DB or dropping tables
+* Doing an ugly database migration
