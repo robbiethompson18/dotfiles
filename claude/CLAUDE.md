@@ -19,6 +19,11 @@ current changes. Please do not commit and push later on without permission.
 - You should check these logs when you're helping the user debug local dev issues.
 - To find the log file for the current project, check `/tmp/repos/<project-name>/dev-output.log`.
 
+## Log checking
+
+- Never tell the user to check logs themselves (e.g., "run `fly logs`" or "check `cat /tmp/logs/x`").
+- Always check logs yourself and report what you find, if checking logs is necessary for the task at hand.
+
 ## Sensitive commands
 
 - `HIST_IGNORE_SPACE` is enabled: commands starting with a space are not saved to zsh history.
