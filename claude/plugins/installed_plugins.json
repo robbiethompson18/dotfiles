@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "plugins": {
+    "github@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/Users/robbie/.claude/plugins/cache/claude-plugins-official/github/e30768372b41",
+        "version": "e30768372b41",
+        "installedAt": "2025-12-28T22:12:33.453Z",
+        "lastUpdated": "2026-01-21T05:44:41.300Z",
+        "gitCommitSha": "17f5162f146747f22542ba4f936ab557df6caa52"
+      }
+    ],
+    "frontend-design@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/Users/robbie/.claude/plugins/cache/claude-plugins-official/frontend-design/e30768372b41",
+        "version": "e30768372b41",
+        "installedAt": "2026-01-09T18:29:12.589Z",
+        "lastUpdated": "2026-01-21T05:44:41.305Z",
+        "gitCommitSha": "09f6413b8af0f26c43211292fd67d134bdbb93ce"
+      }
+    ],
+    "code-simplifier@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/Users/robbie/.claude/plugins/cache/claude-plugins-official/code-simplifier/1.0.0",
+        "version": "1.0.0",
+        "installedAt": "2026-01-09T18:29:12.611Z",
+        "lastUpdated": "2026-01-09T18:29:12.611Z",
+        "gitCommitSha": "09f6413b8af0f26c43211292fd67d134bdbb93ce"
+      }
+    ],
+    "beads@beads-marketplace": [
+      {
+        "scope": "user",
+        "installPath": "/Users/robbie/.claude/plugins/cache/beads-marketplace/beads/0.49.0",
+        "version": "0.49.0",
+        "installedAt": "2026-01-26T01:13:30.562Z",
+        "lastUpdated": "2026-01-26T01:13:30.562Z",
+        "gitCommitSha": "132f9d2f6f245e9eb38e28054ccf48bda7fe6733"
+      }
+    ]
+  }
+}
