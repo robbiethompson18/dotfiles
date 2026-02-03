@@ -21,7 +21,7 @@ current changes. Please do not commit and push later on without permission.
 
 ## Log checking
 
-- Never tell the user to check logs themselves (e.g., "run `fly logs`" or "check `cat /tmp/logs/x`").
+- Never tell the user to check logs themselves (e.g."check `cat /tmp/logs/x`").
 - Always check logs yourself and report what you find, if checking logs is necessary for the task at hand.
 
 ## Sensitive commands
