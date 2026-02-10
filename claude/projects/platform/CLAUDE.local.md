@@ -31,13 +31,13 @@ Current permanent worktrees:
 
 ### Branch Convention
 
-**Each worktree should stay on its own `tmp/{worktree-name}` branch**, not on `main`. This allows any worktree to temporarily checkout `main` to pull latest changes, then switch back to its branch:
+**Each worktree should stay on its own `tmp/{worktree-random-id}` branch**, not on `main`. This allows any worktree to temporarily checkout `main` to pull latest changes, then switch back to its branch:
 
 ```bash
 # In any worktree, to sync with main:
 git checkout main
 git pull origin main
-git checkout tmp/platform  # or tmp/platform-2, etc.
+git checkout -b tmp/platform-randomid  # or tmp/platform-2-randomid, etc.
 git rebase main
 ```
 
