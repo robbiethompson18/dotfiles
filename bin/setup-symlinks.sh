@@ -68,3 +68,7 @@ create_symlink "$HOME/repos/dotfiles/cursor/keybindings.json" "$HOME/Library/App
 
 # Hammerspoon config
 create_symlink "$HOME/repos/dotfiles/hammerspoon" "$HOME/.hammerspoon" "Hammerspoon"
+
+# Ghostty config
+mkdir -p "$HOME/.config/ghostty"
+create_symlink "$HOME/repos/dotfiles/ghostty/config" "$HOME/.config/ghostty/config" "Ghostty config"
