@@ -106,7 +106,7 @@ end)
 --------------------------------------------------------------------------------
 
 local appBindings = {
-  I = "iTerm 2",
+  I = { bundleID = "com.mitchellh.ghostty", name = "Ghostty" },
   G = "Google Chrome",
   C = "Cursor",
   S = "Slack",
@@ -119,7 +119,15 @@ local appBindings = {
 
 for key, app in pairs(appBindings) do
   hyperMode:bind("", key, function()
-    hs.application.launchOrFocus(app)
+    if type(app) == "table" and app.bundleID then
+      if hs.application.launchOrFocusByBundleID then
+        hs.application.launchOrFocusByBundleID(app.bundleID)
+      else
+        hs.application.launchOrFocus(app.name or app.bundleID)
+      end
+    else
+      hs.application.launchOrFocus(app)
+    end
     hyperMode:exit()
   end)
 end
