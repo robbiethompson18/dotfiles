@@ -1,0 +1,16 @@
+# Pane navigation (directional)
+keybind = cmd+alt+left=goto_split:left
+keybind = cmd+alt+right=goto_split:right
+keybind = cmd+alt+up=goto_split:top
+keybind = cmd+alt+down=goto_split:bottom
+
+# Pane navigation (by index)
+keybind = alt+1=goto_split:1
+keybind = alt+2=goto_split:2
+keybind = alt+3=goto_split:3
+keybind = alt+4=goto_split:4
+keybind = alt+5=goto_split:5
+
+# Create splits
+keybind = cmd+d=new_split:right
+keybind = cmd+shift+d=new_split:down
