@@ -60,5 +60,6 @@
   "allow": [
     "*"
   ],
-  "autoUpdates": true
+  "autoUpdates": true,
+  "fastMode": true
 }
