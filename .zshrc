@@ -33,10 +33,12 @@ cdr() { cd ~/repos/"$1"; }
 _cdr() { _files -W ~/repos -/; }
 compdef _cdr cdr
 alias cdrp="cd ~/repos/platform"
+alias cdrpd="cd ~/repos/platform-debugging-only"
 alias cdrpp="cd ~/repos/platform-2"
 alias cdrp2="cd ~/repos/platform-2"
 alias cdrpf="cd ~/repos/platform-frontend"
 alias cdrd="cd ~/repos/dotfiles"
+alias cdop="cd ~/.openclaw"
 
 # Git aliases
 alias gs="git status"
@@ -48,7 +50,19 @@ alias gp="git push"
 gtr() {
   git add . && git commit -m "${1:-[No commit message]}" && git push
 }
-alias gd="git diff"
+unalias gd 2>/dev/null
+gd() {
+  git diff "$@"
+  local -a untracked
+  # Collect untracked files safely (NUL-delimited to handle spaces).
+  untracked=("${(@0)$(git ls-files -o --exclude-standard -z)}")
+  if (( ${#untracked} )); then
+    printf '\n# Untracked files\n'
+    for f in "${untracked[@]}"; do
+      git diff --no-index /dev/null -- "$f"
+    done
+  fi
+}
 alias gl="git log"
 alias gm="git merge"
 alias gpl="git pull"
@@ -92,6 +106,14 @@ prd() {
   local log_file="$log_dir/dev-output.log"
   rm -f "$log_file"
   FORCE_COLOR=1 pnpm run dev 2>&1 | tee "$log_file"
+}
+unalias plp 2>/dev/null
+plp() {
+  local log_dir="/tmp${PWD#$HOME}"
+  mkdir -p "$log_dir"
+  local log_file="$log_dir/logs-prod.log"
+  rm -f "$log_file"
+  FORCE_COLOR=1 pnpm run logs-prod 2>&1 | tee "$log_file"
 }
 alias pt="pnpm i & pnpm build"
 
