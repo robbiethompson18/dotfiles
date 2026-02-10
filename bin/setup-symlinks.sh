@@ -9,7 +9,17 @@ create_symlink() {
 
     if [ -L "$target" ]; then
         if [ -e "$target" ]; then
-            echo "✅ $name symlink already exists"
+            # Update the symlink if it points somewhere else.
+            local current
+            current="$(readlink "$target")"
+            if [ "$current" = "$source" ]; then
+                echo "✅ $name symlink already exists"
+            else
+                echo "⚠️  $name symlink points to $current - updating to $source"
+                rm "$target"
+                ln -s "$source" "$target"
+                echo "✅ Updated $name symlink"
+            fi
         else
             echo "⚠️  $name symlink is broken - fixing it"
             rm "$target"
@@ -46,6 +56,10 @@ mkdir -p "$HOME/.claude"
 create_symlink "$HOME/repos/dotfiles/claude/settings.json" "$HOME/.claude/settings.json" "Claude settings.json"
 create_symlink "$HOME/repos/dotfiles/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md" "Claude CLAUDE.md"
 create_symlink "$HOME/repos/dotfiles/claude/plugins" "$HOME/.claude/plugins" "Claude plugins"
+
+# Codex config
+mkdir -p "$HOME/.codex"
+create_symlink "$HOME/repos/dotfiles/claude/CLAUDE.md" "$HOME/.codex/AGENTS.md" "Codex AGENTS.md"
 
 # Cursor config
 mkdir -p "$HOME/Library/Application Support/Cursor/User"
