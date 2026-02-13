@@ -19,3 +19,5 @@ echo "  • pulumi"
 brew install pulumi
 echo "  • awscli"
 brew install awscli
+echo "  • visual-studio-code"
+brew install --cask visual-studio-code
