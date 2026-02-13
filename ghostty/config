@@ -7,3 +7,6 @@ keybind = cmd+alt+down=goto_split:bottom
 # Create splits
 keybind = cmd+d=new_split:right
 keybind = cmd+shift+d=new_split:down
+
+# Don't prompt when closing windows with running processes
+confirm-close-surface = false

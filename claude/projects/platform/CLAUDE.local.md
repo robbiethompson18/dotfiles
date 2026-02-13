@@ -7,7 +7,7 @@ take chances to explain how stuff works.
 
 ## Database
 
-Please do not use the neon MCP or to query the database!! Use the /db skill.
+Please do not use the neon MCP to query the database!! Use the /db skill.
 
 ## Development Workflow
 
@@ -20,14 +20,20 @@ Please do not use the neon MCP or to query the database!! Use the /db skill.
 - If you commit and then make new changes, don't keep committing and pushing. Ask for permission again.
 - Claude, you often ignore the above instruction, and it DRIVES ROBBIE NUTS. Please ask for permission EVERY TIME YOU PUSH.
 
-## Git Worktrees for Parallel Claude Sessions
+## Multiple Clones for Parallel Claude Sessions
 
-**Worktrees are meant to be long-lived.** Create them once and reuse them. Neon branches are free when idle, and having worktrees ready means you can start a new Claude session instantly.
+We don't use git worktrees. Everything is a fresh clone with a checkout of main.
+Stay on main, commit and merge from there. Only use branches if sepcifically asked, or the user wants to view a PR.
+The different branches use different ports, different Google Oauth clients, and two different databases
+(frontend and platform-2 share a database). 
+platform-debugging isn't meant for code chages, it's meant for using cli (eg aws, posthog) to
+find and fix customer issues.
 
-Current permanent worktrees:
-- `platform` on `tmp/platform` — primary development at `localhost:5173`
-- `platform-2` on `tmp/platform-2` — secondary development at `http://test.lvh.me:5175`
-- `platform-frontend` on `tmp/platform-frontend` — parallel frontend work at `http://test.lvh.me:5177`
+Current permanent clones:
+- `platform` — primary development at `localhost:5173`
+- `platform-2` — secondary development at `http://test.lvh.me:5175`
+- `platform-frontend`  — tertiary development work at `http://test.lvh.me:5177`. Shares a DB with platform-2.
+- `platform-debugging` — just for using the CLI and changing Claude skills. Not set up to build typescript.
 
 ### Branch Convention
 

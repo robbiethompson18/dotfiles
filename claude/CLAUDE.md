@@ -207,9 +207,10 @@ POTENTIAL CONCERNS:
 7. Being sycophantic ("Of course!" to bad ideas)
 8. Overcomplicating code and APIs
 9. Bloating abstractions unnecessarily
-10. Not cleaning up dead code after refactors
-11. Modifying comments/code orthogonal to the task
-12. Removing things you don't fully understand
+10. Over-defensive bash scripts (e.g., `SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)` when scripts always run from repo root — just use relative paths)
+11. Not cleaning up dead code after refactors
+12. Modifying comments/code orthogonal to the task
+13. Removing things you don't fully understand
 </failure_modes_to_avoid>
 
 <meta>
