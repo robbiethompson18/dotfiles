@@ -1,4 +1,4 @@
-// NOTE: Similar config exists at vscode/settings.json — update both when making changes
+// NOTE: Similar config exists at cursor/settings.json — update both when making changes
 {
     "[python]": {
         "editor.formatOnType": true,
@@ -34,13 +34,8 @@
         "source.organizeImports": "explicit"
     },
     "python.analysis.useLibraryCodeForTypes": true,
-    "cursor.cpp.disabledLanguages": [
-        "plaintext",
-        "javascript",
-        "typescript"
-    ],
-    "workbench.colorTheme": "Cursor Dark High Contrast",
-    "git.autofetch": true
+    "workbench.colorTheme": "Default Dark Modern",
+    "git.autofetch": true,
     "[markdown]": {
         "editor.quickSuggestions": false,
         "editor.suggestOnTriggerCharacters": false

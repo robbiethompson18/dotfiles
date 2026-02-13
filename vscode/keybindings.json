@@ -1,4 +1,4 @@
-// NOTE: Similar config exists at vscode/keybindings.json — update both when making changes
+// NOTE: Similar config exists at cursor/keybindings.json — update both when making changes
 // Place your key bindings in this file to override the defaults
 [
     {
@@ -24,9 +24,5 @@
     {
         "key": "ctrl+cmd+=",
         "command": "workbench.action.showMultipleEditorTabs"
-    },
-    {
-        "key": "cmd+i",
-        "command": "composerMode.agent"
     }
 ]
