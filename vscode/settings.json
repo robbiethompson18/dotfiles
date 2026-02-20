@@ -37,11 +37,19 @@
     "workbench.colorTheme": "Default Dark Modern",
     "git.autofetch": true,
     "[markdown]": {
-        "editor.quickSuggestions": false,
+        "editor.quickSuggestions": {
+            "comments": "off",
+            "strings": "off",
+            "other": "off"
+        },
         "editor.suggestOnTriggerCharacters": false
     },
     "[plaintext]": {
-        "editor.quickSuggestions": false,
+        "editor.quickSuggestions": {
+            "comments": "off",
+            "strings": "off",
+            "other": "off"
+        },
         "editor.suggestOnTriggerCharacters": false
     }
 }
