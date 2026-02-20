@@ -123,7 +123,22 @@ alias chromeDebuggable='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ 
 # CLI tools
 alias claude="claude --dangerously-skip-permissions --chrome"
 alias codex="codex --yolo --search"
-alias c="claude --dangerously-skip-permissions --chrome"
+c() {
+  local opts=()
+  local words=()
+  for arg in "$@"; do
+    if [[ "$arg" == -* ]]; then
+      opts+=("$arg")
+    else
+      words+=("$arg")
+    fi
+  done
+  if (( ${#words[@]} > 0 )); then
+    command claude --dangerously-skip-permissions --chrome "${opts[@]}" "${words[*]}"
+  else
+    command claude --dangerously-skip-permissions --chrome "${opts[@]}"
+  fi
+}
 alias cr="claude --resume"
 
 # use nice new versions of python tools:
