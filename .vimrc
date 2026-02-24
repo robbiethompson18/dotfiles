@@ -36,6 +36,9 @@ set hidden
 " Enable mouse support
 set mouse+=a
 
+" Use system clipboard for yank/paste
+set clipboard=unnamed
+
 " This setting makes search case-insensitive when all characters in the string
 " being searched are lowercase. However, the search becomes case-sensitive if
 " it contains any capital letters. This makes searching more convenient.
