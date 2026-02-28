@@ -38,6 +38,7 @@ alias cdrpp="cd ~/repos/platform-2"
 alias cdrp2="cd ~/repos/platform-2"
 alias cdrpf="cd ~/repos/platform-frontend"
 alias cdrd="cd ~/repos/dotfiles"
+alias cdra="cd ~/repos/agentdrive"
 alias cdop="cd ~/.openclaw"
 
 # Git aliases
