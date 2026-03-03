@@ -40,7 +40,7 @@ Always display times in **California time (Pacific)**. Convert UTC timestamps be
 
 Always ask the user before: 
 * Using Pulumi
-* Deploying to prod
+* Deploying to prod, if working in a `platform*` repo
 * Resetting the DB or dropping tables
 * Doing an ugly database migration
 
