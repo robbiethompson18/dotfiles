@@ -5,9 +5,7 @@ echo "  • claude"
 brew install claude
 echo "  • codex"
 brew install codex
-echo "  • node"
-brew install node
-echo "  • pnpm"
+echo "  • pnpm (note: use nvm for node, not brew)"
 brew install pnpm
 echo "  • python"
 brew install python
