@@ -106,7 +106,8 @@ end)
 --------------------------------------------------------------------------------
 
 local appBindings = {
-  I = { bundleID = "com.mitchellh.ghostty", name = "Ghostty" },
+  I = "iTerm",
+  V = "Visual Studio Code",
   G = "Google Chrome",
   C = "Cursor",
   S = "Slack",
