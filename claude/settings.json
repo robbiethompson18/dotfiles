@@ -18,6 +18,7 @@
     "deny": [],
     "defaultMode": "bypassPermissions"
   },
+  "model": "claude-opus-4-6",
   "hooks": {
     "PreCompact": [
       {
@@ -53,13 +54,14 @@
   "enabledPlugins": {
     "code-simplifier@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
-    "github@claude-plugins-official": true,
-    "beads@beads-marketplace": true
+    "github@claude-plugins-official": false,
+    "beads@beads-marketplace": false,
+    "agenttunnel@agenttunnel": true
   },
   "alwaysThinkingEnabled": true,
+  "skipDangerousModePermissionPrompt": true,
   "allow": [
     "*"
   ],
-  "autoUpdates": true,
-  "fastMode": true
+  "autoUpdates": true
 }

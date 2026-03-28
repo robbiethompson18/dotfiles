@@ -40,6 +40,16 @@
         "lastUpdated": "2026-01-26T01:13:30.562Z",
         "gitCommitSha": "132f9d2f6f245e9eb38e28054ccf48bda7fe6733"
       }
+    ],
+    "agenttunnel@agenttunnel": [
+      {
+        "scope": "user",
+        "installPath": "/Users/robbie/.claude/plugins/cache/agenttunnel/agenttunnel/5198f1578013",
+        "version": "5198f1578013",
+        "installedAt": "2026-03-06T04:49:07.862Z",
+        "lastUpdated": "2026-03-06T04:49:07.862Z",
+        "gitCommitSha": "5198f15780135657132ee13b2220a5ce4230b4a8"
+      }
     ]
   }
 }
