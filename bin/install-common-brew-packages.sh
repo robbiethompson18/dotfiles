@@ -5,7 +5,11 @@ echo "  • claude"
 brew install claude
 echo "  • codex"
 brew install codex
-echo "  • pnpm (note: use nvm for node, not brew)"
+echo "  • fnm (node version manager)"
+brew install fnm
+echo "  • bun (via bun.sh installer)"
+curl -fsSL https://bun.sh/install | bash
+echo "  • pnpm"
 brew install pnpm
 echo "  • python"
 brew install python
