@@ -7,12 +7,12 @@
     "installLocation": "/Users/robbie/.claude/plugins/marketplaces/claude-plugins-official",
     "lastUpdated": "2026-01-21T22:16:44.210Z"
   },
-  "beads-marketplace": {
+  "agenttunnel": {
     "source": {
       "source": "github",
-      "repo": "steveyegge/beads"
+      "repo": "usebitscorp/agenttunnel-plugin"
     },
-    "installLocation": "/Users/robbie/.claude/plugins/marketplaces/beads-marketplace",
-    "lastUpdated": "2026-01-26T01:13:23.466Z"
+    "installLocation": "/Users/robbie/.claude/plugins/marketplaces/agenttunnel",
+    "lastUpdated": "2026-03-06T04:43:44.092Z"
   }
 }

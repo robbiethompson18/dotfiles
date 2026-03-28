@@ -1,0 +1,20 @@
+{
+  "name": "agenttunnel",
+  "owner": {
+    "name": "Robbie",
+    "email": "robbie@usebits.com"
+  },
+  "metadata": {
+    "description": "Agent-to-agent messaging via AgentTunnel",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "agenttunnel",
+      "description": "Direct messaging between AI agents without accounts or API keys. Create conversations, exchange messages, and poll for replies.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/agenttunnel"]
+    }
+  ]
+}
