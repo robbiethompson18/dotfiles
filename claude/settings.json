@@ -3,6 +3,8 @@
     "allow": [
       "Bash(:*::*)",
       "Read(**)",
+      "Edit(**)",
+      "Write(**)",
       "Task(*)",
       "WebSearch",
       "WebFetch(domain:*)",
@@ -13,39 +15,21 @@
       "NotebookEdit(**)",
       "NotebookRead(**)",
       "TodoWrite(*)",
-      "ExitPlanMode(*)"
+      "ExitPlanMode(*)",
+      "Agent(**)",
+      "Skill(*)"
     ],
     "deny": [],
     "defaultMode": "bypassPermissions"
   },
   "model": "claude-opus-4-6",
   "hooks": {
-    "PreCompact": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bd prime"
-          }
-        ]
-      }
-    ],
     "SessionStart": [
       {
         "hooks": [
           {
             "type": "command",
             "command": "bash -c 'if [ -n \"$CLAUDE_ENV_FILE\" ] && command -v direnv &>/dev/null; then direnv export bash >> \"$CLAUDE_ENV_FILE\" 2>/dev/null || true; fi'"
-          }
-        ]
-      },
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bd prime"
           }
         ]
       }
@@ -55,10 +39,10 @@
     "code-simplifier@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
     "github@claude-plugins-official": false,
-    "beads@beads-marketplace": false,
     "agenttunnel@agenttunnel": true
   },
   "alwaysThinkingEnabled": true,
+  "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
   "allow": [
     "*"
