@@ -1,5 +1,9 @@
 # Claude Code Instructions
 
+## Plan mode
+
+Do NOT use plan mode unless Robbie explicitly asks for it (e.g., "plan this", "make a plan", "enter plan mode"). Just start working.
+
 ## Tool restrictions
 
 - Never use `sed` for file editing. Always use the Edit tool instead.
