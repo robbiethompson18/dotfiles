@@ -200,6 +200,7 @@ fstatus() {
 
 export PATH="$HOME/repos/dotfiles/bin:$PATH"
 export EDITOR='vim'
+export CLAUDE_CODE_NO_FLICKER=1
 
 # ============================================
 # FZF INTEGRATION (Fuzzy command history)
