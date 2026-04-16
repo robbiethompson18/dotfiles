@@ -34,7 +34,7 @@
         "source.organizeImports": "explicit"
     },
     "python.analysis.useLibraryCodeForTypes": true,
-    "workbench.colorTheme": "Default Dark Modern",
+    "workbench.colorTheme": "Dark Modern",
     "git.autofetch": true,
     "[markdown]": {
         "editor.quickSuggestions": {
