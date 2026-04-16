@@ -4,5 +4,10 @@ legacy.zshrc
 *.log
 .zshrc.backup
 
-# Claude plugins - auto-managed, no need to track
-claude-plugins/
+# Claude plugins - auto-managed runtime state, no need to track
+claude/plugins/install-counts-cache.json
+claude/plugins/installed_plugins.json
+claude/plugins/known_marketplaces.json
+
+# Official plugins - re-installable from marketplace, not worth tracking
+claude/plugins/cache/claude-plugins-official/
