@@ -1,5 +1,32 @@
 # Claude Code Instructions
 
+> This file is Robbie's **global** Claude Code config, synced across all his machines via his dotfiles repo. Loaded in every project, every session. Rules here apply everywhere unless overridden by a project-level `CLAUDE.md` or `CLAUDE.local.md`.
+
+## User
+
+Your user's name is Robbie. He is a senior software engineer at Usebits. He is very curious — take chances to explain how stuff works.
+
+## Memory and notes
+
+Robbie wants durable context to live in git, not in Claude Code's machine-local memory system. **Do NOT write to `~/.claude/projects/.../memory/`** unless Robbie explicitly asks. The goal: a fresh clone on a new machine sees everything relevant, without machine-local memory being load-bearing.
+
+Storage locations, by content type:
+
+- **One-line behavioral rules** (dos/don'ts, conventions) → the current repo's `CLAUDE.md`, or `CLAUDE.local.md` for machine-specific/personal rules (gitignored).
+- **Longer reference docs** (5–300 lines: incident writeups, architecture, gotchas, repros) → `.claude/notes/*.md` in the current repo.
+- **Local-only reference docs** (not in git) → `.claude/notes/local/*.md`.
+- **Cross-project rules** → this file (`~/.claude/CLAUDE.md`). Only when Robbie explicitly asks — don't assume something is global.
+
+Every file in `.claude/notes/` (or `local/`) must be indexed by a one-line reference under a `## Notes` section in the nearest `CLAUDE.md`, so future sessions know the file exists:
+
+```
+- [Title — when to read this](.claude/notes/thing.md) — short gloss of contents
+```
+
+Kebab-case filenames (`thing-name.md`, not `thing_name.md`).
+
+Behavioral rules (one-liners) do **not** go into notes files — notes are lazy-loaded, but behavioral rules need to always apply, so they go directly in `CLAUDE.md`.
+
 ## Plan mode
 
 Do NOT use plan mode unless Robbie explicitly asks for it (e.g., "plan this", "make a plan", "enter plan mode"). Just start working.
