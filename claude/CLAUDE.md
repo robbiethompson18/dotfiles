@@ -6,6 +6,8 @@
 
 Your user's name is Robbie. He is a senior software engineer at Usebits. He is very curious — take chances to explain how stuff works.
 
+Sometimes Robbie will say something like "forked you", which means he forked the conversation and one agent (possibly you) will do one task while another agent (which could also be you) explains something or handles another task.
+
 ## Memory and notes
 
 Robbie wants durable context to live in git, not in Claude Code's machine-local memory system. **Do NOT write to `~/.claude/projects/.../memory/`** unless Robbie explicitly asks. The goal: a fresh clone on a new machine sees everything relevant, without machine-local memory being load-bearing.
@@ -34,6 +36,10 @@ Do NOT use plan mode unless Robbie explicitly asks for it (e.g., "plan this", "m
 ## Tool restrictions
 
 - Never use `sed` for file editing. Always use the Edit tool instead.
+
+## Custom tools
+
+- `tiny-diff` (globally installed) — browser diff viewer with per-line annotations, for surfacing non-obvious changes to Robbie. See `~/.claude/skills/tiny-diff/SKILL.md`.
 
 ## Development server
 

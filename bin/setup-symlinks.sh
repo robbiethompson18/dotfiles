@@ -56,6 +56,8 @@ mkdir -p "$HOME/.claude"
 create_symlink "$HOME/repos/dotfiles/claude/settings.json" "$HOME/.claude/settings.json" "Claude settings.json"
 create_symlink "$HOME/repos/dotfiles/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md" "Claude CLAUDE.md"
 create_symlink "$HOME/repos/dotfiles/claude/plugins" "$HOME/.claude/plugins" "Claude plugins"
+create_symlink "$HOME/repos/dotfiles/claude/commands" "$HOME/.claude/commands" "Claude commands"
+create_symlink "$HOME/repos/dotfiles/claude/skills" "$HOME/.claude/skills" "Claude skills"
 
 # Codex config
 mkdir -p "$HOME/.codex"
