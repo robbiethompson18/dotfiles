@@ -1,6 +1,7 @@
 {
   "permissions": {
     "allow": [
+      "Bash(curl *https://app.clawvisor.com/*)",
       "Bash(:*::*)",
       "Read(**)",
       "Edit(**)",
