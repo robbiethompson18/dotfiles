@@ -55,9 +55,15 @@ fi
 mkdir -p "$HOME/.claude"
 create_symlink "$HOME/repos/dotfiles/claude/settings.json" "$HOME/.claude/settings.json" "Claude settings.json"
 create_symlink "$HOME/repos/dotfiles/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md" "Claude CLAUDE.md"
-create_symlink "$HOME/repos/dotfiles/claude/plugins" "$HOME/.claude/plugins" "Claude plugins"
 create_symlink "$HOME/repos/dotfiles/claude/commands" "$HOME/.claude/commands" "Claude commands"
 create_symlink "$HOME/repos/dotfiles/claude/skills" "$HOME/.claude/skills" "Claude skills"
+
+# Plugins: only the small declarative manifests are tracked.
+# cache/, marketplaces/, installed_plugins.json, known_marketplaces.json are
+# auto-managed runtime state — Claude Code regenerates them per machine.
+mkdir -p "$HOME/.claude/plugins"
+create_symlink "$HOME/repos/dotfiles/claude/plugins/blocklist.json" "$HOME/.claude/plugins/blocklist.json" "Claude plugins/blocklist.json"
+create_symlink "$HOME/repos/dotfiles/claude/plugins/config.json" "$HOME/.claude/plugins/config.json" "Claude plugins/config.json"
 
 # Codex config
 mkdir -p "$HOME/.codex"
