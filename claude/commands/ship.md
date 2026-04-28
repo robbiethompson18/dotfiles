@@ -6,11 +6,11 @@ Commit any pending work, push it, and merge to main if needed.
 
 1. **Survey.** Run `git status`, `git log --oneline origin/HEAD..HEAD`, and check the current branch.
 
-2. **No-op check.** If the tree is clean AND there are no unpushed commits AND you're on `main` (or `master`): say so and stop.
+2. **Rebase onto latest main.** If necessary you can stash, pop, etc.
 
-3. **Stage selectively.** Read the diff first. `git add <specific files>` — only what changed in this session. Skip unrelated noise (caches, IDE files, settings drift you didn't author, anything you can't explain). When in doubt, ask.
+3. **Stage selectively.** Read the diff first. `git add <specific files>` — only what changed in this session. Skip unrelated noise (caches, IDE files, settings drift you didn't author, anything you can't explain). When in doubt, ask. You should only ship edits you made unless otherwise instructed.
 
-4. **Commit.** Match the repo's recent commit style (`git log --oneline -5`). Lead with what changed and *why*.
+4. **Commit.** 
 
 5. **Push.** `git push`. If the branch has no upstream, set it with `-u origin <branch>`.
 
