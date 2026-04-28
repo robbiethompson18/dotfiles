@@ -60,6 +60,7 @@ create_symlink "$HOME/repos/dotfiles/claude/plugins" "$HOME/.claude/plugins" "Cl
 # Codex config
 mkdir -p "$HOME/.codex"
 create_symlink "$HOME/repos/dotfiles/claude/CLAUDE.md" "$HOME/.codex/AGENTS.md" "Codex AGENTS.md"
+create_symlink "$HOME/repos/dotfiles/codex/config.toml" "$HOME/.codex/config.toml" "Codex config.toml"
 
 # Cursor config
 mkdir -p "$HOME/Library/Application Support/Cursor/User"
