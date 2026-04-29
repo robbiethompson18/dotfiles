@@ -21,6 +21,9 @@ echo "🚀 Starting dotfiles installation..."
 # Configure macOS settings
 ./configure-macos-settings.sh
 
+# Set VS Code as default editor for code/text files
+./set-default-editor.sh
+
 # Setup symlinks
 ./setup-symlinks.sh
 
