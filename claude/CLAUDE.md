@@ -41,6 +41,10 @@ Do NOT use plan mode unless Robbie explicitly asks for it (e.g., "plan this", "m
 
 - `tiny-diff` (globally installed) — browser diff viewer with per-line annotations, for surfacing non-obvious changes to Robbie. See `~/.claude/skills/tiny-diff/SKILL.md`.
 
+## Repos
+
+- Repos use `.envrc` and `.envrc.local` (direnv).
+
 ## Development server
 
 - The user will typically use `prd` to start the dev server.

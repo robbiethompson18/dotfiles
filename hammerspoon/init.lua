@@ -6,6 +6,10 @@
 --------------------------------------------------------------------------------
 
 hs.window.animationDuration = 0
+pcall(require, "hs.ipc")
+
+TypingSpeedLogger = dofile("/Users/robbie/repos/cognitive-tests/hammerspoon/typing-speed-logger.lua")
+TypingSpeedLogger.start()
 
 --------------------------------------------------------------------------------
 -- HYPER MODE (Modal)

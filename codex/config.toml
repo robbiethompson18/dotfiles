@@ -17,5 +17,17 @@ trust_level = "trusted"
 [projects."/Users/robbie/repos/dotfiles"]
 trust_level = "trusted"
 
+[projects."/Users/robbie/repos/agent-mvps"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/cognitive-tests"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/tiny-diff"]
+trust_level = "trusted"
+
 [plugins."slack@openai-curated"]
 enabled = true

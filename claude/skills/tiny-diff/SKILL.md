@@ -25,6 +25,7 @@ cd $repo && echo '<JSON>' | tiny-diff
 
 ```json
 {
+  "name": "short-kebab-name",
   "base": "main",
   "files": [{
     "path": "src/foo.ts",
@@ -36,6 +37,8 @@ cd $repo && echo '<JSON>' | tiny-diff
   }]
 }
 ```
+
+`name` is required and must be unique among active diffs (one daemon, port 7327, hosts all of them at `/<name>`). Pick something specific to this diff so concurrent agents don't collide — e.g. `auth-validation-fix`, not `review`. If you legitimately want to overwrite an existing diff (you're iterating on the same one), include `"replace": true`; otherwise tiny-diff will exit non-zero on a name collision so you notice.
 
 For committed work: `"HEAD~1"`, `"<sha>^"`, or `"origin/main"` as base.
 
