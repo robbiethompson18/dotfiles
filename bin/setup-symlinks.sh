@@ -55,7 +55,6 @@ fi
 mkdir -p "$HOME/.claude"
 create_symlink "$HOME/repos/dotfiles/claude/settings.json" "$HOME/.claude/settings.json" "Claude settings.json"
 create_symlink "$HOME/repos/dotfiles/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md" "Claude CLAUDE.md"
-create_symlink "$HOME/repos/dotfiles/claude/commands" "$HOME/.claude/commands" "Claude commands"
 create_symlink "$HOME/repos/dotfiles/claude/skills" "$HOME/.claude/skills" "Claude skills"
 
 # Plugins: only the small declarative manifests are tracked.
@@ -69,6 +68,7 @@ create_symlink "$HOME/repos/dotfiles/claude/plugins/config.json" "$HOME/.claude/
 mkdir -p "$HOME/.codex"
 create_symlink "$HOME/repos/dotfiles/claude/CLAUDE.md" "$HOME/.codex/AGENTS.md" "Codex AGENTS.md"
 create_symlink "$HOME/repos/dotfiles/codex/config.toml" "$HOME/.codex/config.toml" "Codex config.toml"
+"$HOME/repos/dotfiles/bin/sync-codex-claude-skills"
 
 # Cursor config
 mkdir -p "$HOME/Library/Application Support/Cursor/User"

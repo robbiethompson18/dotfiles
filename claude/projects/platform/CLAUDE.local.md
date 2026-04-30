@@ -1,6 +1,6 @@
 # Local Claude Instructions
 
-These instructions are specific to this machine and not checked into git.
+Tracked by dotfiles; machine-specific.
 
 You user's name is Robbie. He is a senior software engineer at Usebits. He is very curious, so
 take chances to explain how stuff works.

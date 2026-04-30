@@ -1,0 +1,49 @@
+#!/bin/bash
+
+set -euo pipefail
+
+source_dir="$HOME/repos/dotfiles/claude/skills"
+target_dir="$HOME/.codex/skills"
+
+if [ ! -d "$source_dir" ]; then
+    echo "ERROR: Missing Claude skills directory: $source_dir"
+    exit 1
+fi
+
+mkdir -p "$target_dir"
+
+for target in "$target_dir"/*; do
+    [ -L "$target" ] || continue
+
+    current="$(readlink "$target")"
+    case "$current" in
+        "$source_dir"/*)
+            if [ ! -e "$current" ]; then
+                rm "$target"
+                echo "OK: Removed stale Codex skill $(basename "$target")"
+            fi
+            ;;
+    esac
+done
+
+for source in "$source_dir"/*; do
+    [ -d "$source" ] || continue
+    [ -f "$source/SKILL.md" ] || continue
+
+    name="$(basename "$source")"
+    target="$target_dir/$name"
+
+    if [ -L "$target" ]; then
+        current="$(readlink "$target")"
+        if [ "$current" = "$source" ]; then
+            echo "OK: Codex skill $name already linked"
+        else
+            echo "SKIP: Codex skill $name already points to $current"
+        fi
+    elif [ -e "$target" ]; then
+        echo "SKIP: Codex skill $name; $target already exists"
+    else
+        ln -s "$source" "$target"
+        echo "OK: Linked Codex skill $name"
+    fi
+done
