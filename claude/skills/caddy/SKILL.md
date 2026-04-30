@@ -1,0 +1,80 @@
+---
+name: caddy
+description: Robbie runs a local Caddy reverse proxy that maps `<app>.localhost` → some local port, and this skill also doubles as the port registry for his machine. Use this when adding a new local app, picking a port (check the registry to avoid collisions, then update it), designing URLs, or when seeing hardcoded `localhost:PORT` strings that should use the Caddy hostname.
+---
+
+# caddy
+
+## The setup
+
+Caddy runs as a launchd service (started via `sudo brew services start caddy`), listening on `:80`. It reverse-proxies hostnames to ports.
+
+- Caddyfile: `/opt/homebrew/etc/Caddyfile`
+- Restart after edits: `sudo brew services restart caddy`
+- The browser hits `http://<app>.localhost/` (port 80, no port in URL) and Caddy forwards to `127.0.0.1:<app-port>`.
+
+The `.localhost` TLD is RFC-reserved and resolves to `127.0.0.1` automatically — **no `/etc/hosts` entry needed**. Browsers also treat `*.localhost` as a secure context, so HTTP works without warnings.
+
+## Adding a new app
+
+1. App listens on a free port (e.g. `8765`) bound to `127.0.0.1`.
+2. Append a block to `/opt/homebrew/etc/Caddyfile`:
+   ```
+   http://myapp.localhost {
+       reverse_proxy localhost:8765
+   }
+   ```
+3. `sudo brew services restart caddy`
+4. Visit `http://myapp.localhost/`.
+
+## What "Caddy-aware" means for an app
+
+An app behaves well under Caddy when:
+
+- **It serves the user-facing entry point at `/`.** Not `/myapp.html`. If the underlying server is `python -m http.server`-style, name the entry file `index.html`.
+- **User-facing URLs in the app's output use the Caddy hostname**, not `localhost:PORT`. CLI tools that print "open this URL" should print `http://myapp.localhost/...`.
+- **Internal calls** (CLI → its own daemon, healthchecks, etc.) **stay on `127.0.0.1:PORT`**. Faster, doesn't depend on Caddy being up, no proxy hop. Don't route the app's own internal traffic through Caddy.
+
+## Port registry
+
+**Single source of truth for every port Robbie's machine reserves.** Before picking a port for a new app, scan this list to avoid collisions. After picking one, **update this file**.
+
+Caddy-routed apps (have a `*.localhost` hostname):
+
+| Port  | Hostname                | Source                       |
+|-------|-------------------------|------------------------------|
+| 7327  | `tinydiff.localhost`    | `~/repos/tiny-diff`          |
+| 8765  | `cognitive.localhost`   | `~/repos/cognitive-tests`    |
+
+Platform stack — each clone of `~/repos/platform*` claims one slot in each row:
+
+| Service           | platform | platform-2 | platform-frontend |
+|-------------------|----------|------------|-------------------|
+| API (`PORT`)      | 3000     | 3001       | 3002              |
+| AgentDrive        | 3010     | 3011       | 3012              |
+| Vite              | 5173     | 5175       | 5177              |
+| Vite AgentDrive   | (n/a)    | 5176       | 5178              |
+| Vite Chrome ext   | 5174     | 5179       | 5180              |
+| OpenClaw local    | (n/a)    | 18791      | 18793             |
+
+Other reservations:
+
+| Port  | What                                                    |
+|-------|---------------------------------------------------------|
+| 5432  | Postgres (local docker)                                 |
+| 5433  | Postgres (bastion-forwarded staging RDS)                |
+| 5434  | Postgres (bastion-forwarded prod RDS)                   |
+| 5435  | Postgres (secondary docker)                             |
+| 18789 | OpenClaw gateway (bastion-forwarded)                    |
+
+**Rough convention** for picking a new port:
+- One-off hobby web apps → `7XXX` (next free) or `8XXX` (next free).
+- Platform-style stacks → claim the next column in the platform table.
+- Avoid 3000–3019, 5173–5180, 5432–5435, 18789–18793.
+
+## Troubleshooting
+
+- **"This site can't be reached"** → Caddy isn't running. `sudo brew services start caddy`.
+- **Hostname resolves but page is blank / 502** → the backend app isn't listening. Check the port directly with `curl localhost:PORT`.
+- **Got the directory listing instead of the app** → app's `/` doesn't serve the entry HTML. Either add an `index.html` or special-case `/` in its router.
+- **Lost track of what's listening** → `lsof -iTCP -sTCP:LISTEN | grep LISTEN`.
