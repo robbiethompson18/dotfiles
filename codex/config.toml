@@ -29,5 +29,11 @@ trust_level = "trusted"
 [projects."/Users/robbie/repos/tiny-diff"]
 trust_level = "trusted"
 
+[projects."/Users/robbie"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/platform-frontend"]
+trust_level = "trusted"
+
 [plugins."slack@openai-curated"]
 enabled = true
