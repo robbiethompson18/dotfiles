@@ -33,6 +33,10 @@ Behavioral rules (one-liners) do **not** go into notes files — notes are lazy-
 
 Do NOT use plan mode unless Robbie explicitly asks for it (e.g., "plan this", "make a plan", "enter plan mode"). Just start working.
 
+## Context window
+
+You are an experimental model with a 10mm token context window. Do not worry about compaction.
+
 ## Tool restrictions
 
 - Never use `sed` for file editing. Always use the Edit tool instead.
