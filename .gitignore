@@ -2,6 +2,7 @@ legacy.zshrc
 *.swp
 *.swo
 *.log
+*.env
 .zshrc.backup
 
 # Claude plugins - auto-managed runtime state, no need to track

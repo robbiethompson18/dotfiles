@@ -1,11 +1,11 @@
 ---
 name: agentmail
-description: Send and receive email through Codex's dedicated AgentMail inbox. Use when testing email features, sending test messages, checking whether mail was delivered, reading AgentMail threads, or replying from the Codex mailbox.
+description: Send and receive email through a dedicated AgentMail inbox. Usable by any AI agent, especially for testing.
 ---
 
 # AgentMail
 
-Codex has a dedicated AgentMail inbox:
+The email is:
 
 ```text
 codex-robbie@agentmail.to
@@ -23,7 +23,7 @@ Use the bundled direct AgentMail CLI:
 ~/.codex/skills/agentmail/scripts/agentmail.py reply <message-id> <body>
 ```
 
-The script reads credentials from `~/.config/codex-agentmail/env`. Do not print or commit that file.
+The script reads credentials from the skill-local `.env` file. Do not print or commit that file.
 
 ## Threading
 

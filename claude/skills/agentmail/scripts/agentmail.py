@@ -11,7 +11,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-CONFIG_FILE = os.path.expanduser("~/.config/codex-agentmail/env")
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+CONFIG_FILE = os.path.abspath(os.path.join(SCRIPT_DIR, "..", ".env"))
 API_BASE = "https://api.agentmail.to/v0"
 
 
