@@ -35,5 +35,14 @@ trust_level = "trusted"
 [projects."/Users/robbie/repos/platform-frontend"]
 trust_level = "trusted"
 
+[projects."/Users/robbie/repos/llm-text-classifier"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/openclaw-upgrades"]
+trust_level = "trusted"
+
 [plugins."slack@openai-curated"]
 enabled = true
+
+[tui.model_availability_nux]
+"gpt-5.5" = 4
