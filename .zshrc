@@ -29,6 +29,7 @@ alias cd4="cd ../../../.."
 alias cd5="cd ../../../../.."
 alias ..="cd .."
 alias .="pwd"
+alias c="codex"
 cdr() { cd ~/repos/"$1"; }
 _cdr() { _files -W ~/repos -/; }
 compdef _cdr cdr
@@ -125,22 +126,6 @@ alias chromeDebuggable='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ 
 # CLI tools
 alias claude="claude --dangerously-skip-permissions --chrome"
 alias codex="codex --yolo --search"
-c() {
-  local opts=()
-  local words=()
-  for arg in "$@"; do
-    if [[ "$arg" == -* ]]; then
-      opts+=("$arg")
-    else
-      words+=("$arg")
-    fi
-  done
-  if (( ${#words[@]} > 0 )); then
-    command claude --dangerously-skip-permissions --chrome "${opts[@]}" "${words[*]}"
-  else
-    command claude --dangerously-skip-permissions --chrome "${opts[@]}"
-  fi
-}
 alias cr="claude --resume"
 
 # use nice new versions of python tools:
