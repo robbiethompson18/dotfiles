@@ -126,6 +126,7 @@ alias chromeDebuggable='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ 
 # CLI tools
 alias claude="claude --dangerously-skip-permissions --chrome"
 alias codex="codex --yolo --search"
+alias cf="codex fork"
 alias cr="claude --resume"
 
 # use nice new versions of python tools:
