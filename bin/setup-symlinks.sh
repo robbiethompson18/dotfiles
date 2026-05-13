@@ -39,6 +39,7 @@ create_symlink() {
 
 # Shell config
 create_symlink "$HOME/repos/dotfiles/.vimrc" "$HOME/.vimrc" ".vimrc"
+create_symlink "$HOME/repos/dotfiles/.zshenv" "$HOME/.zshenv" ".zshenv"
 create_symlink "$HOME/repos/dotfiles/.zshrc" "$HOME/.zshrc" ".zshrc"
 create_symlink "$HOME/repos/dotfiles/.gitconfig" "$HOME/.gitconfig" ".gitconfig"
 
