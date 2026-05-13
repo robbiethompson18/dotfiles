@@ -44,6 +44,53 @@ hs.alert.show("Hammerspoon loaded")
 -- WINDOW MANAGEMENT (using Rectangle for positioning)
 --------------------------------------------------------------------------------
 
+local function getScreensSortedLeftToRight()
+  local screens = hs.screen.allScreens()
+  table.sort(screens, function(a, b)
+    return a:frame().x < b:frame().x
+  end)
+  return screens
+end
+
+local function unionFrames(a, b)
+  local left = math.min(a.x, b.x)
+  local top = math.min(a.y, b.y)
+  local right = math.max(a.x + a.w, b.x + b.w)
+  local bottom = math.max(a.y + a.h, b.y + b.h)
+
+  return {
+    x = left,
+    y = top,
+    w = right - left,
+    h = bottom - top,
+  }
+end
+
+local function expandWindowAcrossTwoScreens()
+  local win = hs.window.focusedWindow()
+  if not win then return end
+
+  local screens = getScreensSortedLeftToRight()
+  if #screens < 2 then
+    hs.alert.show("Only one monitor available", 0.5)
+    return
+  end
+
+  local currentScreen = win:screen()
+  local currentIndex = 1
+  for i, screen in ipairs(screens) do
+    if screen:id() == currentScreen:id() then
+      currentIndex = i
+      break
+    end
+  end
+
+  local neighborIndex = currentIndex < #screens and currentIndex + 1 or currentIndex - 1
+  win:setFrame(unionFrames(screens[currentIndex]:frame(), screens[neighborIndex]:frame()))
+end
+
+hs.hotkey.bind({"ctrl", "alt"}, "J", expandWindowAcrossTwoScreens)
+
 --------------------------------------------------------------------------------
 -- WINDOW CYCLING (Vim-style J/K)
 --------------------------------------------------------------------------------
@@ -140,14 +187,6 @@ end
 --------------------------------------------------------------------------------
 -- MONITOR FOCUS (move mouse to monitor)
 --------------------------------------------------------------------------------
-
-local function getScreensSortedLeftToRight()
-  local screens = hs.screen.allScreens()
-  table.sort(screens, function(a, b)
-    return a:frame().x < b:frame().x
-  end)
-  return screens
-end
 
 local function focusScreen(screenIndex)
   local screens = getScreensSortedLeftToRight()
