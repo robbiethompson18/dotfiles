@@ -38,9 +38,19 @@ cd $repo && echo '<JSON>' | tiny-diff
 }
 ```
 
-`name` is required and must be unique among active diffs (one daemon, port 7327, hosts all of them at `/<name>`). Pick something specific to this diff so concurrent agents don't collide — e.g. `auth-validation-fix`, not `review`. If you legitimately want to overwrite an existing diff (you're iterating on the same one), include `"replace": true`; otherwise tiny-diff will exit non-zero on a name collision so you notice.
+`name` is required and must be unique among active diffs (one daemon, port 7327, hosts all of them at `/<name>`). Pick something specific to this diff so concurrent agents don't collide — e.g. `auth-validation-fix`, not `review`. If Robbie may have reviewed or commented on an existing diff, do not reuse that name and do not include `"replace": true`; create a new name instead, such as `auth-validation-fix-v2`. Only use `"replace": true` before user review, when you are intentionally correcting your own just-created diff.
 
 For committed work: `"HEAD~1"`, `"<sha>^"`, or `"origin/main"` as base.
+
+## Reading replies
+
+After Robbie looks at your diff, fetch replies before responding or changing code, even if he also left commentary directly in the chat thread:
+
+```bash
+tiny-diff --replies <name> --json
+```
+
+Treat those replies as user feedback. If you create another tiny-diff after addressing the feedback, use a fresh name so the original reviewed diff and its replies remain intact.
 
 ## Comment hygiene
 
