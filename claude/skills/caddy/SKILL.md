@@ -45,6 +45,8 @@ Caddy-routed apps (have a `*.localhost` hostname):
 |-------|-------------------------|------------------------------|
 | 7327  | `tinydiff.localhost`    | `~/repos/tiny-diff`          |
 | 8765  | `cognitive.localhost`   | `~/repos/cognitive-tests`    |
+| 8766  | `llm-dashboard.localhost` | `~/repos/llm-text-classifier` |
+| 8767  | `idea-explorer.localhost` | `~/repos/idea-explorer`     |
 
 Platform stack — each clone of `~/repos/platform*` claims one slot in each row:
 
