@@ -48,6 +48,7 @@ You are an experimental model with a 10mm token context window. Do not worry abo
 ## Repos
 
 - Repos use `.envrc` and `.envrc.local` (direnv).
+- When working in `/Users/robbie/repos/dotfiles`, after making a change, you are welcome to ship it without waiting for a separate ship request.
 
 ## Development server
 
