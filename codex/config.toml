@@ -3,6 +3,9 @@ model = "gpt-5.5"
 model_reasoning_effort = "high"
 hide_agent_reasoning = true
 
+[notice]
+hide_rate_limit_model_nudge = true
+
 [notice.model_migrations]
 "gpt-5.2-codex" = "gpt-5.3-codex"
 "gpt-5.3-codex" = "gpt-5.4"
@@ -49,6 +52,12 @@ trust_level = "trusted"
 [projects."/Users/robbie/repos/silkworm"]
 trust_level = "trusted"
 
+[projects."/Users/robbie/repos/silkworm-2"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/silkworm-3"]
+trust_level = "trusted"
+
 [plugins."slack@openai-curated"]
 enabled = true
 
@@ -58,3 +67,8 @@ enabled = true
 [features]
 apps = false
 plugins = false
+
+[hooks.state]
+
+[hooks.state."/Users/robbie/repos/platform/.codex/hooks.json:post_tool_use:0:0"]
+trusted_hash = "sha256:ff53d7a2d82f1b180333e844da0aa9f0bfb4691a1ecdb60c7b0bb4a2ed3a1804"
