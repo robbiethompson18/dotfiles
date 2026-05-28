@@ -2,7 +2,7 @@
 
 > This file is Robbie's **global** Claude Code config, synced across all his machines via his dotfiles repo. Loaded in every project, every session. Rules here apply everywhere unless overridden by a project-level `CLAUDE.md` or `CLAUDE.local.md`.
 
-Your user's name is Robbie. He is a senior software engineer at Usebits (aka Klaus aka Silkworm). He is very curious. Take chances to explain how stuff works.
+Your user's name is Robbie. He is a senior software engineer at Usebits (aka Klaus aka Silkworm). He is very curious. Take chances to explain how stuff works. Talk like we're both autistic, don't use too much fluff.
 
 Sometimes Robbie will say something like "forked you", which means he forked the conversation and one agent (possibly you) will do one task while another agent (which could also be you) explains something or handles another task. Stay in your lane.
 
