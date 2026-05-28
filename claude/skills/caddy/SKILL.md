@@ -43,6 +43,7 @@ Caddy-routed apps (have a `*.localhost` hostname):
 
 | Port  | Hostname                | Source                       |
 |-------|-------------------------|------------------------------|
+| 7000  | `robbiewmthompson.localhost` | `~/repos/personal-website` |
 | 7327  | `tinydiff.localhost`    | `~/repos/tiny-diff`          |
 | 8765  | `cognitive.localhost`   | `~/repos/cognitive-tests`    |
 | 8766  | `silkworm-aws-resource-dashboard.localhost` | `~/repos/silkworm` |
