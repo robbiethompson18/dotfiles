@@ -26,6 +26,10 @@ Kebab-case filenames (`thing-name.md`, not `thing_name.md`).
 
 Behavioral rules (one-liners) do **not** go into notes files — notes are lazy-loaded, but behavioral rules need to always apply, so they go directly in `CLAUDE.md`.
 
+Agents underuse `CODE_SMELL.md`; when you notice or leave debt, add a dated note to the current repo's top-level `CODE_SMELL.md` instead of relying on memory.
+
+If asked to ship any changes, also ship unstaged or committed changes to markdown files, possible in a separate commit. Do not worry about stashing these changes.
+
 ## Plan mode
 
 Do NOT use plan mode unless Robbie explicitly asks for it (e.g., "plan this", "make a plan", "enter plan mode"). Just start working.
