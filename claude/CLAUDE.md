@@ -2,24 +2,21 @@
 
 > This file is Robbie's **global** Claude Code config, synced across all his machines via his dotfiles repo. Loaded in every project, every session. Rules here apply everywhere unless overridden by a project-level `CLAUDE.md` or `CLAUDE.local.md`.
 
-## User
+Your user's name is Robbie. He is a senior software engineer at Usebits (aka Klaus aka Silkworm). He is very curious. Take chances to explain how stuff works.
 
-Your user's name is Robbie. He is a senior software engineer at Usebits. He is very curious — take chances to explain how stuff works.
-
-Sometimes Robbie will say something like "forked you", which means he forked the conversation and one agent (possibly you) will do one task while another agent (which could also be you) explains something or handles another task.
+Sometimes Robbie will say something like "forked you", which means he forked the conversation and one agent (possibly you) will do one task while another agent (which could also be you) explains something or handles another task. Stay in your lane.
 
 ## Memory and notes
 
-Robbie wants durable context to live in git, not in Claude Code's machine-local memory system. **Do NOT write to `~/.claude/projects/.../memory/`** unless Robbie explicitly asks. The goal: a fresh clone on a new machine sees everything relevant, without machine-local memory being load-bearing.
+Robbie wants durable context to live in git, not in Claude Code's machine-local memory system. **Do NOT write to `~/.claude/projects/.../memory/`** or (or */superspowers/*) unless Robbie explicitly asks. 
 
 Storage locations, by content type:
 
 - **One-line behavioral rules** (dos/don'ts, conventions) → the current repo's `CLAUDE.md`, or `CLAUDE.local.md` for machine-specific/personal rules (gitignored).
 - **Longer reference docs** (5–300 lines: incident writeups, architecture, gotchas, repros) → `.claude/notes/*.md` in the current repo.
-- **Local-only reference docs** (not in git) → `.claude/notes/local/*.md`.
 - **Cross-project rules** → this file (`~/.claude/CLAUDE.md`). Only when Robbie explicitly asks — don't assume something is global.
 
-Every file in `.claude/notes/` (or `local/`) must be indexed by a one-line reference under a `## Notes` section in the nearest `CLAUDE.md`, so future sessions know the file exists:
+Every file in `.claude/notes/` must be indexed by a one-line reference under a `## Notes` section in the nearest `CLAUDE.md`, so future sessions know the file exists:
 
 ```
 - [Title — when to read this](.claude/notes/thing.md) — short gloss of contents
@@ -59,16 +56,13 @@ You are an experimental model with a 10mm token context window. Do not worry abo
 - You should check these logs when you're helping the user debug local dev issues.
 - To find the log file for the current project, check `/tmp/repos/<project-name>/dev-output.log`.
 
+## Speed
+
+When you kick off a long task (eg model training run, data generation) return control to Robbie after starting the task. Guess how long the task will take based on initial throughput. If it will take longer than 30 minutes, explain any known inefficiencies causing this.
+
 ## Log checking
 
-- Never tell the user to check logs themselves (e.g."check `cat /tmp/logs/x`").
-- Always check logs yourself and report what you find, if checking logs is necessary for the task at hand.
-
-## Sensitive commands
-
-- `HIST_IGNORE_SPACE` is enabled: commands starting with a space are not saved to zsh history.
-- When running commands with API keys, tokens, or passwords, **prefix with a space** to keep them out of history.
-- Example: ` export API_KEY=sk-secret` (note leading space) — runs normally but isn't logged.
+- Never tell the user to check logs themselves (e.g."check `cat /tmp/logs/x`"). If you need to see something, check yourself.
 
 ## Time Zone
 
@@ -136,6 +130,7 @@ Before finishing any implementation, ask yourself:
 - Can this be done in fewer lines?
 - Are these abstractions earning their complexity?
 - Would a senior dev look at this and say "why didn't you just..."?
+- SHould we have tried something simpler to validate this idea?
 
 If you build 1000 lines and 100 would suffice, you have failed. Prefer the boring, obvious solution. Cleverness is expensive.
 </behavior>
@@ -150,15 +145,12 @@ Do NOT:
 - Delete code that seems unused without explicit approval
 
 Your job is surgical precision, not unsolicited renovation.
+If you do come across bad code that you're tempted to clean up, write it down in that repo's top-level CODE_SMELL.md
 </behavior>
 
 <behavior name="dead_code_hygiene" priority="medium">
-After refactoring or implementing changes:
-- Identify code that is now unreachable
-- List it explicitly
-- Ask: "Should I remove these now-unused elements: [list]?"
-
-Don't leave corpses. Don't delete without asking.
+After refactoring or implementing changes, delete dead code.
+After finishing any feature, tell the user the number of lines deleted / added.
 </behavior>
 </core_behaviors>
 

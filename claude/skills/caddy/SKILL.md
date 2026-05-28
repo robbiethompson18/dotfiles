@@ -48,6 +48,7 @@ Caddy-routed apps (have a `*.localhost` hostname):
 | 8766  | `silkworm-aws-resource-dashboard.localhost` | `~/repos/silkworm` |
 | 8767  | `idea-explorer.localhost` | `~/repos/idea-explorer`     |
 | 8768  | `silkworm-experiments.localhost` | `~/repos/silkworm`       |
+| 5173  | `silkworm-experiments-ui.localhost` | `~/repos/silkworm`       |
 
 Platform stack — each clone of `~/repos/platform*` claims one slot in each row:
 
