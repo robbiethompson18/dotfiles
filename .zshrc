@@ -18,6 +18,7 @@ bindkey '^[[Z' autosuggest-accept
 
 # CLI shortcuts
 alias cl="claude"
+alias co="codex"
 alias src="source"
 alias da="direnv allow"
 
@@ -29,7 +30,7 @@ alias cd4="cd ../../../.."
 alias cd5="cd ../../../../.."
 alias ..="cd .."
 alias .="pwd"
-alias c="codex"
+alias c="claude"
 cdr() { cd ~/repos/"$1"; }
 _cdr() { _files -W ~/repos -/; }
 compdef _cdr cdr
