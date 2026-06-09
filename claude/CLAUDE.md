@@ -42,6 +42,10 @@ You are an experimental model with a 10mm token context window. Do not worry abo
 
 - Never use `sed` for file editing. Always use the Edit tool instead.
 
+## Other agents
+
+Other agents might be editing the same checkout as you. Do not use worktrees. When shipping, ship only your own code unless I ask you to ship all changes. If a build fails, wait a minute or two to give the other agent a chance to clean up their mess. If a lint fails, just fix it yourself. Do not stash another agents' code so that you can build and ship without permission.
+
 ## Custom tools
 
 - `tiny-diff` (globally installed) — browser diff viewer with per-line annotations, for surfacing non-obvious changes to Robbie. See `~/.claude/skills/tiny-diff/SKILL.md`.
