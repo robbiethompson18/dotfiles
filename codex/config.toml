@@ -58,6 +58,12 @@ trust_level = "trusted"
 [projects."/Users/robbie/repos/silkworm-3"]
 trust_level = "trusted"
 
+[projects."/Users/robbie/repos/agenttunnel"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/sapient"]
+trust_level = "trusted"
+
 [plugins."slack@openai-curated"]
 enabled = true
 
