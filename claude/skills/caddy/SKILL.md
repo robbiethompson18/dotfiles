@@ -47,7 +47,7 @@ Caddy-routed apps (have a `*.localhost` hostname):
 | 7327  | `tinydiff.localhost`    | `~/repos/tiny-diff`          |
 | 8765  | `cognitive.localhost`   | `~/repos/cognitive-tests`    |
 | 8766  | `silkworm-aws-resource-dashboard.localhost` | `~/repos/silkworm` |
-| 8767  | `idea-explorer.localhost` | `~/repos/idea-explorer`     |
+| 8767  | `sapient.localhost` | `~/repos/sapient`     |
 | 8768  | `silkworm-experiments.localhost` | `~/repos/silkworm`       |
 | 5173  | `silkworm-experiments-ui.localhost` | `~/repos/silkworm`       |
 
