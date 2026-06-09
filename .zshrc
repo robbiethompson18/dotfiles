@@ -41,6 +41,8 @@ alias cdrpf="cd ~/repos/platform-frontend"
 alias cdrd="cd ~/repos/dotfiles"
 alias cdra="cd ~/repos/agentdrive"
 alias cdrs="cd ~/repos/sapient"
+alias cdrs2="cd ~/repos/sapient-2"
+alias cdrs3="cd ~/repos/sapient-3"
 alias cdop="cd ~/.openclaw"
 
 # Git aliases
