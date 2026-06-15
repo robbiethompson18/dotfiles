@@ -5,7 +5,9 @@
 The following files are **symlinked** from `~/.claude/` to this dotfiles repo:
 - `~/.claude/settings.json` → `~/repos/dotfiles/claude/settings.json`
 - `~/.claude/CLAUDE.md` → `~/repos/dotfiles/claude/CLAUDE.md`
-- `~/.claude/plugins/` → `~/repos/dotfiles/claude/plugins/`
+- `~/.claude/skills` → `~/repos/dotfiles/claude/skills`
+- `~/.claude/plugins/blocklist.json` → `~/repos/dotfiles/claude/plugins/blocklist.json`
+- `~/.claude/plugins/config.json` → `~/repos/dotfiles/claude/plugins/config.json`
 
 **Always edit the files in `~/repos/dotfiles/`**, not in `~/.claude/`! Except for `~/.claude/settings.local.json` which is machine-specific.
 
@@ -20,8 +22,10 @@ Global instructions for Claude Code that apply to all projects.
 Edit this file to customize Claude's behavior across all your repos.
 
 ### `claude/plugins/`
-Plugin configurations, MCP servers, skills, and hooks.
-Symlinked so your plugins/skills are consistent across machines.
+Only the small declarative manifests are tracked and symlinked: `blocklist.json`
+and `config.json`. The rest of `~/.claude/plugins/` (`cache/`, `marketplaces/`,
+`installed_plugins.json`, `known_marketplaces.json`) is auto-managed runtime
+state that Claude Code regenerates per machine, so it is deliberately NOT tracked.
 
 ### `~/.claude/settings.local.json` (NOT symlinked)
 Machine-specific overrides that stay local to each computer.

@@ -76,6 +76,11 @@ mkdir -p "$HOME/Library/Application Support/Cursor/User"
 create_symlink "$HOME/repos/dotfiles/cursor/settings.json" "$HOME/Library/Application Support/Cursor/User/settings.json" "Cursor settings.json"
 create_symlink "$HOME/repos/dotfiles/cursor/keybindings.json" "$HOME/Library/Application Support/Cursor/User/keybindings.json" "Cursor keybindings.json"
 
+# VS Code config (used as the default file:// opener; see set-default-editor.sh)
+mkdir -p "$HOME/Library/Application Support/Code/User"
+create_symlink "$HOME/repos/dotfiles/vscode/settings.json" "$HOME/Library/Application Support/Code/User/settings.json" "VS Code settings.json"
+create_symlink "$HOME/repos/dotfiles/vscode/keybindings.json" "$HOME/Library/Application Support/Code/User/keybindings.json" "VS Code keybindings.json"
+
 # Hammerspoon config
 create_symlink "$HOME/repos/dotfiles/hammerspoon" "$HOME/.hammerspoon" "Hammerspoon"
 

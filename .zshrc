@@ -30,13 +30,13 @@ alias cd4="cd ../../../.."
 alias cd5="cd ../../../../.."
 alias ..="cd .."
 alias .="pwd"
-alias c="claude"
+alias c="codex"   # redundant with `co` below (both → codex); c is the one-key version
 cdr() { cd ~/repos/"$1"; }
 _cdr() { _files -W ~/repos -/; }
 compdef _cdr cdr
 alias cdrp="cd ~/repos/platform"
 alias cdrpd="cd ~/repos/platform-debugging-only"
-alias cdrpp="cd ~/repos/platform-2"
+alias cdrpp="cd ~/repos/platform-2"  # redundant with cdrp2 (both → platform-2)
 alias cdrp2="cd ~/repos/platform-2"
 alias cdrpf="cd ~/repos/platform-frontend"
 alias cdrd="cd ~/repos/dotfiles"
@@ -121,7 +121,7 @@ plp() {
   rm -f "$log_file"
   FORCE_COLOR=1 pnpm run logs-prod 2>&1 | tee "$log_file"
 }
-alias pt="pnpm i & pnpm build"
+alias pt="pnpm i && pnpm build"
 
 # help with puppeteer / playwright:
 alias chromeDebuggable='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir=/tmp/chrome-debug'
