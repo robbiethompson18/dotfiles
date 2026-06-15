@@ -3,4 +3,4 @@
     b) Claude
     c) pnpm
     d) Python? 
-    e) Can it install things like Cursor, rectangle, etc? 
+    e) Can it install things like Cursor, etc? 
