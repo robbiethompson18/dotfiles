@@ -8,8 +8,12 @@
 hs.window.animationDuration = 0
 pcall(require, "hs.ipc")
 
-TypingSpeedLogger = dofile("/Users/robbie/repos/cognitive-tests/hammerspoon/typing-speed-logger.lua")
-TypingSpeedLogger.start()
+-- Only load the typing-speed keylogger if the cognitive-tests repo is checked out.
+local typingLoggerPath = "/Users/robbie/repos/cognitive-tests/hammerspoon/typing-speed-logger.lua"
+if hs.fs.attributes(typingLoggerPath) then
+  TypingSpeedLogger = dofile(typingLoggerPath)
+  TypingSpeedLogger.start()
+end
 
 --------------------------------------------------------------------------------
 -- HYPER MODE (Modal)
