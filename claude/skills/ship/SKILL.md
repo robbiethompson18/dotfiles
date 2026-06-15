@@ -13,10 +13,16 @@ Commit any pending work, push it, and merge to main.
 
 2. Select files. Read the diff and choose only the files changed for this task/session. Skip unrelated noise such as caches, IDE files, settings drift you did not author, and anything you cannot explain. When in doubt, ask.
 
-3. Commit. Match the repo's recent commit style from `git log --oneline -5`. Lead with what changed and why. Use the committer helper with explicit file paths:
+3. Commit. Match the repo's recent commit style from `git log --oneline -5`. Lead with what changed and why. Use the committer helper with explicit file paths for whole-file commits:
 
    ```bash
    committer "your commit message" path/to/file1 path/to/file2
+   ```
+
+   For partial-file commits, stage the intended hunks first, verify with `git diff --cached`, then commit the existing index without path args:
+
+   ```bash
+   committer --staged "your commit message"
    ```
 
 4. Sync with remote. Run `git pull --rebase` to absorb upstream commits. The tree should be clean post-commit, so no stash is needed. On conflict, stop and report.

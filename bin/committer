@@ -5,20 +5,27 @@ set -euo pipefail
 set -f
 usage() {
   printf 'Usage: %s [--force] "commit message" "file" ["file" ...]\n' "$(basename "$0")" >&2
+  printf '       %s [--force] --staged "commit message"\n' "$(basename "$0")" >&2
   exit 2
 }
 
-if [ "$#" -lt 2 ]; then
+if [ "$#" -lt 1 ]; then
   usage
 fi
 
 force_delete_lock=false
+staged_only=false
 if [ "${1:-}" = "--force" ]; then
   force_delete_lock=true
   shift
 fi
 
-if [ "$#" -lt 2 ]; then
+if [ "${1:-}" = "--staged" ]; then
+  staged_only=true
+  shift
+fi
+
+if [ "$#" -lt 1 ]; then
   usage
 fi
 
@@ -35,7 +42,12 @@ if [ -e "$commit_message" ]; then
   exit 1
 fi
 
-if [ "$#" -eq 0 ]; then
+if [ "$staged_only" = true ] && [ "$#" -ne 0 ]; then
+  printf 'Error: --staged commits the existing index and does not accept file paths\n' >&2
+  exit 1
+fi
+
+if [ "$staged_only" = false ] && [ "$#" -eq 0 ]; then
   usage
 fi
 
@@ -64,7 +76,13 @@ last_commit_error=''
 run_git_commit() {
   local stderr_log
   stderr_log=$(mktemp)
-  if git commit -m "$commit_message" -- "${files[@]}" 2> >(tee "$stderr_log" >&2); then
+  if {
+    if [ "$staged_only" = true ]; then
+      git commit -m "$commit_message"
+    else
+      git commit -m "$commit_message" -- "${files[@]}"
+    fi
+  } 2> >(tee "$stderr_log" >&2); then
     rm -f "$stderr_log"
     last_commit_error=''
     return 0
@@ -75,20 +93,26 @@ run_git_commit() {
   return 1
 }
 
-for file in "${files[@]}"; do
-  if [ ! -e "$file" ]; then
-    if ! git ls-files --error-unmatch -- "$file" >/dev/null 2>&1; then
-      printf 'Error: file not found: %s\n' "$file" >&2
-      exit 1
+if [ "$staged_only" = false ]; then
+  for file in "${files[@]}"; do
+    if [ ! -e "$file" ]; then
+      if ! git ls-files --error-unmatch -- "$file" >/dev/null 2>&1; then
+        printf 'Error: file not found: %s\n' "$file" >&2
+        exit 1
+      fi
     fi
-  fi
-done
+  done
 
-git restore --staged :/
-git add -- "${files[@]}"
+  git restore --staged :/
+  git add -- "${files[@]}"
+fi
 
 if git diff --staged --quiet; then
-  printf 'Warning: no staged changes detected for: %s\n' "${files[*]}" >&2
+  if [ "$staged_only" = true ]; then
+    printf 'Warning: no staged changes detected\n' >&2
+  else
+    printf 'Warning: no staged changes detected for: %s\n' "${files[*]}" >&2
+  fi
   exit 1
 fi
 
@@ -114,4 +138,8 @@ if [ "$committed" = false ]; then
   exit 1
 fi
 
-printf 'Committed "%s" with %d files\n' "$commit_message" "${#files[@]}"
+if [ "$staged_only" = true ]; then
+  printf 'Committed "%s" with staged changes\n' "$commit_message"
+else
+  printf 'Committed "%s" with %d files\n' "$commit_message" "${#files[@]}"
+fi
