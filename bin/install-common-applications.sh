@@ -24,6 +24,14 @@ else
     echo "✅ Cursor already installed"
 fi
 
+# Install VS Code (used as the default file:// opener; set-default-editor.sh points file types here)
+if [ ! -d "/Applications/Visual Studio Code.app" ]; then
+    echo "📦 Installing VS Code..."
+    brew install --cask visual-studio-code
+else
+    echo "✅ VS Code already installed"
+fi
+
 # Install Docker
 if [ ! -d "/Applications/Docker.app" ]; then
     echo "📦 Installing Docker..."
