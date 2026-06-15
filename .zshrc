@@ -16,9 +16,16 @@ bindkey '^[[Z' autosuggest-accept
 # CUSTOM ALIASES
 # ============================================
 
+# Claude / Codex (launchers + short aliases, all in one place)
+alias claude="claude --dangerously-skip-permissions --chrome"
+alias codex="codex --yolo --search"
+alias cl="claude"        # claude
+alias cr="claude --resume"
+alias c="codex"          # codex (one-key)
+alias co="codex"         # codex (same as c)
+alias cf="codex fork"
+
 # CLI shortcuts
-alias cl="claude"
-alias co="codex"
 alias src="source"
 alias da="direnv allow"
 
@@ -30,7 +37,6 @@ alias cd4="cd ../../../.."
 alias cd5="cd ../../../../.."
 alias ..="cd .."
 alias .="pwd"
-alias c="codex"   # redundant with `co` below (both → codex); c is the one-key version
 cdr() { cd ~/repos/"$1"; }
 _cdr() { _files -W ~/repos -/; }
 compdef _cdr cdr
@@ -80,7 +86,6 @@ alias gnb="git checkout -b"
 alias grebasemain="git fetch origin main && git rebase origin/main"
 alias grb="git fetch origin main && git rebase origin/main"
 alias g="git"
-alias p="pnpm"
 gstashfile() {
   git stash push -m "${2:-stash}" "$1"
 }
@@ -105,6 +110,7 @@ gclonessh() {
 }
 
 # Development
+alias p="pnpm"
 unalias prd 2>/dev/null
 prd() {
   local log_dir="/tmp${PWD#$HOME}"
@@ -126,12 +132,6 @@ alias pt="pnpm i && pnpm build"
 # help with puppeteer / playwright:
 alias chromeDebuggable='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir=/tmp/chrome-debug'
 
-# CLI tools
-alias claude="claude --dangerously-skip-permissions --chrome"
-alias codex="codex --yolo --search"
-alias cf="codex fork"
-alias cr="claude --resume"
-
 # use nice new versions of python tools:
 alias pip="pip3"
 alias python="python3"
@@ -151,6 +151,7 @@ alias tl="tmux list-sessions"
 # ============================================
 
 export PATH="$HOME/repos/dotfiles/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 export EDITOR='vim'
 export CLAUDE_CODE_NO_FLICKER=1
 
@@ -164,7 +165,6 @@ source <(fzf --zsh)
 # DIRENV (Auto-load .envrc files)
 # ============================================
 eval "$(direnv hook zsh)"
-export PATH="$HOME/.local/bin:$PATH"
 
 # Don't save commands starting with a space to history
 setopt HIST_IGNORE_SPACE
