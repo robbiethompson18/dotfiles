@@ -45,7 +45,7 @@ end)
 hs.alert.show("Hammerspoon loaded")
 
 --------------------------------------------------------------------------------
--- WINDOW MANAGEMENT (using Rectangle for positioning)
+-- WINDOW MANAGEMENT (window positioning, replaces Rectangle)
 --------------------------------------------------------------------------------
 
 local function getScreensSortedLeftToRight()
@@ -94,6 +94,21 @@ local function expandWindowAcrossTwoScreens()
 end
 
 hs.hotkey.bind({"ctrl", "alt"}, "J", expandWindowAcrossTwoScreens)
+
+-- Halves + maximize (ctrl+alt, matching Rectangle's recommended shortcuts)
+local function snap(unit)
+  local win = hs.window.focusedWindow()
+  if win then win:moveToUnit(unit) end
+end
+
+hs.hotkey.bind({"ctrl", "alt"}, "Left",   function() snap({0,   0,   0.5, 1}) end)
+hs.hotkey.bind({"ctrl", "alt"}, "Right",  function() snap({0.5, 0,   0.5, 1}) end)
+hs.hotkey.bind({"ctrl", "alt"}, "Up",     function() snap({0,   0,   1,   0.5}) end)
+hs.hotkey.bind({"ctrl", "alt"}, "Down",   function() snap({0,   0.5, 1,   0.5}) end)
+hs.hotkey.bind({"ctrl", "alt"}, "Return", function()
+  local win = hs.window.focusedWindow()
+  if win then win:maximize() end
+end)
 
 --------------------------------------------------------------------------------
 -- WINDOW CYCLING (Vim-style J/K)

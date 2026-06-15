@@ -9,8 +9,8 @@ Just run `cd bin && sh install.sh` from the root of this repo.
 
 This will download:
 * Chrome
-* Rectangle
-   - Launch this, then in the dock, right click on the icon and select "Open at Login"
+* Hammerspoon (window management + hotkeys, config symlinked from this repo)
+   - Grant Accessibility permission (System Settings -> Privacy & Security -> Accessibility), then enable "Launch Hammerspoon at login" in its preferences
 * Maccy (clipboard manager)
    - Settings: Launch at login, change popup hotkey to Option+Command+C
 * Iterm2 

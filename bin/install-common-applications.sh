@@ -8,14 +8,6 @@ else
     echo "✅ Google Chrome already installed"
 fi
 
-# Install Rectangle
-if [ ! -d "/Applications/Rectangle.app" ]; then
-    echo "📦 Installing Rectangle..."
-    brew install rectangle
-else
-    echo "✅ Rectangle already installed"
-fi
-
 # Install iTerm2
 if [ ! -d "/Applications/iTerm.app" ]; then
     echo "📦 Installing iTerm2..."
