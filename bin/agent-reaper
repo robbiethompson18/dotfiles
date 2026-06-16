@@ -143,8 +143,8 @@ reset_terminal_state() {
 
   stty sane opost onlcr icanon isig iexten echo echoe echok echoctl \
     icrnl -inlcr -igncr ixon brkint imaxbel iutf8 <"$device" 2>/dev/null || true
-  # Clear terminal modes TUIs commonly leave behind when killed mid-frame.
-  printf '\033[<u\033[<u\033[<u\033[=0u\033[>4;0m\033[?1l\033>\033[?1000l\033[?1002l\033[?1003l\033[?1006l\033[?1004l\033[?2004l\033[?1049l\033[?25h\033[0m\r\033[K' >"$device" 2>/dev/null || true
+  # Reset terminal modes TUIs commonly leave behind when killed mid-frame.
+  printf '\033[<u\033[<u\033[<u\033[=0u\033[>4;0m\033[?1l\033>\033[?1000l\033[?1002l\033[?1003l\033[?1006l\033[?1004l\033[?2004l\033[?1049l\033[?25h\033[0m' >"$device" 2>/dev/null || true
 }
 
 request_file_for() {
