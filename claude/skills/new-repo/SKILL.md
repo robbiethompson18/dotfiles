@@ -1,11 +1,11 @@
 ---
 name: new-repo
-description: Create a new private GitHub repo under ~/repos/ pre-loaded with a template CLAUDE.md and .gitignore that match Robbie's notes-in-git conventions. Use when the user runs /new-repo or asks to bootstrap a new project.
+description: Create a new private GitHub repo under ~/repos/ pre-loaded with a template CLAUDE.md, AGENTS.md symlink, and .gitignore that match Robbie's notes-in-git conventions. Use when the user runs /new-repo or asks to bootstrap a new project.
 ---
 
 # New Repo
 
-Creates a private GitHub repo under `~/repos/<name>/` with a template `CLAUDE.md` and `.gitignore` already set up per Robbie's notes conventions (see `~/.claude/CLAUDE.md` § Memory and notes).
+Creates a private GitHub repo under `~/repos/<name>/` with a template `CLAUDE.md`, an `AGENTS.md -> CLAUDE.md` symlink, and `.gitignore` already set up per Robbie's notes conventions (see `~/.claude/CLAUDE.md` § Memory and notes).
 
 ## Arguments
 
@@ -22,16 +22,20 @@ Creates a private GitHub repo under `~/repos/<name>/` with a template `CLAUDE.md
    cd ~/repos && gh repo create <name> --private --clone --description "<description>"
    ```
 4. **Write `CLAUDE.md`** at `~/repos/<name>/CLAUDE.md` using the template below. Substitute `<name>` and `<description>`.
-5. **Write `.gitignore`** at `~/repos/<name>/.gitignore` using the template below. This keeps `CLAUDE.local.md` and `.claude/notes/local/` out of git.
-6. **Initial commit + push:**
+5. **Create `AGENTS.md` symlink** at `~/repos/<name>/AGENTS.md` pointing to `CLAUDE.md`:
+   ```bash
+   cd ~/repos/<name> && ln -s CLAUDE.md AGENTS.md
+   ```
+6. **Write `.gitignore`** at `~/repos/<name>/.gitignore` using the template below. This keeps `CLAUDE.local.md` and `.claude/notes/local/` out of git.
+7. **Initial commit + push:**
    ```bash
    cd ~/repos/<name>
-   git add CLAUDE.md .gitignore
+   git add CLAUDE.md AGENTS.md .gitignore
    git branch -M main
    git commit -m "Initial commit"
    git push -u origin main
    ```
-7. **Report back:** print the local path (`~/repos/<name>`) and the GitHub URL (`gh repo view --web --json url -q .url` or just `gh repo view <name> --json url -q .url`).
+8. **Report back:** print the local path (`~/repos/<name>`) and the GitHub URL (`gh repo view --web --json url -q .url` or just `gh repo view <name> --json url -q .url`).
 
 ## Template: `CLAUDE.md`
 
@@ -39,6 +43,8 @@ Creates a private GitHub repo under `~/repos/<name>/` with a template `CLAUDE.md
 # <name>
 
 <description>
+
+`AGENTS.md` at the repo root is a symlink to `CLAUDE.md` so Codex/other agents see the same instructions. Do not replace it with a separate file.
 
 ## Notes
 
@@ -72,5 +78,6 @@ CLAUDE.local.md
 
 - Don't run this against a non-empty existing directory — stop and tell the user.
 - Don't create the repo as public — Robbie's default for new repos is private.
-- Don't add a README.md, license, or any other files beyond `CLAUDE.md` + `.gitignore`. Keep the bootstrap minimal; Robbie adds what he actually needs.
+- Don't create `AGENTS.md` as a regular file — it should be a symlink to `CLAUDE.md` so Codex/other agents see the same instructions.
+- Don't add a README.md, license, or any other files beyond `CLAUDE.md` + `AGENTS.md` symlink + `.gitignore`. Keep the bootstrap minimal; Robbie adds what he actually needs.
 - Don't skip the confirmation on `<description>` if it wasn't supplied — the description lands in GitHub metadata and at the top of `CLAUDE.md`, both annoying to change later.
