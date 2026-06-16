@@ -1,41 +1,69 @@
 #!/bin/bash
-# Kill processes running on a specified port with confirmation
 
-set -e
+set -eo pipefail
 
-if [[ -z "$1" ]]; then
-  echo "Usage: killport <port>"
+ports=("$@")
+
+add_port() {
+  local port="$1"
+  local existing
+
+  [[ -n "$port" ]] || return 0
+  for existing in "${ports[@]}"; do
+    [[ "$existing" == "$port" ]] && return 0
+  done
+  ports+=("$port")
+}
+
+add_pid() {
+  local pid="$1"
+  local existing
+
+  [[ -n "$pid" ]] || return 0
+  for existing in "${kill_pids[@]}"; do
+    [[ "$existing" == "$pid" ]] && return 0
+  done
+  kill_pids+=("$pid")
+}
+
+if [[ ${#ports[@]} -eq 0 ]]; then
+  for port_var in DEFAULT_PORT PORT WEB_PORT API_PORT VITE_PORT; do
+    add_port "${!port_var:-}"
+  done
+fi
+
+if [[ ${#ports[@]} -eq 0 ]]; then
+  echo "killport: pass a port or set DEFAULT_PORT/PORT/WEB_PORT/API_PORT/VITE_PORT"
   exit 1
 fi
 
-port="$1"
+for port in "${ports[@]}"; do
+  pids="$(lsof -tiTCP:"$port" -sTCP:LISTEN 2>/dev/null || true)"
+  if [[ -z "$pids" ]]; then
+    echo "killport: nothing listening on $port"
+    continue
+  fi
 
-# Find processes on the port
-pids=$(lsof -ti :"$port" 2>/dev/null || true)
+  kill_pids=()
+  for pid in $pids; do
+    add_pid "$pid"
 
-if [[ -z "$pids" ]]; then
-  echo "No processes found on port $port"
-  exit 0
-fi
+    parent_pid="$(ps -o ppid= -p "$pid" 2>/dev/null | awk '{print $1}')"
+    if [[ -n "$parent_pid" && "$parent_pid" != "1" ]]; then
+      parent_command="$(ps -o command= -p "$parent_pid" 2>/dev/null || true)"
+      case "$parent_command" in
+        *pnpm* | *npm* | *yarn* | *bun* | *turbo*) add_pid "$parent_pid" ;;
+      esac
+    fi
+  done
 
-echo "Processes found on port $port:"
-echo "---"
+  echo "killport: killing port $port: ${kill_pids[*]}"
+  kill "${kill_pids[@]}" 2>/dev/null || true
+  sleep 0.5
 
-for pid in $pids; do
-  # Get process details
-  proc_info=$(ps -p "$pid" -o pid=,user=,command= 2>/dev/null || echo "$pid (process info unavailable)")
-  echo "$proc_info"
-done
-
-echo "---"
-echo
-
-for pid in $pids; do
-  proc_name=$(ps -p "$pid" -o command= 2>/dev/null | head -c 50 || echo "unknown")
-  read -rp "Kill PID $pid ($proc_name)? [y/N] " confirm
-  if [[ "$confirm" =~ ^[Yy]$ ]]; then
-    kill -9 "$pid" 2>/dev/null && echo "Killed $pid" || echo "Failed to kill $pid (may have already exited)"
-  else
-    echo "Skipped $pid"
+  remaining="$(lsof -tiTCP:"$port" -sTCP:LISTEN 2>/dev/null || true)"
+  if [[ -n "$remaining" ]]; then
+    echo "killport: force killing port $port: ${remaining//$'\n'/ }"
+    kill -9 $remaining 2>/dev/null || true
   fi
 done
