@@ -18,6 +18,7 @@ Usage:
   agent-reaper identify
   agent-reaper request [--pid PID] [--reason TEXT]
   agent-reaper kill PID [--reason TEXT]
+  agent-reaper reset-tty TTY
 
 Kills Claude/Codex terminal sessions from outside the target process tree.
 EOF
@@ -140,7 +141,8 @@ reset_terminal_state() {
   device="$(terminal_device_for "$tty")" || return 0
   [[ -w "$device" ]] || return 0
 
-  stty sane <"$device" 2>/dev/null || true
+  stty sane opost onlcr icanon isig iexten echo echoe echok echoctl \
+    icrnl -inlcr -igncr ixon brkint imaxbel iutf8 <"$device" 2>/dev/null || true
   # Clear terminal modes TUIs commonly leave behind when killed mid-frame.
   printf '\033[<u\033[<u\033[<u\033[=0u\033[>4;0m\033[?1l\033>\033[?1000l\033[?1002l\033[?1003l\033[?1006l\033[?1004l\033[?2004l\033[?1049l\033[?25h\033[0m\r\033[K' >"$device" 2>/dev/null || true
 }
@@ -224,6 +226,8 @@ kill_target() {
   done
   ((${#alive[@]})) && kill -KILL "${alive[@]}" 2>/dev/null || true
   sleep 0.2
+  reset_terminal_state "$expected_tty"
+  sleep 0.6
   reset_terminal_state "$expected_tty"
 
   remaining=()
@@ -332,6 +336,12 @@ cmd_status() {
   printf 'state_dir=%s\nlog_file=%s\n' "$state_dir" "$log_file"
 }
 
+cmd_reset_tty() {
+  local tty="$1"
+  tty="${tty#/dev/}"
+  reset_terminal_state "$tty"
+}
+
 reason=''
 target_pid=''
 cmd="${1:-}"
@@ -344,6 +354,7 @@ case "$cmd" in
   status) (($# == 0)) || usage; cmd_status ;;
   watch) (($# == 0)) || usage; cmd_watch ;;
   identify) (($# == 0)) || usage; cmd_identify ;;
+  reset-tty) (($# == 1)) || usage; cmd_reset_tty "$1" ;;
   request)
     while (($#)); do
       case "$1" in
