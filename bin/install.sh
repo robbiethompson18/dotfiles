@@ -36,6 +36,9 @@ echo "🚀 Starting dotfiles installation..."
 # Install launchd agent for weekly dotfiles pull
 ./install-launchd-pull
 
+# Install launchd agent that lets Claude/Codex sessions request retirement
+./install-agent-reaper
+
 echo ""
 echo "✨ Installation complete!"
 echo ""
@@ -52,6 +55,7 @@ echo "  • Common brew packages installed"
 echo "  • Common applications installed (Chrome, iTerm2, Cursor, VS Code, Hammerspoon)"
 echo "  • macOS key repeat enabled (press-and-hold disabled)"
 echo "  • Weekly dotfiles auto-pull (launchd)"
+echo "  • Agent reaper for Claude/Codex session cleanup (launchd)"
 echo ""
 echo "Note: See CLAUDE_SETTINGS_README.md for info about Claude settings."
 echo ""
