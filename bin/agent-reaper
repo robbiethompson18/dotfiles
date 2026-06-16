@@ -1,0 +1,357 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+state_dir="${AGENT_REAPER_DIR:-/tmp/agent-reaper}"
+request_dir="$state_dir/requests"
+done_dir="$state_dir/done"
+log_file="${AGENT_REAPER_LOG:-$state_dir/agent-reaper.log}"
+pid_file="$state_dir/watch.pid"
+
+usage() {
+  cat >&2 <<'EOF'
+Usage:
+  agent-reaper start
+  agent-reaper stop
+  agent-reaper status
+  agent-reaper watch
+  agent-reaper identify
+  agent-reaper request [--pid PID] [--reason TEXT]
+  agent-reaper kill PID [--reason TEXT]
+
+Kills Claude/Codex terminal sessions from outside the target process tree.
+EOF
+  exit 2
+}
+
+mkdirs() {
+  mkdir -p "$request_dir" "$done_dir"
+}
+
+log() {
+  mkdirs
+  printf '%s %s\n' "$(TZ=America/Los_Angeles date '+%Y-%m-%d %H:%M:%S %Z')" "$*" >>"$log_file"
+}
+
+ps_field() {
+  local pid="$1"
+  local field="$2"
+  ps -o "$field"= -p "$pid" 2>/dev/null | awk '{$1=$1; print}'
+}
+
+command_cksum() {
+  printf '%s' "$1" | cksum | awk '{print $1 ":" $2}'
+}
+
+agent_kind() {
+  local command="$1"
+  case "$command" in
+    codex\ * | */codex\ *) echo codex ;;
+    claude\ * | */claude\ *) echo claude ;;
+    *) return 1 ;;
+  esac
+}
+
+find_session_root() {
+  local pid="${1:-$$}"
+  local command kind
+
+  while [[ -n "$pid" && "$pid" != "0" && "$pid" != "1" ]]; do
+    command="$(ps_field "$pid" command || true)"
+    if [[ -n "$command" ]] && kind="$(agent_kind "$command")"; then
+      printf '%s\t%s\t%s\n' "$pid" "$kind" "$command"
+      return 0
+    fi
+    pid="$(ps_field "$pid" ppid || true)"
+  done
+  return 1
+}
+
+children_of() {
+  pgrep -P "$1" . 2>/dev/null || true
+}
+
+process_tree() {
+  local root="$1"
+  local pid child
+  local -a queue=("$root")
+  local -a seen=("")
+
+  while ((${#queue[@]})); do
+    pid="${queue[0]}"
+    queue=("${queue[@]:1}")
+    [[ -n "$pid" ]] || continue
+    ps -p "$pid" >/dev/null 2>&1 || continue
+
+    for child in "${seen[@]}"; do
+      [[ "$child" == "$pid" ]] && continue 2
+    done
+    seen+=("$pid")
+    printf '%s\n' "$pid"
+
+    while IFS= read -r child; do
+      [[ -n "$child" ]] && queue+=("$child")
+    done < <(children_of "$pid")
+  done
+}
+
+validate_target() {
+  local pid="$1"
+  local expected_kind="$2"
+  local expected_tty="$3"
+  local expected_cksum="$4"
+  local command tty kind checksum
+
+  command="$(ps_field "$pid" command || true)"
+  [[ -n "$command" ]] || {
+    printf 'agent-reaper: pid %s is not running\n' "$pid" >&2
+    return 1
+  }
+
+  kind="$(agent_kind "$command" || true)"
+  [[ "$kind" == "$expected_kind" ]] || {
+    printf 'agent-reaper: pid %s is %s, expected %s\n' "$pid" "${kind:-unknown}" "$expected_kind" >&2
+    return 1
+  }
+
+  tty="$(ps_field "$pid" tty || true)"
+  [[ "$tty" == "$expected_tty" ]] || {
+    printf 'agent-reaper: pid %s tty changed from %s to %s\n' "$pid" "$expected_tty" "$tty" >&2
+    return 1
+  }
+
+  checksum="$(command_cksum "$command")"
+  [[ "$checksum" == "$expected_cksum" ]] || {
+    printf 'agent-reaper: pid %s command changed\n' "$pid" >&2
+    return 1
+  }
+}
+
+request_file_for() {
+  printf '%s/request-%s-%s-%s.env' \
+    "$request_dir" "$(date +%s)" "$$" "$RANDOM"
+}
+
+write_request() {
+  local target_pid="$1"
+  local reason="$2"
+  local root kind command tty pgid checksum file tmp
+
+  if [[ -n "$target_pid" ]]; then
+    root="$target_pid"
+    command="$(ps_field "$root" command || true)"
+    kind="$(agent_kind "$command" || true)"
+    [[ -n "$kind" ]] || {
+      printf 'agent-reaper: pid %s is not a Claude/Codex session\n' "$root" >&2
+      exit 1
+    }
+  else
+    IFS=$'\t' read -r root kind command < <(find_session_root "$$") || {
+      printf 'agent-reaper: could not find a Claude/Codex ancestor\n' >&2
+      exit 1
+    }
+  fi
+
+  tty="$(ps_field "$root" tty)"
+  pgid="$(ps_field "$root" pgid)"
+  checksum="$(command_cksum "$command")"
+  mkdirs
+  file="$(request_file_for)"
+  tmp="$file.tmp"
+  {
+    printf 'pid=%s\n' "$root"
+    printf 'kind=%s\n' "$kind"
+    printf 'tty=%s\n' "$tty"
+    printf 'pgid=%s\n' "$pgid"
+    printf 'command_cksum=%s\n' "$checksum"
+    printf 'requester_pid=%s\n' "$$"
+    printf 'created_at=%s\n' "$(TZ=America/Los_Angeles date '+%Y-%m-%dT%H:%M:%S%z')"
+    printf 'reason=%q\n' "$reason"
+  } >"$tmp"
+  mv "$tmp" "$file"
+  printf 'agent-reaper: requested %s session kill for pid %s (%s)\n' "$kind" "$root" "$tty"
+  printf 'agent-reaper: request %s\n' "$file"
+}
+
+kill_target() {
+  local pid="$1"
+  local expected_kind="$2"
+  local expected_tty="$3"
+  local expected_cksum="$4"
+  local reason="$5"
+  local target
+  local -a targets=()
+  local -a alive=()
+  local -a remaining=()
+
+  validate_target "$pid" "$expected_kind" "$expected_tty" "$expected_cksum"
+  while IFS= read -r target; do
+    targets+=("$target")
+  done < <(process_tree "$pid")
+
+  ((${#targets[@]})) || return 0
+  log "killing $expected_kind pid=$pid tty=$expected_tty reason=$reason targets=${targets[*]}"
+
+  kill -INT "${targets[@]}" 2>/dev/null || true
+  sleep 0.4
+  alive=()
+  for target in "${targets[@]}"; do
+    ps -p "$target" >/dev/null 2>&1 && alive+=("$target")
+  done
+  ((${#alive[@]})) && kill -TERM "${alive[@]}" 2>/dev/null || true
+  sleep 0.4
+  alive=()
+  for target in "${targets[@]}"; do
+    ps -p "$target" >/dev/null 2>&1 && alive+=("$target")
+  done
+  ((${#alive[@]})) && kill -KILL "${alive[@]}" 2>/dev/null || true
+  sleep 0.2
+
+  remaining=()
+  for target in "${targets[@]}"; do
+    ps -p "$target" >/dev/null 2>&1 && remaining+=("$target")
+  done
+  if ((${#remaining[@]})); then
+    log "remaining after kill pid=$pid targets=${remaining[*]}"
+    printf 'agent-reaper: remaining after kill: %s\n' "${remaining[*]}" >&2
+    return 1
+  fi
+}
+
+load_request() {
+  local file="$1"
+  pid=''
+  kind=''
+  tty=''
+  pgid=''
+  command_cksum=''
+  reason=''
+  while IFS='=' read -r key value; do
+    case "$key" in
+      pid) pid="$value" ;;
+      kind) kind="$value" ;;
+      tty) tty="$value" ;;
+      pgid) pgid="$value" ;;
+      command_cksum) command_cksum="$value" ;;
+      reason) reason="$value" ;;
+    esac
+  done <"$file"
+}
+
+handle_request() {
+  local file="$1"
+  load_request "$file"
+  if [[ -z "$pid" || -z "$kind" || -z "$tty" || -z "$command_cksum" ]]; then
+    log "invalid request $file"
+    mv "$file" "$done_dir/invalid-$(basename "$file")"
+    return 0
+  fi
+
+  if kill_target "$pid" "$kind" "$tty" "$command_cksum" "$reason"; then
+    mv "$file" "$done_dir/done-$(basename "$file")"
+  else
+    mv "$file" "$done_dir/failed-$(basename "$file")"
+  fi
+}
+
+cmd_identify() {
+  local root kind command tty pgid
+  IFS=$'\t' read -r root kind command < <(find_session_root "$$") || {
+    printf 'agent-reaper: no Claude/Codex ancestor found\n' >&2
+    exit 1
+  }
+  tty="$(ps_field "$root" tty)"
+  pgid="$(ps_field "$root" pgid)"
+  printf 'pid=%s\nkind=%s\ntty=%s\npgid=%s\ncommand=%s\n' "$root" "$kind" "$tty" "$pgid" "$command"
+}
+
+cmd_watch() {
+  local file
+  mkdirs
+  echo "$$" >"$pid_file"
+  log "watch started pid=$$"
+  while true; do
+    for file in "$request_dir"/*.env; do
+      [[ -e "$file" ]] || continue
+      handle_request "$file"
+    done
+    sleep 1
+  done
+}
+
+cmd_start() {
+  mkdirs
+  if [[ -f "$pid_file" ]] && ps -p "$(cat "$pid_file")" >/dev/null 2>&1; then
+    printf 'agent-reaper: already running pid %s\n' "$(cat "$pid_file")"
+    return 0
+  fi
+  rm -f "$pid_file"
+  nohup "$0" watch >>"$log_file" 2>&1 &
+  local started_pid="$!"
+  for _ in 1 2 3 4 5; do
+    [[ -f "$pid_file" ]] && break
+    sleep 0.1
+  done
+  printf 'agent-reaper: started watcher pid %s\n' "${started_pid}"
+}
+
+cmd_stop() {
+  if [[ ! -f "$pid_file" ]] || ! ps -p "$(cat "$pid_file")" >/dev/null 2>&1; then
+    printf 'agent-reaper: not running\n'
+    return 0
+  fi
+  kill "$(cat "$pid_file")"
+  printf 'agent-reaper: stopped watcher pid %s\n' "$(cat "$pid_file")"
+}
+
+cmd_status() {
+  if [[ -f "$pid_file" ]] && ps -p "$(cat "$pid_file")" >/dev/null 2>&1; then
+    printf 'agent-reaper: running pid %s\n' "$(cat "$pid_file")"
+  else
+    printf 'agent-reaper: not running\n'
+  fi
+  printf 'state_dir=%s\nlog_file=%s\n' "$state_dir" "$log_file"
+}
+
+reason=''
+target_pid=''
+cmd="${1:-}"
+[[ -n "$cmd" ]] || usage
+shift || true
+
+case "$cmd" in
+  start) (($# == 0)) || usage; cmd_start ;;
+  stop) (($# == 0)) || usage; cmd_stop ;;
+  status) (($# == 0)) || usage; cmd_status ;;
+  watch) (($# == 0)) || usage; cmd_watch ;;
+  identify) (($# == 0)) || usage; cmd_identify ;;
+  request)
+    while (($#)); do
+      case "$1" in
+        --pid) target_pid="${2:-}"; shift 2 ;;
+        --reason) reason="${2:-}"; shift 2 ;;
+        *) usage ;;
+      esac
+    done
+    write_request "$target_pid" "$reason"
+    ;;
+  kill)
+    (($# >= 1)) || usage
+    target_pid="$1"
+    shift
+    while (($#)); do
+      case "$1" in
+        --reason) reason="${2:-}"; shift 2 ;;
+        *) usage ;;
+      esac
+    done
+    command="$(ps_field "$target_pid" command || true)"
+    kind="$(agent_kind "$command" || true)"
+    [[ -n "$kind" ]] || {
+      printf 'agent-reaper: pid %s is not a Claude/Codex session\n' "$target_pid" >&2
+      exit 1
+    }
+    kill_target "$target_pid" "$kind" "$(ps_field "$target_pid" tty)" "$(command_cksum "$command")" "$reason"
+    ;;
+  *) usage ;;
+esac
