@@ -127,6 +127,24 @@ validate_target() {
   }
 }
 
+terminal_device_for() {
+  local tty="$1"
+  [[ -n "$tty" && "$tty" != "??" ]] || return 1
+  printf '/dev/%s\n' "$tty"
+}
+
+reset_terminal_state() {
+  local tty="$1"
+  local device
+
+  device="$(terminal_device_for "$tty")" || return 0
+  [[ -w "$device" ]] || return 0
+
+  stty sane <"$device" 2>/dev/null || true
+  # Clear terminal modes TUIs commonly leave behind when killed mid-frame.
+  printf '\033[?1l\033>\033[?1000l\033[?1002l\033[?1003l\033[?1006l\033[?1004l\033[?2004l\033[?1049l\033[?25h\033[0m\r\033[K' >"$device" 2>/dev/null || true
+}
+
 request_file_for() {
   printf '%s/request-%s-%s-%s.env' \
     "$request_dir" "$(date +%s)" "$$" "$RANDOM"
@@ -206,6 +224,7 @@ kill_target() {
   done
   ((${#alive[@]})) && kill -KILL "${alive[@]}" 2>/dev/null || true
   sleep 0.2
+  reset_terminal_state "$expected_tty"
 
   remaining=()
   for target in "${targets[@]}"; do
