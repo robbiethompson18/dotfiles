@@ -157,6 +157,21 @@ restore_terminal_flags() {
     icrnl -inlcr -igncr ixon brkint imaxbel iutf8 <"$device" 2>/dev/null || true
 }
 
+clear_shell_status() {
+  local tty="$1"
+  local device
+
+  device="$(terminal_device_for "$tty")" || return 0
+  [[ -w "$device" ]] || return 0
+
+  # Gross but pragmatic: zsh keeps showing the killed job's 143/130 forever
+  # until a command succeeds. Wait for the shell prompt, then inject a no-op.
+  (
+    sleep 0.25
+    printf 'true\n' >"$device" 2>/dev/null || true
+  ) >/dev/null 2>&1 &
+}
+
 request_file_for() {
   printf '%s/request-%s-%s-%s.env' \
     "$request_dir" "$(date +%s)" "$$" "$RANDOM"
@@ -233,6 +248,7 @@ kill_target() {
   ((${#alive[@]})) && kill -KILL "${alive[@]}" 2>/dev/null || true
   sleep 0.2
   restore_terminal_flags "$expected_tty"
+  clear_shell_status "$expected_tty"
 
   remaining=()
   for target in "${targets[@]}"; do
