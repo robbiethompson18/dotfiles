@@ -3,6 +3,9 @@ model = "gpt-5.5"
 model_reasoning_effort = "high"
 hide_agent_reasoning = true
 
+notify = ["/Users/robbie/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]
+service_tier = "default"
+
 [notice]
 hide_rate_limit_model_nudge = true
 
@@ -67,14 +70,62 @@ trust_level = "trusted"
 [plugins."slack@openai-curated"]
 enabled = true
 
+[plugins."browser@openai-bundled"]
+enabled = true
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."pdf@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[plugins."chrome@openai-bundled"]
+enabled = true
+
 [tui.model_availability_nux]
 "gpt-5.5" = 4
 
 [features]
 apps = false
-plugins = false
+plugins = true
+js_repl = false
 
 [hooks.state]
 
 [hooks.state."/Users/robbie/repos/platform/.codex/hooks.json:post_tool_use:0:0"]
 trusted_hash = "sha256:ff53d7a2d82f1b180333e844da0aa9f0bfb4691a1ecdb60c7b0bb4a2ed3a1804"
+
+[marketplaces.openai-bundled]
+last_updated = "2026-06-16T17:21:00Z"
+source_type = "local"
+source = "/Users/robbie/.codex/.tmp/bundled-marketplaces/openai-bundled"
+
+[marketplaces.openai-primary-runtime]
+last_updated = "2026-06-16T17:00:56Z"
+source_type = "local"
+source = "/Users/robbie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
+
+[mcp_servers.node_repl]
+args = []
+command = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node_repl"
+startup_timeout_sec = 120
+
+[mcp_servers.node_repl.env]
+NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
+NODE_REPL_NODE_MODULE_DIRS = "/Applications/Codex.app/Contents/Resources/cua_node/lib/node_modules"
+NODE_REPL_NODE_PATH = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node"
+NODE_REPL_TRUSTED_CODE_PATHS = "/Users/robbie/.codex"
+CODEX_HOME = "/Users/robbie/.codex"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "89809670b247cbaffbc4f87d9fa9742a9038c0f4a06fb822d7f85ff19bf24215"
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.609.71450"
+CODEX_CLI_PATH = "/Applications/Codex.app/Contents/Resources/codex"
