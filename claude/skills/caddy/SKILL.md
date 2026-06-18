@@ -52,13 +52,15 @@ Caddy-routed apps (have a `*.localhost` hostname):
 | 5173  | `silkworm-experiments-ui.localhost` | `~/repos/silkworm`       |
 | 8770  | `sapient-2.localhost` | `~/repos/sapient-2`   |
 | 8772  | `sapient-3.localhost` | `~/repos/sapient-3`   |
+| 8774  | `sapient-4.localhost` | `~/repos/sapient-4`   |
+| 8776  | `sapient-5.localhost` | `~/repos/sapient-5`   |
 
 Sapient stack — web port is Caddy-routed (rows above); API port is internal-only. Per-checkout ports live in each checkout's `.envrc.local`; all checkouts share the postgres on 5435:
 
-| Service          | sapient | sapient-2 | sapient-3 |
-|------------------|---------|-----------|-----------|
-| Web (Vite)       | 8767    | 8770      | 8772      |
-| API (`API_PORT`) | 8769    | 8771      | 8773      |
+| Service          | sapient | sapient-2 | sapient-3 | sapient-4 | sapient-5 |
+|------------------|---------|-----------|-----------|-----------|-----------|
+| Web (Vite)       | 8767    | 8770      | 8772      | 8774      | 8776      |
+| API (`API_PORT`) | 8769    | 8771      | 8773      | 8775      | 8777      |
 
 Platform stack — each clone of `~/repos/platform*` claims one slot in each row:
 

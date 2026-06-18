@@ -47,9 +47,38 @@ alias cdrp2="cd ~/repos/platform-2"
 alias cdrpf="cd ~/repos/platform-frontend"
 alias cdrd="cd ~/repos/dotfiles"
 alias cdra="cd ~/repos/agentdrive"
-alias cdrs="cd ~/repos/sapient"
+unalias cdrs 2>/dev/null
+cdrs() {
+  local -a roots available
+  local root pick
+
+  roots=(
+    "$HOME/repos/sapient"
+    "$HOME/repos/sapient-2"
+    "$HOME/repos/sapient-3"
+    "$HOME/repos/sapient-4"
+    "$HOME/repos/sapient-5"
+  )
+
+  for root in "${roots[@]}"; do
+    [[ -d "$root" ]] || continue
+    available+=("$root")
+  done
+
+  if (( ${#available[@]} == 0 )); then
+    echo "no sapient checkout available"
+    return 1
+  fi
+
+  pick="${available[$((RANDOM % ${#available[@]} + 1))]}"
+  cd "$pick" || return
+  echo "using $pick"
+}
+alias cdrs1="cd ~/repos/sapient"
 alias cdrs2="cd ~/repos/sapient-2"
 alias cdrs3="cd ~/repos/sapient-3"
+alias cdrs4="cd ~/repos/sapient-4"
+alias cdrs5="cd ~/repos/sapient-5"
 alias cdop="cd ~/.openclaw"
 
 # Git aliases
