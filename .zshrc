@@ -58,6 +58,9 @@ cdrs() {
     "$HOME/repos/sapient-3"
     "$HOME/repos/sapient-4"
     "$HOME/repos/sapient-5"
+    "$HOME/repos/sapient-6"
+    "$HOME/repos/sapient-7"
+    "$HOME/repos/sapient-8"
   )
 
   for root in "${roots[@]}"; do
@@ -79,6 +82,9 @@ alias cdrs2="cd ~/repos/sapient-2"
 alias cdrs3="cd ~/repos/sapient-3"
 alias cdrs4="cd ~/repos/sapient-4"
 alias cdrs5="cd ~/repos/sapient-5"
+alias cdrs6="cd ~/repos/sapient-6"
+alias cdrs7="cd ~/repos/sapient-7"
+alias cdrs8="cd ~/repos/sapient-8"
 alias cdop="cd ~/.openclaw"
 
 # Git aliases

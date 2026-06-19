@@ -54,13 +54,16 @@ Caddy-routed apps (have a `*.localhost` hostname):
 | 8772  | `sapient-3.localhost` | `~/repos/sapient-3`   |
 | 8774  | `sapient-4.localhost` | `~/repos/sapient-4`   |
 | 8776  | `sapient-5.localhost` | `~/repos/sapient-5`   |
+| 8778  | `sapient-6.localhost` | `~/repos/sapient-6`   |
+| 8780  | `sapient-7.localhost` | `~/repos/sapient-7`   |
+| 8782  | `sapient-8.localhost` | `~/repos/sapient-8`   |
 
 Sapient stack — web port is Caddy-routed (rows above); API port is internal-only. Per-checkout ports live in each checkout's `.envrc.local`; all checkouts share the postgres on 5435:
 
-| Service          | sapient | sapient-2 | sapient-3 | sapient-4 | sapient-5 |
-|------------------|---------|-----------|-----------|-----------|-----------|
-| Web (Vite)       | 8767    | 8770      | 8772      | 8774      | 8776      |
-| API (`API_PORT`) | 8769    | 8771      | 8773      | 8775      | 8777      |
+| Service          | sapient | sapient-2 | sapient-3 | sapient-4 | sapient-5 | sapient-6 | sapient-7 | sapient-8 |
+|------------------|---------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| Web (Vite)       | 8767    | 8770      | 8772      | 8774      | 8776      | 8778      | 8780      | 8782      |
+| API (`API_PORT`) | 8769    | 8771      | 8773      | 8775      | 8777      | 8779      | 8781      | 8783      |
 
 Platform stack — each clone of `~/repos/platform*` claims one slot in each row:
 
