@@ -71,6 +71,7 @@ When you kick off a long task (eg model training run, data generation) return co
 ## Log checking
 
 - Never tell the user to check logs themselves (e.g."check `cat /tmp/logs/x`"). If you need to see something, check yourself.
+- If you need AWS logs and I'm not logged in just return and tell me asap instead of trying roundabout methods of investigation
 
 ## Time Zone
 
