@@ -9,7 +9,7 @@ hs.window.animationDuration = 0
 pcall(require, "hs.ipc")
 
 -- Only load the typing-speed keylogger if the cognitive-tests repo is checked out.
-local typingLoggerPath = "/Users/robbie/repos/cognitive-tests/hammerspoon/typing-speed-logger.lua"
+local typingLoggerPath = os.getenv("HOME") .. "/repos/cognitive-tests/hammerspoon/typing-speed-logger.lua"
 if hs.fs.attributes(typingLoggerPath) then
   TypingSpeedLogger = dofile(typingLoggerPath)
   TypingSpeedLogger.start()
