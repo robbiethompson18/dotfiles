@@ -240,6 +240,11 @@ augroup END
 " Setup shellcheck for shell scripts
 let g:coc_filetype_map = {'sh': 'shellscript'}
 
+" Disable coc's autocomplete popup in prose files. There's no language server
+" for these, so every suggestion is just the noisy buffer-word ([A]/around)
+" source. Code keeps full LSP completion.
+autocmd FileType markdown,text,gitcommit,markdown.mdx let b:coc_suggest_disable = 1
+
 
 " local customizations in ~/.vimrc_local
 let $LOCALFILE=expand("~/.vimrc_local")
