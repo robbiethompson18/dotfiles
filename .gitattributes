@@ -1,0 +1,3 @@
+# Binary plists render as readable XML in `git diff` (textconv defined in .gitconfig).
+# Keeps the stored file binary (iTerm2-compatible) while diffs stay human-readable.
+*.plist diff=plist
