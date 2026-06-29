@@ -20,3 +20,7 @@
 	file-decoration-style = bold yellow ul
 	file-style = bold yellow
 	hunk-header-decoration-style = cyan box
+[diff "plist"]
+	# Show binary plists (e.g. iTerm2 prefs) as readable XML in diffs.
+	# git appends the file path; plutil converts to xml1 on stdout without touching the file.
+	textconv = plutil -convert xml1 -o -
