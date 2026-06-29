@@ -17,8 +17,8 @@ set number
 " show line and column in status bar
 set ruler
 
-" set column marker at 80 characters
-set colorcolumn=80
+" set column marker at 100 characters
+set colorcolumn=100
 
 " Always show the status line at the bottom, even if you only have one window open.
 set laststatus=2
@@ -131,6 +131,11 @@ call plug#end()
 " let g:vim_jsx_pretty_colorful_config = 1 " default 0
 
 colorscheme desert
+
+" Make the colorcolumn marker a faint gray instead of desert's loud red.
+" ctermbg is a 256-color grayscale ramp: 232 (near-black) .. 255 (near-white).
+" Bump the number up to make the line more visible, down to make it fainter.
+highlight ColorColumn ctermbg=240 guibg=#585858
 
 " color picker:
 " https://upload.wikimedia.org/wikipedia/commons/1/15/Xterm_256color_chart.svg
