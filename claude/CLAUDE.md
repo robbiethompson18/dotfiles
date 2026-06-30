@@ -46,9 +46,19 @@ You are an experimental model with a 10mm token context window. Do not worry abo
 
 Other agents might be editing the same checkout as you. Do not use worktrees. When shipping, ship only your own code unless I ask you to ship all changes. If a build fails, wait a minute or two to give the other agent a chance to clean up their mess. If a lint fails, just fix it yourself. Do not stash another agents' code so that you can build and ship without permission.
 
-## Custom tools
+## Comments
 
-- `tiny-diff` (globally installed) — browser diff viewer with per-line annotations, for surfacing non-obvious changes to Robbie. See `~/.claude/skills/tiny-diff/SKILL.md`.
+Robbie will often write todos for agents in files, eg:
+```
+#@claude please research this section and fill in all blanks
+```
+
+Don't work on these todos unless explicitly asked. When you
+finish one of these todos, respond with a comment of your own, eg:
+```
+#@claude please research this section and write notes, somewhere outside this doc
+#@robbie done, see posts/plastic-straws/RESEARCH_NOTES.md
+```
 
 ## Repos
 
