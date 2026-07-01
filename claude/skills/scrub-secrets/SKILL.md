@@ -1,6 +1,8 @@
 ---
 name: scrub-secrets
-description: Scan zsh history for API keys, tokens, passwords, and other secrets, then remove them after user confirmation.
+description:
+  Scan zsh history for API keys, tokens, passwords, and other secrets, then remove them after user
+  confirmation.
 ---
 
 # Scrub Secrets from Shell History

@@ -1,11 +1,14 @@
 ---
 name: explain
-description: Explore and explain a codebase, bug, logs, or behavior without editing files. Use when the user asks to explain, investigate, trace, or understand something and has not asked for changes.
+description:
+  Explore and explain a codebase, bug, logs, or behavior without editing files. Use when the user
+  asks to explain, investigate, trace, or understand something and has not asked for changes.
 ---
 
 # Explain Mode
 
-You are in exploration/explanation mode. Your goal is to help the user understand the codebase, or to catch a bug.
+You are in exploration/explanation mode. Your goal is to help the user understand the codebase, or
+to catch a bug.
 
 ## What you CAN do
 

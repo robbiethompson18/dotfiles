@@ -1,4 +1,3 @@
-// NOTE: Similar config exists at cursor/settings.json — update both when making changes
 {
     "[python]": {
         "editor.formatOnType": true,

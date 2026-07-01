@@ -1,6 +1,8 @@
 ---
 name: agentmail
-description: Send and receive email through a dedicated AgentMail inbox. Usable by any AI agent, especially for testing.
+description:
+  Send and receive email through a dedicated AgentMail inbox. Usable by any AI agent, especially for
+  testing.
 ---
 
 # AgentMail
@@ -27,7 +29,8 @@ The script reads credentials from the skill-local `.env` file. Do not print or c
 
 ## Threading
 
-Always use `reply` for follow-ups to an existing email conversation. Use `send` only for a new recipient or a completely new subject.
+Always use `reply` for follow-ups to an existing email conversation. Use `send` only for a new
+recipient or a completely new subject.
 
 Before replying:
 
