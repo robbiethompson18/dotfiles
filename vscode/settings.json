@@ -36,6 +36,7 @@
     "python.analysis.useLibraryCodeForTypes": true,
     "workbench.colorTheme": "Dark Modern",
     "git.autofetch": true,
+    "vim.useSystemClipboard": true,
     "[markdown]": {
         "editor.quickSuggestions": {
             "comments": "off",

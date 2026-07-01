@@ -40,7 +40,8 @@
         "typescript"
     ],
     "workbench.colorTheme": "Cursor Dark High Contrast",
-    "git.autofetch": true
+    "git.autofetch": true,
+    "vim.useSystemClipboard": true,
     "[markdown]": {
         "editor.quickSuggestions": false,
         "editor.suggestOnTriggerCharacters": false
