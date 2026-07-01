@@ -38,6 +38,7 @@
     "git.autofetch": true,
     "vim.useSystemClipboard": true,
     "[markdown]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.quickSuggestions": {
             "comments": "off",
             "strings": "off",
