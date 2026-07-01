@@ -250,6 +250,13 @@ let g:coc_filetype_map = {'sh': 'shellscript'}
 " source. Code keeps full LSP completion.
 autocmd FileType markdown,text,gitcommit,markdown.mdx let b:coc_suggest_disable = 1
 
+" gq / gqip on markdown: wrap each list item on its own instead of merging the
+" bullets into one reflowed blob. 'n' tells gq to honor 'formatlistpat', which
+" here matches "1. " / "1) " numbered items and "-/*/+ " bullets (and their
+" indent, so wrapped continuation lines tuck under the item text).
+autocmd FileType markdown setlocal formatoptions+=n
+autocmd FileType markdown let &l:formatlistpat = '^\s*\d\+[.)]\s\+\|^\s*[-*+]\s\+'
+
 
 " local customizations in ~/.vimrc_local
 let $LOCALFILE=expand("~/.vimrc_local")
