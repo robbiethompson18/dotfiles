@@ -2,8 +2,8 @@
 
 Tracked by dotfiles; machine-specific.
 
-You user's name is Robbie. He is a senior software engineer at Usebits. He is very curious, so
-take chances to explain how stuff works.
+You user's name is Robbie. He is a senior software engineer at Usebits. He is very curious, so take
+chances to explain how stuff works.
 
 ## Database
 
@@ -11,33 +11,40 @@ Please do not use the neon MCP to query the database!! Use the /db skill.
 
 ## Development Workflow
 
-- **Always run `pnpm build` before returning control to the user** - Don't assume hot reload caught everything. Verify the build passes before saying a fix is done.
+- **Always run `pnpm build` before returning control to the user** - Don't assume hot reload caught
+  everything. Verify the build passes before saying a fix is done.
 
 ## Git Workflow
 
 - Do not push changes unless explicitly asked to.
 - If asked to commit, only commit - do not push unless also instructed.
-- If you commit and then make new changes, don't keep committing and pushing. Ask for permission again.
-- Claude, you often ignore the above instruction, and it DRIVES ROBBIE NUTS. Please ask for permission EVERY TIME YOU PUSH.
+- If you commit and then make new changes, don't keep committing and pushing. Ask for permission
+  again.
+- Claude, you often ignore the above instruction, and it DRIVES ROBBIE NUTS. Please ask for
+  permission EVERY TIME YOU PUSH.
 
 ## Multiple Clones for Parallel Claude Sessions
 
-We don't use git worktrees. Everything is a fresh clone with a checkout of main.
-Stay on main, commit and merge from there. Only use branches if sepcifically asked, or the user wants to view a PR.
-The different branches use different ports, different Google Oauth clients, and two different databases
-(frontend and platform-2 share a database). 
-platform-debugging isn't meant for code chages, it's meant for using cli (eg aws, posthog) to
-find and fix customer issues.
+We don't use git worktrees. Everything is a fresh clone with a checkout of main. Stay on main,
+commit and merge from there. Only use branches if sepcifically asked, or the user wants to view a
+PR. The different branches use different ports, different Google Oauth clients, and two different
+databases (frontend and platform-2 share a database). platform-debugging isn't meant for code
+chages, it's meant for using cli (eg aws, posthog) to find and fix customer issues.
 
 Current permanent clones:
+
 - `platform` — primary development at `localhost:5173`
 - `platform-2` — secondary development at `http://test.lvh.me:5175`
-- `platform-frontend`  — tertiary development work at `http://test.lvh.me:5177`. Shares a DB with platform-2.
-- `platform-debugging` — just for using the CLI and changing Claude skills. Not set up to build typescript.
+- `platform-frontend` — tertiary development work at `http://test.lvh.me:5177`. Shares a DB with
+  platform-2.
+- `platform-debugging` — just for using the CLI and changing Claude skills. Not set up to build
+  typescript.
 
 ### Branch Convention
 
-**Each worktree should stay on its own `tmp/{worktree-random-id}` branch**, not on `main`. This allows any worktree to temporarily checkout `main` to pull latest changes, then switch back to its branch:
+**Each worktree should stay on its own `tmp/{worktree-random-id}` branch**, not on `main`. This
+allows any worktree to temporarily checkout `main` to pull latest changes, then switch back to its
+branch:
 
 ```bash
 # In any worktree, to sync with main:
@@ -47,12 +54,15 @@ git checkout -b tmp/platform-randomid  # or tmp/platform-2-randomid, etc.
 git rebase main
 ```
 
-This avoids conflicts where multiple worktrees try to be on `main` simultaneously. The `tmp/*` branches are rebased onto `main` regularly and force-pushed.
+This avoids conflicts where multiple worktrees try to be on `main` simultaneously. The `tmp/*`
+branches are rebased onto `main` regularly and force-pushed.
 
 **Limited simultaneous worktrees** due to:
+
 1. **Google OAuth** - Each redirect URI must be manually registered in Google Cloud Console
 2. **trustedOrigins** - Only `test.lvh.me` is pre-configured for worktrees
-3. **Separate OAuth app** - Worktrees use a dev Google OAuth app in "Testing" mode that only works with `@usebits.com` accounts
+3. **Separate OAuth app** - Worktrees use a dev Google OAuth app in "Testing" mode that only works
+   with `@usebits.com` accounts
 
 ### Syncing Environment
 
@@ -67,9 +77,11 @@ Override files are in platform repo: `.envrc.different-in-<worktree-name>`
 
 ## Fixing Stuck Prisma Migration Locks
 
-If `migrate reset` times out with error P1002 ("Timed out trying to acquire a postgres advisory lock"), a previous migration left a lock held.
+If `migrate reset` times out with error P1002 ("Timed out trying to acquire a postgres advisory
+lock"), a previous migration left a lock held.
 
 **Find the stuck lock:**
+
 ```sql
 SELECT l.pid, l.objid, a.state, a.query
 FROM pg_locks l
@@ -78,6 +90,7 @@ WHERE l.locktype = 'advisory';
 ```
 
 **Kill it:**
+
 ```sql
 SELECT pg_terminate_backend(<pid>);
 ```
@@ -86,14 +99,16 @@ Run these via the Neon MCP tools (`mcp__Neon__run_sql`) or Neon console.
 
 ## Beads Issue Tracking (Robbie only)
 
-Robbie is the only one on the team using beads. The `.beads/` directory is gitignored, and worktrees use redirects to share the same database.
+Robbie is the only one on the team using beads. The `.beads/` directory is gitignored, and worktrees
+use redirects to share the same database.
 
-* Always sync before running other bd commands, eg finding ready tasks.
-* Please be sure to always update beads as in progress when you're working on them.
-* Work on one bead at a time.
-* If you discover more a big subtask while working, STOP and ASK to make a new bead.
-* **NEVER close a bead without explicit user approval.** Always ask "Ready to close this bead?" first.
-* Please do not work on beads that are already in progress.
+- Always sync before running other bd commands, eg finding ready tasks.
+- Please be sure to always update beads as in progress when you're working on them.
+- Work on one bead at a time.
+- If you discover more a big subtask while working, STOP and ASK to make a new bead.
+- **NEVER close a bead without explicit user approval.** Always ask "Ready to close this bead?"
+  first.
+- Please do not work on beads that are already in progress.
 
 ### Quick Reference
 
@@ -107,7 +122,8 @@ bd sync               # Sync with git
 
 ### Session Completion Checklist
 
-When ending a work session, complete ALL steps below. Work is NOT complete until `git push` succeeds.
+When ending a work session, complete ALL steps below. Work is NOT complete until `git push`
+succeeds.
 
 1. **File issues for remaining work** - Create issues for anything that needs follow-up
 2. **Run quality gates** (if code changed) - Tests, linters, builds

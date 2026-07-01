@@ -27,9 +27,6 @@ echo "🚀 Starting dotfiles installation..."
 # Setup symlinks
 ./setup-symlinks.sh
 
-# install cursor extensions
-./install-cursor-extensions.sh
-
 # setup vim
 ./setup-vim.sh
 
@@ -52,7 +49,7 @@ echo "  • fzf fuzzy search (Ctrl+R for history)"
 echo "  • Claude Code settings synced from dotfiles"
 echo "  • Brew installed"
 echo "  • Common brew packages installed"
-echo "  • Common applications installed (Chrome, iTerm2, Cursor, VS Code, Hammerspoon)"
+echo "  • Common applications installed (Chrome, iTerm2, VS Code, Hammerspoon)"
 echo "  • macOS key repeat enabled (press-and-hold disabled)"
 echo "  • Weekly dotfiles auto-pull (launchd)"
 echo "  • Agent reaper for Claude/Codex session cleanup (launchd)"

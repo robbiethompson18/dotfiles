@@ -1,0 +1,8 @@
+// Prettier config for the dotfiles repo — reflows Markdown prose/lists to 100 cols on save.
+// KEEP IN SYNC with the sibling configs in the other repos that share these Markdown settings:
+//   ~/repos/personal-website/.prettierrc     (JSON; also formats *.html)
+//   ~/repos/sapient/.prettierrc.json5         (Markdown-ONLY; Biome owns the code there)
+{
+  printWidth: 100,
+  proseWrap: "always",
+}

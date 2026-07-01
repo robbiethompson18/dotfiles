@@ -16,14 +16,6 @@ else
     echo "✅ iTerm2 already installed"
 fi
 
-# Install Cursor
-if [ ! -d "/Applications/Cursor.app" ]; then
-    echo "📦 Installing Cursor..."
-    brew install cursor
-else
-    echo "✅ Cursor already installed"
-fi
-
 # Install VS Code (used as the default file:// opener; set-default-editor.sh points file types here)
 if [ ! -d "/Applications/Visual Studio Code.app" ]; then
     echo "📦 Installing VS Code..."
