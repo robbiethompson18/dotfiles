@@ -23,5 +23,10 @@
     {
         "key": "ctrl+cmd+=",
         "command": "workbench.action.showMultipleEditorTabs"
+    },
+    {
+        "key": "o",
+        "command": "notebook.cell.insertCodeCellBelow",
+        "when": "notebookEditorFocused && !inputFocus"
     }
 ]
