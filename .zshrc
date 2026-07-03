@@ -28,6 +28,7 @@ alias cf="codex fork"
 # CLI shortcuts
 alias src="source"
 alias da="direnv allow"
+alias ls="ls -a"
 
 # Directory navigation
 alias cd1="cd .."
