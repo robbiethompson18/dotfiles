@@ -179,7 +179,6 @@ local appBindings = {
   I = "iTerm 2",
   V = "Visual Studio Code",
   G = "Google Chrome",
-  C = "Codex",
   S = "Slack",
   M = "Messages",
   N = "Notes",
