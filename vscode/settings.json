@@ -1,56 +1,61 @@
 {
-    "[python]": {
-        "editor.formatOnType": true,
-        "editor.formatOnSave": true,
-        "editor.defaultFormatter": "ms-python.black-formatter"
-    },
-    "[notebook]": {
-        "editor.formatOnType": true,
-        "editor.formatOnSave": true,
-        "editor.defaultFormatter": "ms-python.black-formatter"
-    },
-    "files.autoSave": "afterDelay",
-    "files.autoSaveDelay": 1000,
-    "python.defaultInterpreterPath": "/usr/local/bin/python3",
-    "python.linting.enabled": true,
-    "python.linting.ruffEnabled": true,
-    "python.formatting.provider": "black",
-    "python.formatting.blackEnabled": true,
-    "python.formatting.blackPath": "/opt/homebrew/bin/black",
-    "python.formatting.blackArgs": [
-        "--line-length",
-        "88"
-    ],
-    "github.copilot.enable": {
-        "*": false,
-        "plaintext": false,
-        "javascript": false,
-        "typescript": false
-    },
+  "[python]": {
+    "editor.formatOnType": true,
     "editor.formatOnSave": true,
+    "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.codeActionsOnSave": {
-        "source.fixAll": "explicit",
-        "source.organizeImports": "explicit"
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit",
     },
-    "python.analysis.useLibraryCodeForTypes": true,
-    "workbench.colorTheme": "Dark Modern",
-    "git.autofetch": true,
-    "vim.useSystemClipboard": true,
-    "[markdown]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "editor.quickSuggestions": {
-            "comments": "off",
-            "strings": "off",
-            "other": "off"
-        },
-        "editor.suggestOnTriggerCharacters": false
+  },
+  "[notebook]": {
+    "editor.formatOnType": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "notebook.codeActionsOnSave": {
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit",
     },
-    "[plaintext]": {
-        "editor.quickSuggestions": {
-            "comments": "off",
-            "strings": "off",
-            "other": "off"
-        },
-        "editor.suggestOnTriggerCharacters": false
-    }
+  },
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+  "python.defaultInterpreterPath": "/usr/local/bin/python",
+  "python.linting.enabled": true,
+  "python.linting.ruffEnabled": true,
+  "python.formatting.provider": "black",
+  "python.formatting.blackEnabled": true,
+  "python.formatting.blackPath": "/opt/homebrew/bin/black",
+  "python.formatting.blackArgs": ["--line-length", "88"],
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "javascript": false,
+    "typescript": false,
+  },
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit",
+  },
+  "python.analysis.useLibraryCodeForTypes": true,
+  "workbench.colorTheme": "Dark Modern",
+  "git.autofetch": true,
+  "vim.useSystemClipboard": true,
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off",
+    },
+    "editor.suggestOnTriggerCharacters": false,
+  },
+  "[plaintext]": {
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off",
+    },
+    "editor.suggestOnTriggerCharacters": false,
+  },
 }
