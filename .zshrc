@@ -49,6 +49,7 @@ alias cdrpf="cd ~/repos/platform-frontend"
 alias cdrd="cd ~/repos/dotfiles"
 alias cdra="cd ~/repos/agentdrive"
 alias cdrb="cd ~/repos/personal-website"
+alias cdrv="cd ~/repos/vf-exercises"
 unalias cdrs 2>/dev/null
 cdrs() {
   local -a roots available
