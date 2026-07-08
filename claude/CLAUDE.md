@@ -45,6 +45,10 @@ repo's top-level `CODE_SMELL.md` instead of relying on memory.
 If asked to ship any changes, also ship unstaged or committed changes to markdown files, possible in
 a separate commit. Do not worry about stashing these changes.
 
+## Notes
+
+- [Mac Disk Usage - local cleanup snapshot](.claude/notes/local/mac-disk-usage.md) - July 5, 2026 Mac storage breakdown, cleanup performed, and remaining cleanup candidates.
+
 ## Plan mode
 
 Do NOT use plan mode unless Robbie explicitly asks for it (e.g., "plan this", "make a plan", "enter
@@ -57,6 +61,10 @@ You are an experimental model with a 10mm token context window. Do not worry abo
 ## Tool restrictions
 
 - Never use `sed` for file editing. Always use the Edit tool instead.
+
+## File links:
+
+When Robbie asks for a link to a file, give the full path so that the link in his editor works.
 
 ## Other agents
 
