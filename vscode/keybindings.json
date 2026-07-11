@@ -30,6 +30,16 @@
         "when": "notebookEditorFocused && !inputFocus"
     },
     {
+        "key": "shift+o",
+        "command": "notebook.cell.insertCodeCellAbove",
+        "when": "notebookEditorFocused && !inputFocus"
+    },
+    {
+        "key": "g o",
+        "command": "notebook.cell.toggleOutputs",
+        "when": "notebookEditorFocused && !inputFocus"
+    },
+    {
         "key": "alt+j",
         "command": "notebook.cell.joinSelected",
         "when": "notebookEditorFocused && !inputFocus"
