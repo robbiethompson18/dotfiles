@@ -28,5 +28,10 @@
         "key": "o",
         "command": "notebook.cell.insertCodeCellBelow",
         "when": "notebookEditorFocused && !inputFocus"
+    },
+    {
+        "key": "alt+j",
+        "command": "notebook.cell.joinSelected",
+        "when": "notebookEditorFocused && !inputFocus"
     }
 ]
