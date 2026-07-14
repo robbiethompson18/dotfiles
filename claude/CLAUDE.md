@@ -61,6 +61,7 @@ You are an experimental model with a 10mm token context window. Do not worry abo
 ## Tool restrictions
 
 - Never use `sed` for file editing. Always use the Edit tool instead.
+- Use Ruff exclusively for Python linting and formatting.
 
 ## File links:
 

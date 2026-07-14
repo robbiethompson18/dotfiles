@@ -8,24 +8,16 @@
       "source.organizeImports.ruff": "explicit",
     },
   },
-  "[notebook]": {
-    "editor.formatOnType": true,
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "charliermarsh.ruff",
-    "notebook.codeActionsOnSave": {
-      "source.fixAll.ruff": "explicit",
-      "source.organizeImports.ruff": "explicit",
-    },
+  "notebook.formatOnSave.enabled": true,
+  "notebook.codeActionsOnSave": {
+    "notebook.source.fixAll": "explicit",
+    "notebook.source.organizeImports": "explicit",
   },
   "files.autoSave": "afterDelay",
   "files.autoSaveDelay": 1000,
   "python.defaultInterpreterPath": "/usr/local/bin/python",
   "python.linting.enabled": true,
   "python.linting.ruffEnabled": true,
-  "python.formatting.provider": "black",
-  "python.formatting.blackEnabled": true,
-  "python.formatting.blackPath": "/opt/homebrew/bin/black",
-  "python.formatting.blackArgs": ["--line-length", "88"],
   "github.copilot.enable": {
     "*": false,
     "plaintext": false,
