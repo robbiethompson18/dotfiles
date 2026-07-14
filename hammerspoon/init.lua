@@ -56,6 +56,41 @@ local function getScreensSortedLeftToRight()
   return screens
 end
 
+local function arrangeWorkspace()
+  local screens = getScreensSortedLeftToRight()
+  if #screens < 3 then
+    hs.alert.show("Workspace layout requires 3 monitors", 1)
+    return
+  end
+
+  local startedAt = hs.timer.secondsSinceEpoch()
+  local arrangedWindowCount = 0
+  for _, win in ipairs(hs.window.allWindows()) do
+    if win:isStandard() then
+      local app = win:application()
+      local bundleID = app and app:bundleID()
+      local targetScreen = screens[1]
+
+      if bundleID == "com.googlecode.iterm2" then
+        targetScreen = screens[3]
+      elseif bundleID == "com.microsoft.VSCode" then
+        targetScreen = screens[2]
+      end
+
+      win:setFrame(targetScreen:frame(), 0)
+      arrangedWindowCount = arrangedWindowCount + 1
+    end
+  end
+
+  hs.printf("Arranged %d windows in %.2fs", arrangedWindowCount, hs.timer.secondsSinceEpoch() - startedAt)
+  hs.alert.show("Arranged " .. arrangedWindowCount .. " windows", 0.5)
+end
+
+hyperMode:bind("", "L", function()
+  arrangeWorkspace()
+  hyperMode:exit()
+end)
+
 local function unionFrames(a, b)
   local left = math.min(a.x, b.x)
   local top = math.min(a.y, b.y)
