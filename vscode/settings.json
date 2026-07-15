@@ -50,4 +50,7 @@
     },
     "editor.suggestOnTriggerCharacters": false,
   },
+  "accessibility.signals.progress": {
+    "sound": "off",
+  },
 }
