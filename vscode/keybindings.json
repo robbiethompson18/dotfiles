@@ -43,5 +43,11 @@
         "key": "alt+j",
         "command": "notebook.cell.joinSelected",
         "when": "notebookEditorFocused && !inputFocus"
+    },
+    {
+        "key": "shift+enter",
+        "command": "type",
+        "args": { "text": "\n" },
+        "when": "notebookEditorFocused && inputFocus && vim.mode == 'Insert'"
     }
 ]
