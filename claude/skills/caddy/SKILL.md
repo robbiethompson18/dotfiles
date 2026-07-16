@@ -56,6 +56,8 @@ Caddy-routed apps (have a `*.localhost` hostname):
 
 | Port | Hostname                                    | Source                     |
 | ---- | ------------------------------------------- | -------------------------- |
+| 6006 | `tblocal.localhost`                         | TensorBoard (local)        |
+| 6007 | `tbvm.localhost`                            | TensorBoard (VM)           |
 | 7000 | `robbiewmthompson.localhost`                | `~/repos/personal-website` |
 | 7327 | `tinydiff.localhost`                        | `~/repos/tiny-diff`        |
 | 8765 | `cognitive.localhost`                       | `~/repos/cognitive-tests`  |
