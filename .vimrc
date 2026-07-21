@@ -249,6 +249,7 @@ let g:coc_filetype_map = {'sh': 'shellscript'}
 " for these, so every suggestion is just the noisy buffer-word ([A]/around)
 " source. Code keeps full LSP completion.
 autocmd FileType markdown,text,gitcommit,markdown.mdx let b:coc_suggest_disable = 1
+autocmd Syntax markdown syntax clear markdownError
 
 
 " local customizations in ~/.vimrc_local
