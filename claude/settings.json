@@ -48,5 +48,6 @@
   "allow": [
     "*"
   ],
-  "autoUpdates": true
+  "autoUpdates": true,
+  "tui": "fullscreen"
 }
