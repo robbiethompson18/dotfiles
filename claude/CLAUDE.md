@@ -63,6 +63,10 @@ You are an experimental model with a 10mm token context window. Do not worry abo
 
 When Robbie asks for a link to a file, give the full path so that the link in his editor works.
 
+## Citations
+
+When citing or linking to a paper, always include its publication year.
+
 ## Other agents
 
 Other agents might be editing the same checkout as you. Do not use worktrees.
