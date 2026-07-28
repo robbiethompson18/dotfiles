@@ -73,13 +73,17 @@ Caddy-routed apps (have a `*.localhost` hostname):
 | 8780 | `sapient-7.localhost`                       | `~/repos/sapient-7`        |
 | 8782 | `sapient-8.localhost`                       | `~/repos/sapient-8`        |
 
-Sapient stack — web port is Caddy-routed (rows above); API port is internal-only. Per-checkout ports
-live in each checkout's `.envrc.local`; all checkouts share the postgres on 5435:
+Sapient stack — web port is Caddy-routed (rows above); API and Postgres ports are internal-only.
+Per-checkout ports live in each checkout's `.envrc.local`. Each checkout has its **own** Docker
+Postgres container (`POSTGRES_PORT`, read by `compose.yaml` via `${POSTGRES_PORT:-5435}`) — this
+used to be one container shared by every checkout on a hardcoded 5435, which silently went stale
+(2026-07-27, see that repo's `CODE_SMELL.md`):
 
-| Service          | sapient | sapient-2 | sapient-3 | sapient-4 | sapient-5 | sapient-6 | sapient-7 | sapient-8 |
-| ---------------- | ------- | --------- | --------- | --------- | --------- | --------- | --------- | --------- |
-| Web (Vite)       | 8767    | 8770      | 8772      | 8774      | 8776      | 8778      | 8780      | 8782      |
-| API (`API_PORT`) | 8769    | 8771      | 8773      | 8775      | 8777      | 8779      | 8781      | 8783      |
+| Service                | sapient | sapient-2 | sapient-3 | sapient-4 | sapient-5 | sapient-6 | sapient-7 | sapient-8 |
+| ---------------------- | ------- | --------- | --------- | --------- | --------- | --------- | --------- | --------- |
+| Web (Vite)              | 8767    | 8770      | 8772      | 8774      | 8776      | 8778      | 8780      | 8782      |
+| API (`API_PORT`)        | 8769    | 8771      | 8773      | 8775      | 8777      | 8779      | 8781      | 8783      |
+| Postgres (`POSTGRES_PORT`) | 5435 | 5436      | 5437      | 5438      | 5439      | 5440      | 5441      | 5442      |
 
 Platform stack — each clone of `~/repos/platform*` claims one slot in each row:
 
@@ -99,14 +103,14 @@ Other reservations:
 | 5432  | Postgres (local docker)                  |
 | 5433  | Postgres (bastion-forwarded staging RDS) |
 | 5434  | Postgres (bastion-forwarded prod RDS)    |
-| 5435  | Postgres (secondary docker)              |
+| 5435–5442 | Postgres, one per sapient checkout (see Sapient stack table above) |
 | 18789 | OpenClaw gateway (bastion-forwarded)     |
 
 **Rough convention** for picking a new port:
 
 - One-off hobby web apps → `7XXX` (next free) or `8XXX` (next free).
 - Platform-style stacks → claim the next column in the platform table.
-- Avoid 3000–3019, 5173–5180, 5432–5435, 18789–18793.
+- Avoid 3000–3019, 5173–5180, 5432–5442, 18789–18793.
 
 ## Troubleshooting
 
