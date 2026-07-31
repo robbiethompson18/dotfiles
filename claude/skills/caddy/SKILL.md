@@ -23,6 +23,9 @@ The `.localhost` TLD is RFC-reserved and resolves to `127.0.0.1` automatically �
 entry needed**. Browsers also treat `*.localhost` as a secure context, so HTTP works without
 warnings.
 
+`http://app.localhost/` is a landing page listing every app below with a live up/down check — see
+"Landing page" section.
+
 ## Adding a new app
 
 1. App listens on a free port (e.g. `8765`) bound to `127.0.0.1`.
@@ -34,6 +37,8 @@ warnings.
    ```
 3. `sudo brew services restart caddy`
 4. Visit `http://myapp.localhost/`.
+5. Add it to both the port registry below AND the `APPS` array in
+   `~/repos/dotfiles/caddy/app-localhost/index.html` so it shows up on `app.localhost`.
 
 ## What "Caddy-aware" means for an app
 
@@ -59,6 +64,8 @@ Caddy-routed apps (have a `*.localhost` hostname):
 | 6006 | `tblocal.localhost`                         | TensorBoard (local)        |
 | 6007 | `tbvm.localhost`                            | TensorBoard (VM)           |
 | 7000 | `robbiewmthompson.localhost`                | `~/repos/personal-website` |
+| 7100 | `inbox.localhost`                           | `~/repos/inbox`            |
+| 7101 | `birds.localhost`                           | `~/repos/whimsy-projects/heard-today` |
 | 7327 | `tinydiff.localhost`                        | `~/repos/tiny-diff`        |
 | 8765 | `cognitive.localhost`                       | `~/repos/cognitive-tests`  |
 | 8766 | `silkworm-aws-resource-dashboard.localhost` | `~/repos/silkworm`         |
@@ -72,6 +79,21 @@ Caddy-routed apps (have a `*.localhost` hostname):
 | 8778 | `sapient-6.localhost`                       | `~/repos/sapient-6`        |
 | 8780 | `sapient-7.localhost`                       | `~/repos/sapient-7`        |
 | 8782 | `sapient-8.localhost`                       | `~/repos/sapient-8`        |
+
+Static apps served directly via Caddy's `file_server` (no port, no backend process):
+
+| Hostname             | Source                                        |
+| --------------------- | ---------------------------------------------- |
+| `shire.localhost`     | `~/repos/whimsy-projects/neighborhood-map`     |
+| `app.localhost`       | `~/repos/dotfiles/caddy/app-localhost` (landing page, see below) |
+
+## Landing page
+
+`app.localhost` lists every app in this registry as a clickable card, with a client-side reachability
+ping (green dot = responded in the last 30s). It's a static file, hand-maintained — the `APPS` array
+in `~/repos/dotfiles/caddy/app-localhost/index.html` needs a new entry whenever this registry gets
+one. There's no way to auto-derive it from the Caddyfile without a backend, so keeping the two in
+sync is on whoever adds the app (see step 5 above).
 
 Sapient stack — web port is Caddy-routed (rows above); API and Postgres ports are internal-only.
 Per-checkout ports live in each checkout's `.envrc.local`. Each checkout has its **own** Docker
