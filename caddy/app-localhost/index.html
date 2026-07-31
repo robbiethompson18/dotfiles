@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>app.localhost — local app index</title>
+<style>
+:root{
+  --bg:#15161a;
+  --card:#1c1e24;
+  --border:#2c2f37;
+  --text:#e4e6eb;
+  --dim:#8a8f9c;
+  --up:#4caf7d;
+  --down:#5a5e68;
+  --accent:#6c8eef;
+}
+@media (prefers-color-scheme: light){
+  :root{
+    --bg:#f4f5f7;
+    --card:#ffffff;
+    --border:#dfe2e8;
+    --text:#1b1d22;
+    --dim:#6b7280;
+    --up:#2f9e63;
+    --down:#b8bcc4;
+    --accent:#3b5fd9;
+  }
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  padding:40px 24px 80px;
+}
+.wrap{max-width:760px;margin:0 auto}
+h1{
+  font-size:15px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--dim);
+  margin:0 0 4px;
+}
+.sub{color:var(--dim);font-size:12px;margin:0 0 28px}
+.group{margin-bottom:28px}
+.group h2{
+  font-size:11px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--dim);
+  font-weight:500;
+  margin:0 0 10px;
+}
+.card{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:11px 14px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:6px;
+  margin-bottom:6px;
+  text-decoration:none;
+  color:var(--text);
+  transition:border-color .15s;
+}
+.card:hover{border-color:var(--accent)}
+.dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--down);
+  flex:none;
+  transition:background .2s;
+}
+.dot.up{background:var(--up)}
+.name{font-size:13px;font-weight:500;flex:none;min-width:220px}
+.desc{font-size:12px;color:var(--dim);flex:1}
+.host{font-size:11px;color:var(--dim)}
+footer{margin-top:36px;font-size:11px;color:var(--dim)}
+footer code{background:var(--card);padding:1px 5px;border-radius:3px;border:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Local apps</h1>
+  <p class="sub">Everything Caddy routes on this machine. Green = Caddy could reach the hostname
+    just now — not a guarantee the backend behind it is actually up. Browsers can't read the
+    status code of a cross-origin request, so a dead app behind a live Caddy route (502) still
+    shows green. If a card feels wrong, <code>curl</code> it directly.</p>
+  <div id="groups"></div>
+  <footer>
+    Source of truth: <code>/opt/homebrew/etc/Caddyfile</code> + the <code>caddy</code> skill's port
+    registry. This list is hand-maintained — add an entry here when you add a Caddyfile block.
+  </footer>
+</div>
+
+<script>
+const APPS = [
+  { group: 'Whimsy', name: 'Heard Today (birds)', host: 'birds.localhost', desc: 'live BirdWeather dashboard' },
+  { group: 'Whimsy', name: 'Shire (neighborhood map)', host: 'shire.localhost', desc: 'Tolkien-style map of the neighborhood' },
+  { group: 'Dashboards', name: 'Cognitive tests', host: 'cognitive.localhost', desc: 'reaction-time / cognition journal' },
+  { group: 'Dashboards', name: 'Silkworm AWS resource dashboard', host: 'silkworm-aws-resource-dashboard.localhost', desc: '' },
+  { group: 'Dashboards', name: 'Silkworm experiments', host: 'silkworm-experiments.localhost', desc: '' },
+  { group: 'Dashboards', name: 'Silkworm experiments UI', host: 'silkworm-experiments-ui.localhost', desc: '' },
+  { group: 'Sapient', name: 'sapient', host: 'sapient.localhost', desc: 'checkout 1' },
+  { group: 'Sapient', name: 'sapient-2', host: 'sapient-2.localhost', desc: 'checkout 2' },
+  { group: 'Sapient', name: 'sapient-3', host: 'sapient-3.localhost', desc: 'checkout 3' },
+  { group: 'Sapient', name: 'sapient-4', host: 'sapient-4.localhost', desc: 'checkout 4' },
+  { group: 'Sapient', name: 'sapient-5', host: 'sapient-5.localhost', desc: 'checkout 5' },
+  { group: 'Sapient', name: 'sapient-6', host: 'sapient-6.localhost', desc: 'checkout 6' },
+  { group: 'Sapient', name: 'sapient-7', host: 'sapient-7.localhost', desc: 'checkout 7' },
+  { group: 'Sapient', name: 'sapient-8', host: 'sapient-8.localhost', desc: 'checkout 8' },
+  { group: 'Misc', name: 'Personal website (local)', host: 'robbiewmthompson.localhost', desc: '' },
+  { group: 'Misc', name: 'TensorBoard (local)', host: 'tblocal.localhost', desc: '' },
+  { group: 'Misc', name: 'TensorBoard (VM)', host: 'tbvm.localhost', desc: '' },
+  { group: 'Misc', name: 'tiny-diff', host: 'tinydiff.localhost', desc: '' },
+  { group: 'Misc', name: 'inbox', host: 'inbox.localhost', desc: '' },
+];
+
+const groups = {};
+for (const a of APPS) (groups[a.group] ??= []).push(a);
+
+const container = document.getElementById('groups');
+for (const [group, apps] of Object.entries(groups)) {
+  const section = document.createElement('div');
+  section.className = 'group';
+  section.innerHTML = `<h2>${group}</h2>`;
+  for (const a of apps) {
+    const card = document.createElement('a');
+    card.className = 'card';
+    card.href = `http://${a.host}/`;
+    card.id = `dot-${a.host}`;
+    card.innerHTML = `
+      <span class="dot" id="dot-${a.host}-indicator"></span>
+      <span class="name">${a.name}</span>
+      <span class="desc">${a.desc}</span>
+      <span class="host">${a.host}</span>`;
+    section.appendChild(card);
+  }
+  container.appendChild(section);
+}
+
+// Reachability check: fetch in no-cors mode. It resolves on ANY successful
+// connection (even an opaque cross-origin response) and rejects only on a
+// real network error (connection refused, DNS fail, timeout) — so this
+// works as a ping without needing CORS headers from any of these apps.
+async function ping(host) {
+  const ctrl = new AbortController();
+  const timeout = setTimeout(() => ctrl.abort(), 2500);
+  try {
+    await fetch(`http://${host}/`, { mode: 'no-cors', cache: 'no-store', signal: ctrl.signal });
+    return true;
+  } catch {
+    return false;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function checkAll() {
+  await Promise.all(APPS.map(async a => {
+    const up = await ping(a.host);
+    document.getElementById(`dot-${a.host}-indicator`).classList.toggle('up', up);
+  }));
+}
+
+checkAll();
+setInterval(checkAll, 30000);
+</script>
+</body>
+</html>
