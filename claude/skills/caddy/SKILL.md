@@ -15,7 +15,17 @@ Caddy runs as a launchd service (started via `sudo brew services start caddy`), 
 It reverse-proxies hostnames to ports.
 
 - Caddyfile: `/opt/homebrew/etc/Caddyfile`
-- Restart after edits: `sudo brew services restart caddy`
+- Reload after edits — **no sudo needed**: `caddy reload --config /opt/homebrew/etc/Caddyfile --address localhost:2019`.
+  The `caddy` binary talks to Caddy's local admin API on `localhost:2019`, which is reachable by any
+  local user even though the Caddy process itself runs as root (needed to bind `:80`). Prefer this
+  over `sudo brew services restart caddy` — that needs an interactive password prompt Claude can't
+  supply, and as of 2026-07 `brew services restart`/`list` errors out with a Homebrew Ruby bug
+  (`undefined method 'stop_timeout'`) on this formula version regardless.
+- The Caddy process launched via `caddy run` (no `--watch` flag) does **not** auto-reload on file
+  changes. If you edit the Caddyfile and skip the reload step, new/changed hostnames get a
+  `308 → https://` redirect to nowhere (Caddy's global auto-HTTPS catch-all for hosts it doesn't
+  recognize on port 80) — it looks like an ".app-TLD" or cert problem but isn't; it's just a stale
+  config. Always reload after editing.
 - The browser hits `http://<app>.localhost/` (port 80, no port in URL) and Caddy forwards to
   `127.0.0.1:<app-port>`.
 
@@ -35,7 +45,7 @@ warnings.
        reverse_proxy localhost:8765
    }
    ```
-3. `sudo brew services restart caddy`
+3. `caddy reload --config /opt/homebrew/etc/Caddyfile --address localhost:2019`
 4. Visit `http://myapp.localhost/`.
 5. Add it to both the port registry below AND the `APPS` array in
    `~/repos/dotfiles/caddy/app-localhost/index.html` so it shows up on `app.localhost`.
