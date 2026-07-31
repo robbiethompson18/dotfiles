@@ -239,6 +239,37 @@ for key, app in pairs(appBindings) do
 end
 
 --------------------------------------------------------------------------------
+-- INBOX CAPTURE (clipboard -> ~/repos/inbox)
+--------------------------------------------------------------------------------
+
+local inboxLogPath = os.getenv("HOME") .. "/Library/Logs/inbox-capture.log"
+
+local function logInbox(line)
+  local f = io.open(inboxLogPath, "a")
+  if f then
+    f:write(os.date("%Y-%m-%d %H:%M:%S") .. " " .. line .. "\n")
+    f:close()
+  end
+end
+
+local function captureToInbox(kind, label)
+  logInbox("hotkey fired: " .. kind)
+  hs.alert.show("Capturing to " .. label .. "...", 1)
+  local script = os.getenv("HOME") .. "/repos/inbox/scripts/capture.sh"
+  hs.task.new(script, function(exitCode, stdOut, stdErr)
+    logInbox("exit=" .. tostring(exitCode) .. " stdout=" .. tostring(stdOut) .. " stderr=" .. tostring(stdErr))
+    if exitCode == 0 then
+      hs.alert.show("Saved to " .. label, 1.5)
+    else
+      hs.alert.show("Inbox capture failed: " .. (stdErr or ""), 3)
+    end
+  end, { kind }):start()
+end
+
+hs.hotkey.bind({"cmd", "shift"}, "9", function() captureToInbox("read-later", "read-later.md") end)
+hs.hotkey.bind({"cmd", "shift"}, "0", function() captureToInbox("todo", "todo.md") end)
+
+--------------------------------------------------------------------------------
 -- MONITOR FOCUS (move mouse to monitor)
 --------------------------------------------------------------------------------
 
