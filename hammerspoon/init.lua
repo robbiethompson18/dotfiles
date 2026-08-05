@@ -252,20 +252,34 @@ local function logInbox(line)
   end
 end
 
+local function runCapture(kind, label)
+  hs.alert.show("Capturing to " .. label .. "...", 1)
+  local script = os.getenv("HOME") .. "/repos/inbox/scripts/capture.sh"
+  hs.task.new(script, function(exitCode, stdOut, stdErr)
+    logInbox("exit=" .. tostring(exitCode) .. " stdout=" .. tostring(stdOut) .. " stderr=" .. tostring(stdErr))
+    if exitCode == 0 then
+      hs.alert.show("Saved to " .. label, 1.5)
+    else
+      hs.alert.show("Inbox capture failed: " .. (stdErr or ""), 3)
+    end
+  end, { kind }):start()
+end
+
 local function captureToInbox(kind, label)
   logInbox("hotkey fired: " .. kind)
+  local countBefore = hs.pasteboard.changeCount()
   hs.eventtap.keyStroke({"cmd"}, "c")
-  hs.timer.doAfter(0.15, function()
-    hs.alert.show("Capturing to " .. label .. "...", 1)
-    local script = os.getenv("HOME") .. "/repos/inbox/scripts/capture.sh"
-    hs.task.new(script, function(exitCode, stdOut, stdErr)
-      logInbox("exit=" .. tostring(exitCode) .. " stdout=" .. tostring(stdOut) .. " stderr=" .. tostring(stdErr))
-      if exitCode == 0 then
-        hs.alert.show("Saved to " .. label, 1.5)
-      else
-        hs.alert.show("Inbox capture failed: " .. (stdErr or ""), 3)
-      end
-    end, { kind }):start()
+
+  local elapsedMs = 0
+  local pollMs = 10
+  local timeoutMs = 500
+  local poller
+  poller = hs.timer.doEvery(pollMs / 1000, function()
+    elapsedMs = elapsedMs + pollMs
+    if hs.pasteboard.changeCount() ~= countBefore or elapsedMs >= timeoutMs then
+      poller:stop()
+      runCapture(kind, label)
+    end
   end)
 end
 
