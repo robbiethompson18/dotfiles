@@ -38,6 +38,8 @@ create_symlink() {
 }
 
 # Shell config
+mkdir -p "$HOME/.config/shell"
+create_symlink "$HOME/repos/dotfiles/shell/common.sh" "$HOME/.config/shell/common.sh" "shared shell config"
 create_symlink "$HOME/repos/dotfiles/.vimrc" "$HOME/.vimrc" ".vimrc"
 create_symlink "$HOME/repos/dotfiles/.zshenv" "$HOME/.zshenv" ".zshenv"
 create_symlink "$HOME/repos/dotfiles/.zshrc" "$HOME/.zshrc" ".zshrc"
