@@ -50,7 +50,10 @@
     },
     "editor.suggestOnTriggerCharacters": false,
   },
+  "notebook.lineNumbers": "on",
   "accessibility.signals.progress": {
     "sound": "off",
   },
+  "python.analysis.typeCheckingMode": "standard",
+  "git.openRepositoryInParentFolders": "always",
 }
