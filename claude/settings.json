@@ -22,7 +22,7 @@
     "deny": [],
     "defaultMode": "bypassPermissions"
   },
-  "model": "sonnet",
+  "model": "fable",
   "hooks": {
     "SessionStart": [
       {
