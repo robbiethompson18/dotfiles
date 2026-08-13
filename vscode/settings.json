@@ -33,6 +33,9 @@
   "workbench.colorTheme": "Dark Modern",
   "git.autofetch": true,
   "vim.useSystemClipboard": true,
+  // Fallback for repos with no .prettierrc — a repo config file overrides these entirely.
+  "prettier.proseWrap": "always",
+  "prettier.printWidth": 100,
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.quickSuggestions": {
