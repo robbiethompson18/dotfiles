@@ -39,7 +39,7 @@ _cdr() { _files -W ~/repos -/; }
 compdef _cdr cdr
 alias cdrp="cd ~/repos/personal-website"
 alias cdrd="cd ~/repos/dotfiles"
-alias cdrb="cd ~/repos/personal-website"
+alias cdrb="cd ~/repos/bloomy-light-mode"
 alias cdrv="cd ~/repos/vf-exercises"
 alias cdrs="cd ~/repos/sapient"
 alias cdrs1="cd ~/repos/sapient"
