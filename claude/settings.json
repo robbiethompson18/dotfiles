@@ -4,15 +4,11 @@
       "Bash(:*::*)",
       "Read(**)",
       "Edit(**)",
-      "Write(**)",
       "Task(*)",
       "WebSearch",
       "WebFetch(domain:*)",
       "Grep(*)",
-      "Glob(**)",
       "LS(*)",
-      "MultiEdit(**)",
-      "NotebookEdit(**)",
       "NotebookRead(**)",
       "TodoWrite(*)",
       "ExitPlanMode(*)",
@@ -44,10 +40,11 @@
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
   "fastMode": true,
+  "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "allow": [
     "*"
   ],
   "autoUpdates": true,
-  "tui": "fullscreen"
+  "agentPushNotifEnabled": true
 }
