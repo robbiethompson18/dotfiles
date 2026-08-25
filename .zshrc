@@ -39,25 +39,22 @@ _cdr() { _files -W ~/repos -/; }
 compdef _cdr cdr
 alias cdrp="cd ~/repos/personal-website"
 alias cdrd="cd ~/repos/dotfiles"
-alias cdrb="cd ~/repos/bloomy-light-mode"
-alias cdrb1="cd ~/repos/bloomy-light-mode"
-alias cdrb2="cd ~/repos/bloomy-light-mode-2"
-alias cdrb3="cd ~/repos/bloomy-light-mode-3"
-alias cdrb4="cd ~/repos/bloomy-light-mode-4"
-alias cdrb5="cd ~/repos/bloomy-light-mode-5"
-alias cdrb6="cd ~/repos/bloomy-light-mode-6"
-alias cdrb7="cd ~/repos/bloomy-light-mode-7"
-alias cdrb8="cd ~/repos/bloomy-light-mode-8"
 alias cdrv="cd ~/repos/vf-exercises"
-alias cdrs="cd ~/repos/sapient"
-alias cdrs1="cd ~/repos/sapient"
-alias cdrs2="cd ~/repos/sapient-2"
-alias cdrs3="cd ~/repos/sapient-3"
-alias cdrs4="cd ~/repos/sapient-4"
-alias cdrs5="cd ~/repos/sapient-5"
-alias cdrs6="cd ~/repos/sapient-6"
-alias cdrs7="cd ~/repos/sapient-7"
-alias cdrs8="cd ~/repos/sapient-8"
+
+# One alias per extra checkout: cdrb -> bloomy-light-mode, cdrb2 -> bloomy-light-mode-2, etc.
+# cdrb1 and cdrb both point at the main checkout. Generated from what's on disk, so new
+# checkouts get aliases on next shell start with no edit here.
+_checkout_aliases() {
+  local prefix=$1 repo=$2 dir
+  alias "$prefix"="cd ~/repos/$repo"
+  alias "${prefix}1"="cd ~/repos/$repo"
+  for dir in ~/repos/$repo-<2->(N/); do
+    alias "${prefix}${dir##*-}"="cd $dir"
+  done
+}
+_checkout_aliases cdrb bloomy-light-mode
+_checkout_aliases cdrs sapient
+unset -f _checkout_aliases
 
 # use nice new versions of python tools:
 alias pip="pip3"
