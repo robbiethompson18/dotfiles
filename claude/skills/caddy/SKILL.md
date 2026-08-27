@@ -89,6 +89,56 @@ Caddy-routed apps (have a `*.localhost` hostname):
 | 8778 | `sapient-6.localhost`                       | `~/repos/sapient-6`        |
 | 8780 | `sapient-7.localhost`                       | `~/repos/sapient-7`        |
 | 8782 | `sapient-8.localhost`                       | `~/repos/sapient-8`        |
+| 8090 | `bloomy.localhost`                          | `~/repos/bloomy-light-mode`   |
+| 8091 | `2.bloomy.localhost`                        | `~/repos/bloomy-light-mode-2` |
+| 8092 | `3.bloomy.localhost`                        | `~/repos/bloomy-light-mode-3` |
+| 8093 | `4.bloomy.localhost`                        | `~/repos/bloomy-light-mode-4` |
+| 8094 | `5.bloomy.localhost`                        | `~/repos/bloomy-light-mode-5` |
+| 8095 | `6.bloomy.localhost`                        | `~/repos/bloomy-light-mode-6` |
+| 8096 | `7.bloomy.localhost`                        | `~/repos/bloomy-light-mode-7` |
+| 8097 | `8.bloomy.localhost`                        | `~/repos/bloomy-light-mode-8` |
+| 8098 | `9.bloomy.localhost`                        | `~/repos/bloomy-light-mode-9` |
+| 54403 | `db.9.bloomy.localhost`                    | Supabase Studio, bloomy-light-mode-9 |
+
+Bloomy uses `N.bloomy.localhost` rather than the `bloomy-N.localhost` shape the Sapient rows use.
+That's deliberate: `localhost` is not in the public suffix list, so every checkout shares the
+registrable domain `bloomy.localhost` and **one 1Password item covers all eight checkouts**.
+`bloomy-2.localhost` would be its own registrable domain and would need its own item.
+
+Bloomy's Vite config hardcodes `port: 8080` with `strictPort` off, so checkouts silently drift to
+8081, 8082, … in start order — which would leave these hostnames pointing at whichever checkout
+booted first. The fix is per-checkout `.dev-port` files (globally gitignored, containing just the
+port number); `prd` reads that file and passes `--port N --strictPort` to Vite. A checkout without
+`.dev-port` behaves exactly as before.
+
+### Bloomy local Supabase stacks
+
+`supabase/config.toml` is tracked and names the PRODUCTION project ref, so every checkout that ran
+`supabase start` drove the SAME containers on the SAME default ports (54321–54324) — one shared
+stack for all the checkouts, and no way to run two at once.
+
+The fix is a per-checkout project under `.supabase-local/`, driven with the CLI's `--workdir` flag,
+so nothing tracked has to change:
+
+```bash
+supabase --workdir .supabase-local start
+```
+
+Its `supabase/migrations` and `supabase/functions` are symlinks back to the real tracked
+directories, so there is one copy of each on disk. Port block per checkout N is `54320 + (N-1)*10`,
+which leaves checkout 1 on the stock ports:
+
+| Checkout | project_id | API   | DB    | Studio |
+| -------- | ---------- | ----- | ----- | ------ |
+| (shared, legacy) | `tudrtkigpnmmccmudxwr` | 54321 | 54322 | 54323 |
+| `bloomy-light-mode-9` | `bloomy9` | 54401 | 54402 | 54403 |
+
+Point the app at it with a per-checkout `.env.local` (`VITE_SUPABASE_URL`,
+`VITE_SUPABASE_PUBLISHABLE_KEY`) — **not** the repo's `.env`, which is a symlink to
+`bloomy-light-mode-2/.env` and shared by every checkout.
+
+Full write-up, including the edge-runtime/Deno setup, lives in that repo at
+`.claude/notes/local-supabase-stack.md`.
 
 Static apps served directly via Caddy's `file_server` (no port, no backend process):
 
