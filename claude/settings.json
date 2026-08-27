@@ -18,7 +18,6 @@
     "deny": [],
     "defaultMode": "bypassPermissions"
   },
-  "model": "fable",
   "hooks": {
     "SessionStart": [
       {
@@ -39,12 +38,12 @@
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
-  "fastMode": true,
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
+  "agentPushNotifEnabled": true,
   "allow": [
     "*"
   ],
   "autoUpdates": true,
-  "agentPushNotifEnabled": true
+  "model": "fable"
 }
