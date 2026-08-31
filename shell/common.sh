@@ -46,7 +46,7 @@ fi
 
 # Git aliases
 alias gs="git status"
-alias ga="git add ."
+alias ga="git add"
 alias gl="git log"
 alias gm="git merge"
 alias gpl="git pull"
@@ -58,10 +58,11 @@ alias gnb="git checkout -b"
 alias grebasemain="git fetch origin main && git rebase origin/main"
 alias grb="git fetch origin main && git rebase origin/main"
 alias g="git"
-gc() {
-  git commit -am "${1:-[No commit message]}"
-}
+alias gc="git commit"
 alias gp="git push"
+gac() {
+  git add "$1" && git commit -m "${2:-[No commit message]}" -- "$1"
+}
 gtr() {
   git add . && git commit -m "${1:-[No commit message]}" && git push
 }
