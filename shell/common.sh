@@ -63,7 +63,13 @@ alias gp="git push"
 gac() {
   git add "$1" && git commit -m "${2:-[No commit message]}" -- "$1"
 }
-gtr() {
+gacp() {
+  # renamed from gtr, which collided with GNU tr's Homebrew-coreutils name;
+  # a stray `gtr --version` probe once committed and pushed a whole dirty tree
+  if [[ "${1:-}" == -* ]]; then
+    echo "gacp: commit message must not start with '-' (got: $1)" >&2
+    return 1
+  fi
   git add . && git commit -m "${1:-[No commit message]}" && git push
 }
 gstashfile() {
@@ -98,6 +104,13 @@ prd() {
   mkdir -p "$log_dir"
   local log_file="$log_dir/dev-output.log"
   rm -f "$log_file"
-  FORCE_COLOR=1 pnpm run dev 2>&1 | tee "$log_file"
+  # A checkout can pin its dev-server port by dropping the number in .dev-port
+  # (globally gitignored). Needed when a Caddy hostname maps to that port —
+  # otherwise Vite drifts to the next free port and the mapping goes stale.
+  local port_args=()
+  if [[ -f .dev-port ]]; then
+    port_args=(--port "$(tr -d '[:space:]' < .dev-port)" --strictPort)
+  fi
+  FORCE_COLOR=1 pnpm run dev "${port_args[@]}" "$@" 2>&1 | tee "$log_file"
 }
 alias pt="pnpm i && pnpm build"
