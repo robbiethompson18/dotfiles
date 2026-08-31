@@ -37,24 +37,17 @@ bindkey '^[[Z' autosuggest-accept
 cdr() { cd ~/repos/"$1"; }
 _cdr() { _files -W ~/repos -/; }
 compdef _cdr cdr
-alias cdrp="cd ~/repos/personal-website"
-alias cdrd="cd ~/repos/dotfiles"
-alias cdrv="cd ~/repos/vf-exercises"
-
-# One alias per extra checkout: cdrb -> bloomy-light-mode, cdrb2 -> bloomy-light-mode-2, etc.
-# cdrb1 and cdrb both point at the main checkout. Generated from what's on disk, so new
-# checkouts get aliases on next shell start with no edit here.
-_checkout_aliases() {
-  local prefix=$1 repo=$2 dir
-  alias "$prefix"="cd ~/repos/$repo"
-  alias "${prefix}1"="cd ~/repos/$repo"
+# cdr<first-letter> per repo (cdrb -> bloomy-light-mode), plus cdrX2, cdrX3... for extra
+# checkouts found on disk (cdrX1 = cdrX = main checkout). New checkouts get aliases on next
+# shell start; new repos need one entry here (first letters must stay unique).
+for repo in bloomy-light-mode sapient personal-website dotfiles vf-exercises; do
+  alias "cdr${repo[1]}"="cd ~/repos/$repo"
+  alias "cdr${repo[1]}1"="cd ~/repos/$repo"
   for dir in ~/repos/$repo-<2->(N/); do
-    alias "${prefix}${dir##*-}"="cd $dir"
+    alias "cdr${repo[1]}${dir##*-}"="cd $dir"
   done
-}
-_checkout_aliases cdrb bloomy-light-mode
-_checkout_aliases cdrs sapient
-unset -f _checkout_aliases
+done
+unset repo dir
 
 # use nice new versions of python tools:
 alias pip="pip3"
