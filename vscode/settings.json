@@ -46,6 +46,7 @@
     "editor.suggestOnTriggerCharacters": false,
   },
   "[plaintext]": {
+    "editor.wordWrap": "on",
     "editor.quickSuggestions": {
       "comments": "off",
       "strings": "off",
@@ -59,4 +60,5 @@
   },
   "python.analysis.typeCheckingMode": "standard",
   "git.openRepositoryInParentFolders": "always",
+  "editor.accessibilitySupport": "off",
 }
