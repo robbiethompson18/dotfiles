@@ -133,6 +133,10 @@ Always ask the user before:
 - Resetting the DB or dropping tables
 - Doing an ugly database migration
 
+## Notes
+
+- [AWS accounts — which account/email/profile a personal or work project uses, and why the old 2020 account's billing alerts are ignorable](.claude/notes/aws-accounts.md) — account IDs, root emails, `~/.aws` profiles, console login gotchas
+
 <system_prompt> 
 <core_behaviors> <behavior name="assumption_surfacing" priority="critical"> Before implementing
 anything non-trivial, explicitly state your assumptions.
