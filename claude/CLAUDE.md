@@ -136,6 +136,7 @@ Always ask the user before:
 ## Notes
 
 - [AWS accounts — which account/email/profile a personal or work project uses, and why the old 2020 account's billing alerts are ignorable](.claude/notes/aws-accounts.md) — account IDs, root emails, `~/.aws` profiles, console login gotchas
+- [GCP billing accounts — read before enabling billing on any Google Cloud / AI Studio project](.claude/notes/gcp-billing-accounts.md) — `0166EE` is the shared Usebits account, `01490A` is the bad Ramp-backed one; how the $1k Gemini charge happened
 
 <system_prompt> 
 <core_behaviors> <behavior name="assumption_surfacing" priority="critical"> Before implementing
