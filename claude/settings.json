@@ -18,6 +18,7 @@
     "deny": [],
     "defaultMode": "bypassPermissions"
   },
+  "model": "fable[1m]",
   "hooks": {
     "SessionStart": [
       {
@@ -44,6 +45,5 @@
   "allow": [
     "*"
   ],
-  "autoUpdates": true,
-  "model": "fable"
+  "autoUpdates": true
 }
