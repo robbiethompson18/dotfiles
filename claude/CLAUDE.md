@@ -136,6 +136,7 @@ Always ask the user before:
 ## Notes
 
 - [AWS accounts — which account/email/profile a personal or work project uses, and why the old 2020 account's billing alerts are ignorable](.claude/notes/aws-accounts.md) — account IDs, root emails, `~/.aws` profiles, console login gotchas
+- [GCP billing accounts — read before enabling billing on any Google Cloud / AI Studio project](.claude/notes/gcp-billing-accounts.md) — `REDACTED` is the shared Usebits account, `REDACTED` is the bad which account to use, and how the surprise charge happened
 
 <system_prompt> 
 <core_behaviors> <behavior name="assumption_surfacing" priority="critical"> Before implementing
