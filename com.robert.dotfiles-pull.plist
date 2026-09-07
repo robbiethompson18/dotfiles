@@ -7,13 +7,8 @@
 
     <key>ProgramArguments</key>
     <array>
-        <string>/usr/bin/git</string>
-        <string>-C</string>
-        <string>/Users/robbie/repos/dotfiles</string>
-        <string>pull</string>
-        <string>--ff-only</string>
-        <string>origin</string>
-        <string>main</string>
+        <string>/bin/bash</string>
+        <string>/Users/robbie/repos/dotfiles/bin/pull-dotfiles</string>
     </array>
 
     <key>StartInterval</key>

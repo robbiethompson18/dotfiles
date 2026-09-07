@@ -1,0 +1,14 @@
+#!/bin/bash
+# Weekly pull for both dotfiles repos. Driven by com.robert.dotfiles-pull.plist.
+# dotfiles-private holds the Claude notes, so pulling only dotfiles would leave
+# them stale on every machine except the one they were written on.
+
+for repo in "$HOME/repos/dotfiles" "$HOME/repos/dotfiles-private"; do
+    [ -d "$repo/.git" ] || continue
+    echo "--- $(date) $repo"
+    if ! git -C "$repo" pull --ff-only origin main; then
+        # History was rewritten on 2026-09-07 to purge infra notes. A clone from
+        # before then can never fast-forward again.
+        echo "!!! $repo cannot fast-forward. If this clone predates 2026-09-07, re-clone it."
+    fi
+done
