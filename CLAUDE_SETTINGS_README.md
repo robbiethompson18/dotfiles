@@ -1,5 +1,22 @@
 # Claude Code Settings
 
+## This repo is public
+
+Assume anything committed here is world-readable. Notes that name real infrastructure — AWS
+account IDs, root emails, IAM users, bucket names, work hosts, billing accounts — go in the
+private companion repo instead:
+
+- `~/repos/dotfiles-private/claude-notes/` → symlinked to `~/.claude/.claude/notes/`
+- Created by `bin/setup-symlinks.sh`, which clones the private repo if it is missing and skips
+  the symlink gracefully if you have no access to it.
+
+It is a separate **repo**, not a gitignored directory, because gitignored files do not sync
+between machines — and that is exactly why the notes ended up in the public repo the first time.
+
+On 2026-09-07 `claude/.claude/notes/` and `claude/projects/` were purged from this repo's entire
+history with `git filter-repo` and the result was force-pushed. Any clone from before that date has
+divergent history and must be re-cloned; `git pull --ff-only` will refuse to update it.
+
 ## Important: Edit Files in This Repo!
 
 The following files are **symlinked** from `~/.claude/` to this dotfiles repo:

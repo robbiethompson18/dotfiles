@@ -1,3 +1,10 @@
+# THIS REPO IS PUBLIC. Notes naming real infrastructure (AWS account IDs, work
+# hosts, billing accounts) belong in ~/repos/dotfiles-private, which is symlinked
+# to ~/.claude/.claude/notes by bin/setup-symlinks.sh. These two paths were purged
+# from history on 2026-09-07; the ignores stop them from drifting back in.
+claude/.claude/notes/
+claude/projects/
+
 legacy.zshrc
 *.swp
 *.swo

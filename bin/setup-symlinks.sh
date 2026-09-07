@@ -60,6 +60,27 @@ create_symlink "$HOME/repos/dotfiles/claude/settings.json" "$HOME/.claude/settin
 create_symlink "$HOME/repos/dotfiles/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md" "Claude CLAUDE.md"
 create_symlink "$HOME/repos/dotfiles/claude/skills" "$HOME/.claude/skills" "Claude skills"
 
+# Private companion repo (github.com/robbiethompson18/dotfiles-private).
+#
+# This repo is PUBLIC. Notes that name real infrastructure — AWS account IDs, work
+# hosts, billing accounts — live in dotfiles-private instead. It is a separate repo
+# rather than a gitignored directory so the notes still sync between machines.
+#
+# The symlink target really is ~/.claude/.claude/notes (doubled .claude): the global
+# CLAUDE.md sits at ~/.claude/CLAUDE.md and its "## Notes" index links to
+# .claude/notes/*.md, which resolves relative to that file.
+PRIVATE_DIR="$HOME/repos/dotfiles-private"
+if [ ! -d "$PRIVATE_DIR/.git" ]; then
+    echo "⬇️  Cloning dotfiles-private"
+    git clone git@github.com:robbiethompson18/dotfiles-private.git "$PRIVATE_DIR" 2>/dev/null
+fi
+if [ -d "$PRIVATE_DIR/.git" ]; then
+    mkdir -p "$HOME/.claude/.claude"
+    create_symlink "$PRIVATE_DIR/claude-notes" "$HOME/.claude/.claude/notes" "Claude global notes (private)"
+else
+    echo "ℹ️  No access to dotfiles-private - skipping global notes. Everything else works."
+fi
+
 # Plugins: only the small declarative manifests are tracked.
 # cache/, marketplaces/, installed_plugins.json, known_marketplaces.json are
 # auto-managed runtime state — Claude Code regenerates them per machine.

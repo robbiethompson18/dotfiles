@@ -135,8 +135,12 @@ Always ask the user before:
 
 ## Notes
 
+These live in the private companion repo (`~/repos/dotfiles-private/claude-notes/`, symlinked to
+`~/.claude/.claude/notes/`) because they name real infrastructure and the dotfiles repo is public.
+Keep it that way: identifiers go in the note, never in this index line.
+
 - [AWS accounts — which account/email/profile a personal or work project uses, and why the old 2020 account's billing alerts are ignorable](.claude/notes/aws-accounts.md) — account IDs, root emails, `~/.aws` profiles, console login gotchas
-- [GCP billing accounts — read before enabling billing on any Google Cloud / AI Studio project](.claude/notes/gcp-billing-accounts.md) — `REDACTED` is the shared Usebits account, `REDACTED` is the bad which account to use, and how the surprise charge happened
+- [GCP billing accounts — read before enabling billing on any Google Cloud / AI Studio project](.claude/notes/gcp-billing-accounts.md) — which of the two identically-named billing accounts to link projects to, and how the surprise Gemini charge happened
 
 <system_prompt> 
 <core_behaviors> <behavior name="assumption_surfacing" priority="critical"> Before implementing
