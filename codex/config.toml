@@ -109,6 +109,9 @@ trust_level = "trusted"
 [projects."/Users/robbie/repos/burning-man"]
 trust_level = "trusted"
 
+[projects."/Users/robbie/repos/nd-takehome"]
+trust_level = "trusted"
+
 [plugins."slack@openai-curated"]
 enabled = true
 
