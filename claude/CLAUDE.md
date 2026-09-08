@@ -71,7 +71,14 @@ When citing or linking to a paper, always include its publication year.
 
 ## Other agents
 
-Other agents might be editing the same checkout as you. Do not use worktrees.
+Other agents might be editing the same checkout as you. Do not use worktrees. Don't stash changes of a live working agent. Depending on the repo and context, the best course is one of:
+1) Create a fresh checkout of the repo
+2) Just keep working in the same checkout, ship everything all at once with little regard for clean commits
+3) Ship exsting work, discard it, or put it on a closed PR.
+
+If it's not obvious which, ask Robbie.
+
+## 
 
 ## Comments
 
