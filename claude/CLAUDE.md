@@ -150,6 +150,7 @@ Keep it that way: identifiers go in the note, never in this index line.
 
 - [AWS accounts — which account/email/profile a personal or work project uses, and why the old 2020 account's billing alerts are ignorable](.claude/notes/aws-accounts.md) — account IDs, root emails, `~/.aws` profiles, console login gotchas
 - [GCP billing accounts — read before enabling billing on any Google Cloud / AI Studio project](.claude/notes/gcp-billing-accounts.md) — which of the two identically-named billing accounts to link projects to, and how the surprise Gemini charge happened
+- [Chrome profiles — read before any Claude-in-Chrome browser action, to pick the right connected browser](.claude/notes/chrome-profiles.md) — which extension deviceId is the personal ("purple") profile vs the work profile, and which Google/AWS accounts each is signed into
 
 <system_prompt> 
 <core_behaviors> <behavior name="assumption_surfacing" priority="critical"> Before implementing
