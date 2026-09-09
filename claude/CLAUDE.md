@@ -152,6 +152,7 @@ Keep it that way: identifiers go in the note, never in this index line.
 - [GCP billing accounts — read before enabling billing on any Google Cloud / AI Studio project](.claude/notes/gcp-billing-accounts.md) — which of the two identically-named billing accounts to link projects to, and how the surprise Gemini charge happened
 - [Chrome profiles — read before any Claude-in-Chrome browser action, to pick the right connected browser](.claude/notes/chrome-profiles.md) — which extension deviceId is the personal ("purple") profile vs the work profile, and which Google/AWS accounts each is signed into
 - [Personal info — read before filling in any form (bookings, signups) on Robbie's behalf](.claude/notes/personal-info.md) — phone, email, DOB, home address
+- [Hammerspoon hotkeys dead — read when Hyper mode / any hs.hotkey stops firing](.claude/notes/hammerspoon-secure-input.md) — Secure Keyboard Input diagnosis, the iTerm2 refcount leak, why only a restart fixes it
 
 <system_prompt> 
 <core_behaviors> <behavior name="assumption_surfacing" priority="critical"> Before implementing
