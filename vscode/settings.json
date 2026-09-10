@@ -61,4 +61,7 @@
   "python.analysis.typeCheckingMode": "standard",
   "git.openRepositoryInParentFolders": "always",
   "editor.accessibilitySupport": "off",
+  "projectManager.git.baseFolders": ["~/repos"],
+  "projectManager.git.maxDepthRecursion": 1,
+  "projectManager.sortList": "Recent",
 }
