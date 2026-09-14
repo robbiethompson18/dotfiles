@@ -35,6 +35,9 @@ alias cd4="cd ../../../.."
 alias ..="cd .."
 alias .="pwd"
 
+# Repo jumps
+alias cdra="cd ~/repos/deepresponse-core"
+
 # DIRENV (Auto-load .envrc files)
 if command -v direnv >/dev/null 2>&1; then
   if [[ -n "${ZSH_VERSION:-}" ]]; then
