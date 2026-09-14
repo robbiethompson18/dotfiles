@@ -186,6 +186,7 @@ Other reservations:
 | 5433  | Postgres (bastion-forwarded staging RDS) |
 | 5434  | Postgres (bastion-forwarded prod RDS)    |
 | 5435–5442 | Postgres, one per sapient checkout (see Sapient stack table above) |
+| 5443  | Postgres, `~/repos/deepresponse-core` (compose override; repo default is 5432) |
 | 18789 | OpenClaw gateway (bastion-forwarded)     |
 
 **Rough convention** for picking a new port:
