@@ -10,7 +10,9 @@ description:
 
 Creates a private GitHub repo under `~/repos/<name>/` with a template `CLAUDE.md`, an
 `AGENTS.md -> CLAUDE.md` symlink, and `.gitignore` already set up per Robbie's notes conventions
-(see `~/.claude/CLAUDE.md` § Memory and notes).
+(see `~/.claude/personal-repo-rules.md`). The template `CLAUDE.md` imports that file via
+`@~/.claude/personal-repo-rules.md`, so the personal-repo conventions (notes layout, `CODE_SMELL.md`,
+Ruff, `prd`) apply without copying them into each repo.
 
 ## Arguments
 
@@ -56,6 +58,8 @@ Creates a private GitHub repo under `~/repos/<name>/` with a template `CLAUDE.md
 
 <description>
 
+@~/.claude/personal-repo-rules.md
+
 `AGENTS.md` at the repo root is a symlink to `CLAUDE.md` so Codex/other agents see the same
 instructions. Do not replace it with a separate file.
 
@@ -68,7 +72,7 @@ Durable lessons about this repo go in git:
 - **Longer reference docs** (5–300 lines) → `.claude/notes/*.md`, with a one-line index entry below.
 - **Local-only docs** (not in git) → `.claude/notes/local/*.md`.
 
-See `~/.claude/CLAUDE.md` for the full convention.
+See `~/.claude/personal-repo-rules.md` (imported above) for the full convention.
 
 Current notes:
 <!-- As notes are added under .claude/notes/, list them here, one per line: -->

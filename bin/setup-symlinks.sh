@@ -58,6 +58,7 @@ fi
 mkdir -p "$HOME/.claude"
 create_symlink "$HOME/repos/dotfiles/claude/settings.json" "$HOME/.claude/settings.json" "Claude settings.json"
 create_symlink "$HOME/repos/dotfiles/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md" "Claude CLAUDE.md"
+create_symlink "$HOME/repos/dotfiles/claude/personal-repo-rules.md" "$HOME/.claude/personal-repo-rules.md" "Claude personal-repo-rules.md"
 create_symlink "$HOME/repos/dotfiles/claude/skills" "$HOME/.claude/skills" "Claude skills"
 
 # Private companion repo (github.com/robbiethompson18/dotfiles-private).
