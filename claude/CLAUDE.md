@@ -76,6 +76,11 @@ take longer than 30 minutes, explain any known inefficiencies causing this.
   something, check yourself.
 - If you need AWS logs and I'm not logged in just return and tell me asap instead of trying
   roundabout methods of investigation
+- Robbie runs long-lived dev commands in his own terminal via `lg <command...>` (defined in
+  `~/repos/dotfiles/shell/common.sh`), which mirrors output to
+  `/tmp${PWD#$HOME}/<command-slug>.log`, e.g. `lg make dev-cloud` in `~/repos/deepresponse-core` →
+  `/tmp/repos/deepresponse-core/make-dev-cloud.log`. Read those instead of starting servers yourself.
+  Logs are raw TTY output; strip ANSI with `sed 's/\x1b\[[0-9;]*[mK]//g'` when grepping.
 
 ## Time Zone
 

@@ -117,3 +117,23 @@ prd() {
   FORCE_COLOR=1 pnpm run dev "${port_args[@]}" "$@" 2>&1 | tee "$log_file"
 }
 alias pt="pnpm i && pnpm build"
+
+# Run any long-lived command in this terminal while mirroring its output to a
+# log an agent can read: /tmp${PWD#$HOME}/<slug>.log, slug from the command
+# words (`lg make dev-cloud` -> make-dev-cloud.log). Same /tmp convention as
+# prd. Uses script(1) rather than a pipe so the child keeps a TTY (colors,
+# Ctrl-C, prompts); -F flushes per write so a tail -f sees lines live.
+lg() {
+  if [ $# -eq 0 ]; then
+    echo "usage: lg <command> [args...]" >&2
+    return 2
+  fi
+  local log_dir="/tmp${PWD#$HOME}"
+  mkdir -p "$log_dir"
+  local slug
+  slug=$(printf '%s' "$*" | tr -c 'A-Za-z0-9._-' '-' | tr -s '-' | cut -c1-60)
+  local log_file="$log_dir/$slug.log"
+  : > "$log_file"
+  echo "lg: logging to $log_file" >&2
+  script -q -F "$log_file" "$@"
+}
