@@ -37,17 +37,18 @@ bindkey '^[[Z' autosuggest-accept
 cdr() { cd ~/repos/"$1"; }
 _cdr() { _files -W ~/repos -/; }
 compdef _cdr cdr
-# cdr<first-letter> per repo (cdrb -> bloomy-light-mode), plus cdrX2, cdrX3... for extra
+# cdr<letter> per repo (cdrb -> bloomy-light-mode), plus cdrX2, cdrX3... for extra
 # checkouts found on disk (cdrX1 = cdrX = main checkout). New checkouts get aliases on next
-# shell start; new repos need one entry here (first letters must stay unique).
-for repo in bloomy-light-mode sapient personal-website dotfiles vf-exercises; do
-  alias "cdr${repo[1]}"="cd ~/repos/$repo"
-  alias "cdr${repo[1]}1"="cd ~/repos/$repo"
+# shell start; new repos need one letter:repo entry here (letters must stay unique).
+for spec in b:bloomy-light-mode s:sapient p:personal-website d:dotfiles v:vf-exercises a:deepresponse-core; do
+  letter=${spec%%:*} repo=${spec#*:}
+  alias "cdr$letter"="cd ~/repos/$repo"
+  alias "cdr${letter}1"="cd ~/repos/$repo"
   for dir in ~/repos/$repo-<2->(N/); do
-    alias "cdr${repo[1]}${dir##*-}"="cd $dir"
+    alias "cdr$letter${dir##*-}"="cd $dir"
   done
 done
-unset repo dir
+unset spec letter repo dir
 
 # use nice new versions of python tools:
 alias pip="pip3"
