@@ -33,7 +33,7 @@ This will download:
   - So that to update zshrc you can just pull from this repo.
 - Make Claude global settings and plugins symlinks to this repo
   - Likewise about just pulling to update. Not sure if this works perfectly yet.
-  - Log in twice: `claude` then `/login` with the personal account, `clw` then `/login` with the
+  - Log in twice: `clp` then `/login` with the personal account, `clw` then `/login` with the
     work account. They live in `~/.claude` and `~/.claude-work` respectively.
 - Holding down keys works as you'd think, ie actually repeats the key (ran:
   `defaults write -g ApplePressAndHoldEnabled -bool false`)

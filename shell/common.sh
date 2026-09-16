@@ -11,8 +11,8 @@ alias ls="ls -a"
 # Claude / Codex (launchers + short aliases, all in one place)
 alias claude="claude --dangerously-skip-permissions" #without chrome on the portable version
 alias codex="codex --yolo --search"
-alias cl="claude"        # claude
-alias cr="claude --resume"
+alias clp="claude"        # personal-account claude (~/.claude)
+alias crp="claude --resume"
 # Work-account Claude. CLAUDE_CONFIG_DIR gives it its own login (Keychain entry is keyed
 # to the dir), .claude.json, and session history; setup-symlinks.sh links the shared
 # settings/CLAUDE.md/skills into it. `claude` here still expands to the alias above.
