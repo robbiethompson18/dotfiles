@@ -1,6 +1,6 @@
 personality = "pragmatic"
-model = "gpt-5.6-sol"
-model_reasoning_effort = "high"
+model = "gpt-6-astra"
+model_reasoning_effort = "medium"
 hide_agent_reasoning = true
 
 notify = ["/Users/robbie/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]
@@ -112,6 +112,9 @@ trust_level = "trusted"
 [projects."/Users/robbie/repos/nd-takehome"]
 trust_level = "trusted"
 
+[projects."/Users/robbie/repos/deepresponse-core"]
+trust_level = "trusted"
+
 [plugins."slack@openai-curated"]
 enabled = true
 
@@ -142,6 +145,7 @@ enabled = true
 [tui.model_availability_nux]
 "gpt-5.5" = 4
 "gpt-5.6-sol" = 4
+gpt-6-astra = 4
 
 [features]
 apps = false
