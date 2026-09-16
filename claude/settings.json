@@ -20,12 +20,110 @@
   },
   "model": "fable[1m]",
   "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "command": "/Users/robbie/.config/iterm2/cc-status",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "command": "/Users/robbie/.config/iterm2/cc-status",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "/Users/robbie/.config/iterm2/cc-status",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "/Users/robbie/.config/iterm2/cc-status",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "command": "/Users/robbie/.config/iterm2/cc-status",
+            "type": "command"
+          }
+        ]
+      }
+    ],
     "SessionStart": [
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "bash -c 'if [ -n \"$CLAUDE_ENV_FILE\" ] && command -v direnv &>/dev/null; then direnv export bash >> \"$CLAUDE_ENV_FILE\" 2>/dev/null || true; fi'"
+            "command": "bash -c 'if [ -n \"$CLAUDE_ENV_FILE\" ] && command -v direnv &>/dev/null; then direnv export bash >> \"$CLAUDE_ENV_FILE\" 2>/dev/null || true; fi'",
+            "type": "command"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "command": "/Users/robbie/.config/iterm2/cc-status",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "/Users/robbie/.config/iterm2/cc-status",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "hooks": [
+          {
+            "command": "/Users/robbie/.config/iterm2/cc-status",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "command": "/Users/robbie/.config/iterm2/cc-status",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "command": "/Users/robbie/.config/iterm2/cc-status",
+            "type": "command"
           }
         ]
       }

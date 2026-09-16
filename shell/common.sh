@@ -13,6 +13,11 @@ alias claude="claude --dangerously-skip-permissions" #without chrome on the port
 alias codex="codex --yolo --search"
 alias cl="claude"        # claude
 alias cr="claude --resume"
+# Work-account Claude. CLAUDE_CONFIG_DIR gives it its own login (Keychain entry is keyed
+# to the dir), .claude.json, and session history; setup-symlinks.sh links the shared
+# settings/CLAUDE.md/skills into it. `claude` here still expands to the alias above.
+alias clw="CLAUDE_CONFIG_DIR=\$HOME/.claude-work claude"
+alias crw="CLAUDE_CONFIG_DIR=\$HOME/.claude-work claude --resume"
 alias c="codex"          # codex (one-key)
 alias co="codex"         # codex (same as c)
 alias cf="codex fork"
