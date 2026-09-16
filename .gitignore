@@ -20,3 +20,6 @@ claude/plugins/known_marketplaces.json
 # Plugin cache + marketplace fetches - re-fetchable, not worth tracking
 claude/plugins/cache/
 claude/plugins/marketplaces/
+
+# Skills synced from claude.ai - runtime state keyed by org/user UUID, regenerated per login
+claude/skills/synced/

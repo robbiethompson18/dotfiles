@@ -18,14 +18,14 @@
     "deny": [],
     "defaultMode": "bypassPermissions"
   },
-  "model": "fable[1m]",
+  "model": "fable",
   "hooks": {
     "Notification": [
       {
         "hooks": [
           {
-            "command": "/Users/robbie/.config/iterm2/cc-status",
-            "type": "command"
+            "type": "command",
+            "command": "/Users/robbie/.config/iterm2/cc-status"
           }
         ]
       }
@@ -34,8 +34,8 @@
       {
         "hooks": [
           {
-            "command": "/Users/robbie/.config/iterm2/cc-status",
-            "type": "command"
+            "type": "command",
+            "command": "/Users/robbie/.config/iterm2/cc-status"
           }
         ]
       }
@@ -44,8 +44,8 @@
       {
         "hooks": [
           {
-            "command": "/Users/robbie/.config/iterm2/cc-status",
-            "type": "command"
+            "type": "command",
+            "command": "/Users/robbie/.config/iterm2/cc-status"
           }
         ]
       }
@@ -54,8 +54,8 @@
       {
         "hooks": [
           {
-            "command": "/Users/robbie/.config/iterm2/cc-status",
-            "type": "command"
+            "type": "command",
+            "command": "/Users/robbie/.config/iterm2/cc-status"
           }
         ]
       }
@@ -64,8 +64,8 @@
       {
         "hooks": [
           {
-            "command": "/Users/robbie/.config/iterm2/cc-status",
-            "type": "command"
+            "type": "command",
+            "command": "/Users/robbie/.config/iterm2/cc-status"
           }
         ]
       }
@@ -74,16 +74,16 @@
       {
         "hooks": [
           {
-            "command": "bash -c 'if [ -n \"$CLAUDE_ENV_FILE\" ] && command -v direnv &>/dev/null; then direnv export bash >> \"$CLAUDE_ENV_FILE\" 2>/dev/null || true; fi'",
-            "type": "command"
+            "type": "command",
+            "command": "bash -c 'if [ -n \"$CLAUDE_ENV_FILE\" ] && command -v direnv &>/dev/null; then direnv export bash >> \"$CLAUDE_ENV_FILE\" 2>/dev/null || true; fi'"
           }
         ]
       },
       {
         "hooks": [
           {
-            "command": "/Users/robbie/.config/iterm2/cc-status",
-            "type": "command"
+            "type": "command",
+            "command": "/Users/robbie/.config/iterm2/cc-status"
           }
         ]
       }
@@ -92,8 +92,8 @@
       {
         "hooks": [
           {
-            "command": "/Users/robbie/.config/iterm2/cc-status",
-            "type": "command"
+            "type": "command",
+            "command": "/Users/robbie/.config/iterm2/cc-status"
           }
         ]
       }
@@ -102,8 +102,8 @@
       {
         "hooks": [
           {
-            "command": "/Users/robbie/.config/iterm2/cc-status",
-            "type": "command"
+            "type": "command",
+            "command": "/Users/robbie/.config/iterm2/cc-status"
           }
         ]
       }
@@ -112,8 +112,8 @@
       {
         "hooks": [
           {
-            "command": "/Users/robbie/.config/iterm2/cc-status",
-            "type": "command"
+            "type": "command",
+            "command": "/Users/robbie/.config/iterm2/cc-status"
           }
         ]
       }
@@ -122,8 +122,8 @@
       {
         "hooks": [
           {
-            "command": "/Users/robbie/.config/iterm2/cc-status",
-            "type": "command"
+            "type": "command",
+            "command": "/Users/robbie/.config/iterm2/cc-status"
           }
         ]
       }
@@ -139,6 +139,7 @@
   "effortLevel": "high",
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
+  "theme": "dark",
   "agentPushNotifEnabled": true,
   "allow": [
     "*"
