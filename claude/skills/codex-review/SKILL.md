@@ -83,17 +83,27 @@ bias this skill exists to correct — just pointed at the other model.
 ## Accounts / subscriptions
 
 Codex auth lives in `$CODEX_HOME/auth.json`, so a second subscription is just a second
-`CODEX_HOME`:
+`CODEX_HOME`. Two roots exist, set up by `bin/setup-symlinks.sh`:
 
-- `--account personal` → `~/.codex` (default)
-- `--account work` → `~/.codex-work`
+| root | account | interactive alias |
+| --- | --- | --- |
+| `~/.codex` | personal ChatGPT | `cop` / `copf` |
+| `~/.codex-work` | Asymmetric work seat | `cow` / `cowf` |
 
-The default comes from `$CODEX_ACCOUNT`, so setting `CODEX_ACCOUNT=work` in a work repo's
-`.envrc.local` flips it with no flag and no skill edit. If the chosen account has no `auth.json`,
-the script tells you the one command to fix it and exits 3.
+`config.toml`, `AGENTS.md` and `skills/` are symlinked into both from dotfiles, so the two roots
+differ only in `auth.json` and session history.
 
-**Quota is shared with Robbie's interactive Codex.** `auth_mode` is `chatgpt`, not an API key, so
-every agent run draws on the same plan usage window Robbie uses himself. He almost never reaches his quota, feel free to run liberally.
+**This script inherits `CODEX_HOME` rather than defining its own variable.** If a repo exports
+`CODEX_HOME` (direnv, `.envrc.local`), both interactive `codex` and this script use that seat —
+an agent can never review on one account while the terminal beside it burns the other's quota.
+`--account personal|work` overrides for one invocation. With nothing set, it falls back to
+`~/.codex`.
+
+If the resolved root has no `auth.json`, the script prints the exact login command and exits 3.
+
+**Quota is a real constraint.** `auth_mode` is `chatgpt`, not an API key, so runs draw on a plan
+usage window rather than per-token billing. On the personal root that window is the one Robbie
+uses himself. Don't run this on trivial diffs, and don't fan it out across many checkouts at once.
 
 ## Failure handling — fail-warn, never fail-stop
 

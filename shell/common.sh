@@ -18,9 +18,14 @@ alias clpr="claude --resume"
 # settings/CLAUDE.md/skills into it. `claude` here still expands to the alias above.
 alias clw="CLAUDE_CONFIG_DIR=\$HOME/.claude-work claude"
 alias clwr="CLAUDE_CONFIG_DIR=\$HOME/.claude-work claude --resume"
-alias c="codex"          # codex (one-key)
-alias co="codex"         # codex (same as c)
-alias cf="codex fork"
+# Codex mirrors the Claude split: `co` + p/w, never a bare `co`, so the account is
+# always explicit. CODEX_HOME gives the work root its own auth.json and session
+# history; setup-symlinks.sh links the shared config.toml/AGENTS.md/skills into
+# both. `codex` here still expands to the alias above.
+alias cop="codex"        # personal-account codex (~/.codex)
+alias copf="codex fork"
+alias cow="CODEX_HOME=\$HOME/.codex-work codex"
+alias cowf="CODEX_HOME=\$HOME/.codex-work codex fork"
 
 # tmux
 alias ta="tmux attach -t"

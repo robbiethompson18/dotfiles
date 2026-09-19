@@ -8,7 +8,7 @@ set -uo pipefail
 
 BASE=""; COMMIT=""; UNCOMMITTED=""; ASK=""; FIX=""
 THRESHOLD=P1
-ACCOUNT="${CODEX_ACCOUNT:-personal}"
+ACCOUNT=""   # empty: inherit whatever CODEX_HOME already says
 TIMEOUT=420
 MODEL=""
 
@@ -29,17 +29,20 @@ done
 
 # --- account selection -------------------------------------------------------
 # Auth lives in $CODEX_HOME/auth.json, so a second subscription is just a second
-# CODEX_HOME. Set CODEX_ACCOUNT=work in a work repo's .envrc.local to flip the
-# default without touching this script.
+# CODEX_HOME -- the same variable the `cop`/`cow` aliases set. Deliberately no
+# second variable of our own: a work repo that exports CODEX_HOME via direnv gets
+# the work seat for interactive `codex` AND for this script, so an agent can never
+# review on one account while the terminal beside it burns the other's quota.
 case "$ACCOUNT" in
   personal) export CODEX_HOME="$HOME/.codex" ;;
   work)     export CODEX_HOME="$HOME/.codex-work" ;;
+  "")       export CODEX_HOME="${CODEX_HOME:-$HOME/.codex}" ;;
   *) echo "unknown --account: $ACCOUNT (want: personal|work)" >&2; exit 2 ;;
 esac
 
 if [ ! -f "$CODEX_HOME/auth.json" ]; then
-  echo "codex-review: no Codex auth at $CODEX_HOME/auth.json (--account $ACCOUNT)." >&2
-  echo "  Set it up with:  CODEX_HOME=$CODEX_HOME codex login" >&2
+  echo "codex-review: no Codex auth at $CODEX_HOME/auth.json" >&2
+  echo "  Log in with:  mkdir -p $CODEX_HOME && CODEX_HOME=$CODEX_HOME codex login" >&2
   exit 3
 fi
 

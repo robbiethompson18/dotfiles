@@ -96,10 +96,16 @@ for CLAUDE_DIR in "$HOME/.claude" "$HOME/.claude-work"; do
     create_symlink "$HOME/repos/dotfiles/claude/plugins/config.json" "$CLAUDE_DIR/plugins/config.json" "$CLAUDE_DIR/plugins/config.json"
 done
 
-# Codex config
-mkdir -p "$HOME/.codex"
-create_symlink "$HOME/repos/dotfiles/claude/CLAUDE.md" "$HOME/.codex/AGENTS.md" "Codex AGENTS.md"
-create_symlink "$HOME/repos/dotfiles/codex/config.toml" "$HOME/.codex/config.toml" "Codex config.toml"
+# Codex config. Two roots, mirroring ~/.claude and ~/.claude-work: config.toml,
+# AGENTS.md and skills are shared, while auth.json and session history stay per-root
+# so the work ChatGPT seat and the personal plan never share a quota window.
+# Codex resolves all of this from $CODEX_HOME and errors if that path is missing,
+# so the mkdir has to happen before any `codex` invocation against the work root.
+for CODEX_DIR in "$HOME/.codex" "$HOME/.codex-work"; do
+    mkdir -p "$CODEX_DIR"
+    create_symlink "$HOME/repos/dotfiles/claude/CLAUDE.md" "$CODEX_DIR/AGENTS.md" "$CODEX_DIR/AGENTS.md"
+    create_symlink "$HOME/repos/dotfiles/codex/config.toml" "$CODEX_DIR/config.toml" "$CODEX_DIR/config.toml"
+done
 "$HOME/repos/dotfiles/bin/sync-codex-claude-skills"
 
 # VS Code config (used as the default file:// opener; see set-default-editor.sh)
