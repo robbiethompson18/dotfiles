@@ -19,6 +19,7 @@
     "defaultMode": "bypassPermissions"
   },
   "model": "fable",
+  "cleanupPeriodDays": 365,
   "hooks": {
     "Notification": [
       {
