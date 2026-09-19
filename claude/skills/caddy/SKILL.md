@@ -170,13 +170,13 @@ used to be one container shared by every checkout on a hardcoded 5435, which sil
 deepresponse-core stack — ports are Makefile vars (`WEB_PORT`/`API_PORT`/`AGENT_PORT`) plus
 `ADMIN_PORT`, set per checkout in `.envrc.local` (main checkout uses the defaults; clone N is +100·(N-1)):
 
-| Service              | core | core-2 | core-3 | core-4 | core-5 |
-| -------------------- | ---- | ------ | ------ | ------ | ------ |
-| Web (`WEB_PORT`)     | 3000 | 3100   | 3200   | 3300   | 3400   |
-| Admin (`ADMIN_PORT`) | 3001 | 3101   | 3201   | 3301   | 3401   |
-| API (`API_PORT`)     | 8000 | 8100   | 8200   | 8300   | 8400   |
-| Agent (`AGENT_PORT`) | 8001 | 8101   | 8201   | 8301   | 8401   |
-| Postgres             | 5443 | 5444   | 5445   | 5446   | 5447   |
+| Service              | core | core-2 | core-3 | core-4 | core-5 | core-6 | core-7 | core-8 | core-9 | core-10 |
+| -------------------- | ---- | ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------- |
+| Web (`WEB_PORT`)     | 3000 | 3100   | 3200   | 3300   | 3400   | 3500   | 3600   | 3700   | 3800   | 3900    |
+| Admin (`ADMIN_PORT`) | 3001 | 3101   | 3201   | 3301   | 3401   | 3501   | 3601   | 3701   | 3801   | 3901    |
+| API (`API_PORT`)     | 8000 | 8100   | 8200   | 8300   | 8400   | 8500   | 8600   | 8700   | 8800   | 8900    |
+| Agent (`AGENT_PORT`) | 8001 | 8101   | 8201   | 8301   | 8401   | 8501   | 8601   | 8701   | 8801   | 8901    |
+| Postgres             | 5443 | 5444   | 5445   | 5446   | 5447   | 5448   | 5449   | 5450   | 5451   | 5452    |
 
 Platform stack — each clone of `~/repos/platform*` claims one slot in each row:
 
@@ -198,7 +198,7 @@ Other reservations:
 | 5434  | Postgres (bastion-forwarded prod RDS)    |
 | 5435–5442 | Postgres, one per sapient checkout (see Sapient stack table above) |
 | 5443  | Postgres, `~/repos/deepresponse-core` (compose override; repo default is 5432) |
-| 5444–5447 | Postgres, one per `~/repos/deepresponse-core-N` checkout (compose override; see deepresponse-core stack table) |
+| 5444–5452 | Postgres, one per `~/repos/deepresponse-core-N` checkout (compose override; see deepresponse-core stack table) |
 | 18789 | OpenClaw gateway (bastion-forwarded)     |
 
 **Rough convention** for picking a new port:
