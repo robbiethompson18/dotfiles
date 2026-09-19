@@ -18,7 +18,7 @@
     "deny": [],
     "defaultMode": "bypassPermissions"
   },
-  "model": "fable",
+  "model": "opus",
   "cleanupPeriodDays": 365,
   "hooks": {
     "Notification": [

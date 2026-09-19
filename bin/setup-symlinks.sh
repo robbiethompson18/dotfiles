@@ -55,7 +55,7 @@ if ! command -v claude &> /dev/null; then
 fi
 
 # Claude config. Two config dirs: ~/.claude (personal login) and ~/.claude-work (work
-# login, used via the clw/crw aliases in shell/common.sh). Claude Code keys the Keychain
+# login, used via the clw/clwr aliases in shell/common.sh). Claude Code keys the Keychain
 # credential, .claude.json and session history to CLAUDE_CONFIG_DIR, so each dir holds
 # its own account; everything else is the same files symlinked into both.
 #

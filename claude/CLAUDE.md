@@ -64,6 +64,20 @@ a comment of your own, eg:
 #@robbie done, see posts/plastic-straws/RESEARCH_NOTES.md
 ```
 
+## Retiring
+
+"Retire" is a command, not a figure of speech. When I tell you to retire, run:
+
+```bash
+agent-reaper request --reason "<why you're done>"
+```
+
+A daemon kills the session from outside its process tree, because a session can't kill itself.
+Writing "retiring now" without the command is a no-op. Run it as the last action of your final turn.
+
+Only retire when the work finished. If it failed, is blocked, or I owe you an answer, stay alive and
+say so. `kas` is the automatic-after-ship case; this applies either way.
+
 ## Speed
 
 When you kick off a long task (eg model training run, data generation) return control to Robbie
