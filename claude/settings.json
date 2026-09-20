@@ -148,5 +148,10 @@
   "allow": [
     "*"
   ],
-  "autoUpdates": true
+  "autoUpdates": true,
+  "modelSettings": {
+    "claude-fable-5-1": {
+      "effortLevel": "medium"
+    }
+  }
 }

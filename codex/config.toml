@@ -115,6 +115,21 @@ trust_level = "trusted"
 [projects."/Users/robbie/repos/deepresponse-core"]
 trust_level = "trusted"
 
+[projects."/Users/robbie/repos/deepresponse-core-4"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/deepresponse-core-2"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/deepresponse-core-6"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/deepresponse-core-9"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/deepresponse-core-3"]
+trust_level = "trusted"
+
 [plugins."slack@openai-curated"]
 enabled = true
 

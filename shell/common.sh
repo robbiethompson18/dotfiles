@@ -44,6 +44,7 @@ alias cd3="cd ../../.."
 alias cd4="cd ../../../.."
 alias ..="cd .."
 alias .="pwd"
+alias cdrn="cd ~/repos/nd-rl"
 
 # DIRENV (Auto-load .envrc files)
 if command -v direnv >/dev/null 2>&1; then
