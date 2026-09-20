@@ -1,4 +1,5 @@
 {
+  "cleanupPeriodDays": 365,
   "permissions": {
     "allow": [
       "Bash(:*::*)",
@@ -18,15 +19,14 @@
     "deny": [],
     "defaultMode": "bypassPermissions"
   },
-  "model": "opus",
-  "cleanupPeriodDays": 365,
+  "model": "fable",
   "hooks": {
     "Notification": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/robbie/.config/iterm2/cc-status"
+            "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
           }
         ]
       }
@@ -36,7 +36,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/robbie/.config/iterm2/cc-status"
+            "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
           }
         ]
       }
@@ -46,7 +46,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/robbie/.config/iterm2/cc-status"
+            "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
           }
         ]
       }
@@ -56,7 +56,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/robbie/.config/iterm2/cc-status"
+            "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
           }
         ]
       }
@@ -66,7 +66,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/robbie/.config/iterm2/cc-status"
+            "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
           }
         ]
       }
@@ -84,7 +84,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/robbie/.config/iterm2/cc-status"
+            "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
           }
         ]
       }
@@ -94,7 +94,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/robbie/.config/iterm2/cc-status"
+            "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
           }
         ]
       }
@@ -104,7 +104,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/robbie/.config/iterm2/cc-status"
+            "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
           }
         ]
       }
@@ -114,7 +114,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/robbie/.config/iterm2/cc-status"
+            "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
           }
         ]
       }
@@ -124,7 +124,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/robbie/.config/iterm2/cc-status"
+            "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
           }
         ]
       }
