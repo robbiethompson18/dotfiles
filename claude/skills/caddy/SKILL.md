@@ -178,6 +178,14 @@ deepresponse-core stack — ports are Makefile vars (`WEB_PORT`/`API_PORT`/`AGEN
 | Agent (`AGENT_PORT`) | 8001 | 8101   | 8201   | 8301   | 8401   | 8501   | 8601   | 8701   | 8801   | 8901    |
 | Postgres             | 5443 | 5444   | 5445   | 5446   | 5447   | 5448   | 5449   | 5450   | 5451   | 5452    |
 
+| Service              | core-11 | core-12 | core-13 | core-14 | core-15 | core-16 | core-17 | core-18 | core-19 | core-20 |
+| -------------------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
+| Web (`WEB_PORT`)     | 4000    | 4100    | 4200    | 4300    | 4400    | 4500    | 4600    | 4700    | 4800    | 4900    |
+| Admin (`ADMIN_PORT`) | 4001    | 4101    | 4201    | 4301    | 4401    | 4501    | 4601    | 4701    | 4801    | 4901    |
+| API (`API_PORT`)     | 9000    | 9100    | 9200    | 9300    | 9400    | 9500    | 9600    | 9700    | 9800    | 9900    |
+| Agent (`AGENT_PORT`) | 9001    | 9101    | 9201    | 9301    | 9401    | 9501    | 9601    | 9701    | 9801    | 9901    |
+| Postgres             | 5453    | 5454    | 5455    | 5456    | 5457    | 5458    | 5459    | 5460    | 5461    | 5462    |
+
 Platform stack — each clone of `~/repos/platform*` claims one slot in each row:
 
 | Service         | platform | platform-2 | platform-frontend |
@@ -198,14 +206,15 @@ Other reservations:
 | 5434  | Postgres (bastion-forwarded prod RDS)    |
 | 5435–5442 | Postgres, one per sapient checkout (see Sapient stack table above) |
 | 5443  | Postgres, `~/repos/deepresponse-core` (compose override; repo default is 5432) |
-| 5444–5452 | Postgres, one per `~/repos/deepresponse-core-N` checkout (compose override; see deepresponse-core stack table) |
+| 5444–5462 | Postgres, one per `~/repos/deepresponse-core-N` checkout (N=2…20) (compose override; see deepresponse-core stack table) |
 | 18789 | OpenClaw gateway (bastion-forwarded)     |
+| 18443 | Bitcoin Core regtest RPC, llm-provider-canaries (loopback only; integration tests) |
 
 **Rough convention** for picking a new port:
 
 - One-off hobby web apps → `7XXX` (next free) or `8XXX` (next free).
 - Platform-style stacks → claim the next column in the platform table.
-- Avoid 3000–3019, 5173–5180, 5432–5442, 18789–18793.
+- Avoid 3000–3019, 3100–4901 (deepresponse-core web/admin), 5173–5180, 5432–5462, 8000–9901 (deepresponse-core api/agent), 18789–18793.
 
 ## Troubleshooting
 
