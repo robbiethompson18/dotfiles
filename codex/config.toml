@@ -1,6 +1,6 @@
 personality = "pragmatic"
-model = "gpt-6-astra"
-model_reasoning_effort = "medium"
+model = "gpt-5.6-sol"
+model_reasoning_effort = "xhigh"
 hide_agent_reasoning = true
 
 notify = ["/Users/robbie/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]
@@ -130,6 +130,69 @@ trust_level = "trusted"
 [projects."/Users/robbie/repos/deepresponse-core-3"]
 trust_level = "trusted"
 
+[projects."/Users/robbie/repos/job-search-2026"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/deepresponse-core-5"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/deepresponse-core-10"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/deepresponse-core-12"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/deepresponse-core-20"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/Documents/Codex/2026-09-21/reply-to-samuel-s-message-on"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/Documents/Codex/2026-09-21/reply-to-samuel-s-message-on-2"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/Documents/Codex/2026-09-21/reply-to-samuel-s-message-on-3"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/Documents/Codex/2026-09-21/reply-to-samuel-s-message-on-4"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/Documents/Codex/2026-09-21/reply-to-samuel-s-message-on-5"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/Documents/Codex/2026-09-21/reply-to-samuel-s-message-on-6"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/Documents/Codex/2026-09-21/reply-to-samuel-s-message-on-7"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/deepresponse-core-17"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/deepresponse-core-19"]
+trust_level = "trusted"
+
+[projects."/private/tmp/provider-canary-review.KjQUO8"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/deepresponse-core-16"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/ZZZAgentBoard"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/llm-provider-canaries"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/nd-rl"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/deepresponse-core-7"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/deepresponse-core-8"]
+trust_level = "trusted"
+
 [plugins."slack@openai-curated"]
 enabled = true
 
@@ -157,6 +220,18 @@ enabled = true
 [plugins."sentry@openai-curated"]
 enabled = true
 
+[plugins."codex-app-tools@openai-bundled"]
+enabled = true
+
+[plugins."unified-computer-use@openai-bundled"]
+enabled = true
+
+[plugins."visualize@openai-bundled"]
+enabled = true
+
+[plugins."computer-use@openai-bundled"]
+enabled = true
+
 [tui.model_availability_nux]
 "gpt-5.5" = 4
 "gpt-5.6-sol" = 4
@@ -173,32 +248,55 @@ js_repl = false
 trusted_hash = "sha256:ff53d7a2d82f1b180333e844da0aa9f0bfb4691a1ecdb60c7b0bb4a2ed3a1804"
 
 [marketplaces.openai-bundled]
-last_updated = "2026-07-03T20:25:57Z"
 source_type = "local"
 source = "/Users/robbie/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
 [marketplaces.openai-primary-runtime]
-last_updated = "2026-07-05T17:44:10Z"
 source_type = "local"
 source = "/Users/robbie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
 [mcp_servers.node_repl]
+args = []
 command = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node_repl"
-startup_timeout_sec = 120.0
+startup_timeout_sec = 120
 
 [mcp_servers.node_repl.env]
-BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
-BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.616.30709"
-CODEX_CLI_PATH = "/Applications/Codex.app/Contents/Resources/codex"
-CODEX_HOME = "/Users/robbie/.codex"
-NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
-NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
 NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
 NODE_REPL_NODE_MODULE_DIRS = "/Applications/Codex.app/Contents/Resources/cua_node/lib/node_modules"
 NODE_REPL_NODE_PATH = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "d0737b0390c0cfd6105f8cbe62b5895e2e0ad45c705b1512bf754806a04797c9"
-NODE_REPL_TRUSTED_CODE_PATHS = "/Users/robbie/.codex"
+NODE_REPL_TRUSTED_CODE_PATHS = "/Users/robbie/.codex:/Applications/Codex.app/Contents/Resources/cua_node/lib/node_modules"
+CODEX_HOME = "/Users/robbie/.codex"
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+BROWSER_USE_TINYSKY_ENABLED = "1"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
+NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = ""
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.915.31945"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/robbie/.codex/plugins/cache/openai-bundled/browser/26.915.31945/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
+SKY_CUA_SERVICE_PATH = "/Users/robbie/.codex/computer-use/Codex Computer Use.app"
+CODEX_CLI_PATH = "/Applications/Codex.app/Contents/Resources/codex"
 
 [mcp_servers.openaiDeveloperDocs]
 url = "https://developers.openai.com/mcp"
+
+# Robbie's running Chrome, including signed-in tabs. Requires Chrome's approval.
+[mcp_servers.my_chrome]
+command = "npx"
+args = ["-y", "chrome-devtools-mcp@1.9.0", "--autoConnect", "--no-usage-statistics", "--no-performance-crux"]
+startup_timeout_sec = 60
+
+# Separate temporary browser per agent session, including concurrent CLI sessions.
+[mcp_servers.agent_browser]
+command = "npx"
+args = ["-y", "chrome-devtools-mcp@1.9.0", "--isolated", "--no-usage-statistics", "--no-performance-crux"]
+startup_timeout_sec = 60
+
+[mcp_servers.computer-use]
+command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
+args = ["mcp"]
+cwd = "."
+enabled = false
+
+[desktop]
+followUpQueueMode = "queue"
