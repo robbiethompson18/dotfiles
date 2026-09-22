@@ -29,7 +29,7 @@ It's faster than waiting for a github PR bot.
 | `codex-review.sh --fix` | review, then let Codex fix its own findings (**P1 only** by default) |
 
 Other flags: `--fix-threshold P1|P2` (default `P1`), `--account work|personal`,
-`--timeout <sec>` (default 420), `--model <name>`.
+`--timeout <sec>` (default 1200), `--model <name>`.
 
 Output lands in `.git/codex-review/` — inside `.git`, so it is per-checkout and can never be
 committed. `review.md` is the findings, `raw.log` the full transcript, `fix.diff` what Codex wrote.
@@ -119,4 +119,7 @@ Exit 3 means auth/setup is wrong — fix it, the message says how. Exit 2 is a b
 - The sandbox is pinned to `workspace-write`, not `read-only`. Under `read-only` Python's
   `tempfile` cannot create a scratch dir, so the repo's own suite fails spuriously and Codex
   reports sandbox noise as evidence. Review mode still writes nothing to the tree (verified).
-- Review takes ~40–70s on a mid-size diff. 
+- Review takes ~40–70s on a mid-size diff, but a diff spanning several bricks of a
+  comment-dense repo runs far longer — at `xhigh` reasoning most of the wall clock is context
+  gathering, not judging. Hence the 1200s default: a watchdog kill lands mid-read and writes no
+  `review.md` at all, so a timeout costs the whole review rather than truncating it.

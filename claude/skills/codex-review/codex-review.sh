@@ -9,7 +9,10 @@ set -uo pipefail
 BASE=""; COMMIT=""; UNCOMMITTED=""; ASK=""; FIX=""
 THRESHOLD=P1
 ACCOUNT=""   # empty: inherit whatever CODEX_HOME already says
-TIMEOUT=420
+# 1200s, not the ~70s a mid-size review takes: at xhigh reasoning most of the wall clock is
+# context gathering, and a diff spanning several bricks of a comment-dense repo can spend ten
+# minutes reading before it judges anything. A watchdog kill at 420s produced no review at all.
+TIMEOUT=1200
 MODEL=""
 
 while [ $# -gt 0 ]; do
@@ -47,7 +50,7 @@ if [ ! -f "$CODEX_HOME/auth.json" ]; then
 fi
 
 ROOT=$(git rev-parse --show-toplevel) || exit 3
-OUT="$ROOT/.git/codex-review"          # inside .git — never committed, per-checkout
+OUT="$(git rev-parse --absolute-git-dir)/codex-review"  # inside the git dir (a worktree's .git is a file) — never committed, per-checkout
 mkdir -p "$OUT"
 
 # --- run codex under a watchdog (macOS has no coreutils `timeout`) -----------
