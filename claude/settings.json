@@ -141,17 +141,18 @@
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
-  "tui": "fullscreen",
-  "skipDangerousModePermissionPrompt": true,
-  "theme": "dark",
-  "agentPushNotifEnabled": true,
-  "allow": [
-    "*"
-  ],
-  "autoUpdates": true,
   "modelSettings": {
     "claude-fable-5-1": {
       "effortLevel": "medium"
     }
-  }
+  },
+  "tui": "fullscreen",
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark",
+  "switchModelsOnFlag": true,
+  "agentPushNotifEnabled": true,
+  "allow": [
+    "*"
+  ],
+  "autoUpdates": true
 }
