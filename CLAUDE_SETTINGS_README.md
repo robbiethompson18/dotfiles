@@ -6,7 +6,7 @@ Assume anything committed here is world-readable. Notes that name real infrastru
 account IDs, root emails, IAM users, bucket names, work hosts, billing accounts — go in the
 private companion repo instead:
 
-- `~/repos/dotfiles-private/claude-notes/` → symlinked to `~/.claude/.claude/notes/`
+- `~/repos/dotfiles-private/claude-notes/` → symlinked to `~/.claude/docs/` (was `~/.claude/.claude/notes/` before 2026-09-23)
 - Created by `bin/setup-symlinks.sh`, which clones the private repo if it is missing and skips
   the symlink gracefully if you have no access to it.
 

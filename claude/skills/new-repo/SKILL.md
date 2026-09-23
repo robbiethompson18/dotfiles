@@ -12,7 +12,7 @@ description:
 Creates a private GitHub repo under `~/repos/<name>/` with a template `CLAUDE.md`, an
 `AGENTS.md -> CLAUDE.md` symlink, `.gitignore`, direnv, Markdown-only Prettier config, and a
 scaffolded toolchain for Python, TypeScript, or both. The template `CLAUDE.md` imports
-`~/.claude/personal-repo-rules.md`, so the personal-repo conventions (notes layout, `CODE_SMELL.md`,
+`~/.claude/personal-repo-rules.md`, so the personal-repo conventions (docs layout, `CODE_SMELL.md`,
 Ruff, `prd`) apply without copying them into each repo.
 
 ## Arguments
@@ -113,20 +113,20 @@ instructions. Do not replace it with a separate file.
   test suite. If a test would genuinely save time, ask first.
 - Secrets/machine-specific env go in `.envrc.local` (gitignored), never `.envrc`.
 
-## Notes
+## Docs
 
 Durable lessons about this repo go in git:
 
 - **One-line rules** → this file (`CLAUDE.md`), or `CLAUDE.local.md` for machine-specific
   (gitignored).
-- **Longer reference docs** (5–300 lines) → `.claude/notes/*.md`, with a one-line index entry below.
-- **Local-only docs** (not in git) → `.claude/notes/local/*.md`.
+- **Longer reference docs** (5–300 lines) → `docs/*.md`, with a one-line index entry below.
+- **Local-only docs** (not in git) → `docs/local/*.md`.
 
 See `~/.claude/personal-repo-rules.md` (imported above) for the full convention.
 
-Current notes:
-<!-- As notes are added under .claude/notes/, list them here, one per line: -->
-<!-- - [Title — when to read](.claude/notes/foo.md) — short gloss -->
+Current docs:
+<!-- As docs are added under docs/, list them here, one per line: -->
+<!-- - [Title — when to read](docs/foo.md) — short gloss -->
 ```
 
 ## Template: `.gitignore`
@@ -134,7 +134,7 @@ Current notes:
 ```
 # Local Claude config — machine/personal-specific, not shared
 CLAUDE.local.md
-.claude/notes/local/
+docs/local/
 
 # direnv secrets / machine-specific
 .envrc.local

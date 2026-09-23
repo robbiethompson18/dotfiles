@@ -80,12 +80,10 @@ for CLAUDE_DIR in "$HOME/.claude" "$HOME/.claude-work"; do
     create_symlink "$HOME/repos/dotfiles/claude/personal-repo-rules.md" "$CLAUDE_DIR/personal-repo-rules.md" "$CLAUDE_DIR/personal-repo-rules.md"
     create_symlink "$HOME/repos/dotfiles/claude/skills" "$CLAUDE_DIR/skills" "$CLAUDE_DIR/skills"
 
-    # The symlink target really is $CLAUDE_DIR/.claude/notes (doubled .claude): the global
-    # CLAUDE.md sits at $CLAUDE_DIR/CLAUDE.md and its "## Notes" index links to
-    # .claude/notes/*.md, which resolves relative to that file.
+    # The global CLAUDE.md sits at $CLAUDE_DIR/CLAUDE.md and its "## Docs" index links to
+    # docs/*.md, which resolves relative to that file.
     if [ -d "$PRIVATE_DIR/.git" ]; then
-        mkdir -p "$CLAUDE_DIR/.claude"
-        create_symlink "$PRIVATE_DIR/claude-notes" "$CLAUDE_DIR/.claude/notes" "$CLAUDE_DIR/.claude/notes (private)"
+        create_symlink "$PRIVATE_DIR/claude-notes" "$CLAUDE_DIR/docs" "$CLAUDE_DIR/docs (private)"
     fi
 
     # Plugins: only the small declarative manifests are tracked.

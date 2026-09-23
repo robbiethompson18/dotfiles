@@ -4,7 +4,7 @@
 > `CLAUDE.md` via `@~/.claude/personal-repo-rules.md`. Global rules that apply everywhere live in
 > `~/.claude/CLAUDE.md`.
 
-## Memory and notes
+## Memory and docs
 
 Durable context lives in git, not in Claude Code's machine-local memory system. Storage locations,
 by content type:
@@ -12,21 +12,28 @@ by content type:
 - **One-line behavioral rules** (dos/don'ts, conventions) → the current repo's `CLAUDE.md`, or
   `CLAUDE.local.md` for machine-specific/personal rules (gitignored).
 - **Longer reference docs** (5–300 lines: incident writeups, architecture, gotchas, repros) →
-  `.claude/notes/*.md` in the current repo.
+  `docs/*.md` in the current repo. Flat by default; add a topic subfolder (`docs/runbooks/`,
+  `docs/investigations/`) only once several docs of one kind pile up. Local-only docs go in
+  `docs/local/` (gitignored).
 - **Cross-project rules** → `~/.claude/CLAUDE.md` (global) or this file (personal repos only). Only
   when Robbie explicitly asks — don't assume something is global.
 
-Every file in `.claude/notes/` must be indexed by a one-line reference under a `## Notes` section in
-the nearest `CLAUDE.md`, so future sessions know the file exists:
+Agent-written docs go in `docs/` alongside human docs — that's the convention in most repos, and it
+keeps them visible to humans and to non-Claude agents. If `docs/` is a published site (Mintlify
+`docs.json`, `mkdocs.yml`), check how it builds before adding files so internal docs don't get
+published.
+
+Every agent-relevant doc must be indexed by a one-line reference under a `## Docs` section in the
+nearest `CLAUDE.md`, so future sessions know the file exists:
 
 ```
-- [Title — when to read this](.claude/notes/thing.md) — short gloss of contents
+- [Title — when to read this](docs/thing.md) — short gloss of contents
 ```
 
 Kebab-case filenames (`thing-name.md`, not `thing_name.md`).
 
-Behavioral rules (one-liners) do **not** go into notes files — notes are lazy-loaded, but behavioral
-rules need to always apply, so they go directly in `CLAUDE.md`.
+Behavioral rules (one-liners) do **not** go into docs — docs are lazy-loaded, but behavioral rules
+need to always apply, so they go directly in `CLAUDE.md`.
 
 Agents underuse `CODE_SMELL.md`; when you notice or leave debt, add a dated note to the current
 repo's top-level `CODE_SMELL.md` instead of relying on memory.

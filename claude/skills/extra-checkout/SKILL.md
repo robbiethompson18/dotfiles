@@ -35,7 +35,7 @@ new checkouts (default 1). Numbering continues from the highest existing suffix 
    git -C ~/repos/<repo> status --porcelain --ignored | grep '^!!'
    ```
    Typical candidates: `.envrc` (if gitignored — in some repos it's tracked), `.envrc.local`,
-   `CLAUDE.local.md`, `.claude/settings.local.json`, `.claude/notes/local/`. Skip build outputs,
+   `CLAUDE.local.md`, `.claude/settings.local.json`, `docs/local/` (or legacy `.claude/notes/local/`). Skip build outputs,
    `node_modules/`, caches, and local app state (`data/`, `tmp/`) — those regenerate or shouldn't be
    shared.
 4. **Symlink each candidate**, preferring relative links:

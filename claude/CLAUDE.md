@@ -4,7 +4,7 @@
 > dotfiles repo. Loaded in every project, every session, including work repos. Rules here apply
 > everywhere unless overridden by a project-level `CLAUDE.md` or `CLAUDE.local.md`.
 >
-> Conventions that only apply in Robbie's personal repos (notes layout, `CODE_SMELL.md`, Ruff,
+> Conventions that only apply in Robbie's personal repos (docs layout, `CODE_SMELL.md`, Ruff,
 > `prd`, etc.) live in `~/.claude/personal-repo-rules.md`, which each personal repo imports from its
 > own `CLAUDE.md`. Don't put personal-repo conventions here.
 
@@ -113,23 +113,23 @@ Always ask the user before:
 - Resetting the DB or dropping tables
 - Doing an ugly database migration
 
-## Notes
+## Docs
 
 These live in the private companion repo (`~/repos/dotfiles-private/claude-notes/`, symlinked to
-`~/.claude/.claude/notes/`) because they name real infrastructure and the dotfiles repo is public.
+`~/.claude/docs/`) because they name real infrastructure and the dotfiles repo is public.
 Keep it that way: identifiers go in the note, never in this index line.
 
-- [AWS accounts — which account/email/profile a personal or work project uses, and why the old 2020 account's billing alerts are ignorable](.claude/notes/aws-accounts.md)
+- [AWS accounts — which account/email/profile a personal or work project uses, and why the old 2020 account's billing alerts are ignorable](docs/aws-accounts.md)
   — account IDs, root emails, `~/.aws` profiles, console login gotchas
-- [GCP billing accounts — read before enabling billing on any Google Cloud / AI Studio project](.claude/notes/gcp-billing-accounts.md)
+- [GCP billing accounts — read before enabling billing on any Google Cloud / AI Studio project](docs/gcp-billing-accounts.md)
   — which of the two identically-named billing accounts to link projects to, and how the surprise
   Gemini charge happened
-- [Chrome profiles — read before any Claude-in-Chrome browser action, to pick the right connected browser](.claude/notes/chrome-profiles.md)
+- [Chrome profiles — read before any Claude-in-Chrome browser action, to pick the right connected browser](docs/chrome-profiles.md)
   — which extension deviceId is the personal ("purple") profile vs the work profile, and which
   Google/AWS accounts each is signed into
-- [Personal info — read before filling in any form (bookings, signups) on Robbie's behalf](.claude/notes/personal-info.md)
+- [Personal info — read before filling in any form (bookings, signups) on Robbie's behalf](docs/personal-info.md)
   — phone, email, DOB, home address
-- [Hammerspoon hotkeys dead — read when Hyper mode / any hs.hotkey stops firing](.claude/notes/hammerspoon-secure-input.md)
+- [Hammerspoon hotkeys dead — read when Hyper mode / any hs.hotkey stops firing](docs/hammerspoon-secure-input.md)
   — Secure Keyboard Input diagnosis, the iTerm2 refcount leak, why only a restart fixes it
 
 <system_prompt> <core_behaviors> <behavior name="assumption_surfacing" priority="critical"> Before
