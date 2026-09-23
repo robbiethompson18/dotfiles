@@ -1,6 +1,6 @@
 [user]
 	name = Robbie
-	email = robbie+klaus@usebits.com
+	email = robbiethompson2018@gmail.com
 [credential "https://github.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
