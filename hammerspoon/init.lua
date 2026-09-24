@@ -287,6 +287,32 @@ hs.hotkey.bind({"cmd", "shift"}, "9", function() captureToInbox("read-later", "r
 hs.hotkey.bind({"cmd", "shift"}, "0", function() captureToInbox("todo", "todo.md") end)
 
 --------------------------------------------------------------------------------
+-- QUICK URLS (type a number, Enter opens a templated URL)
+--------------------------------------------------------------------------------
+
+local function promptForUrl(template)
+  local chooser
+  chooser = hs.chooser.new(function(choice)
+    if choice then hs.urlevent.openURL(choice.url) end
+  end)
+  chooser:queryChangedCallback(function(query)
+    local id = query:match("^%s*(%d+)%s*$")
+    local url = id and template:format(id)
+    chooser:choices(url and {{text = url, url = url}} or {})
+  end)
+  chooser:placeholderText(template:format("<number>"))
+  chooser:show()
+end
+
+-- F16 is what Kinesis macro key 4 is programmed to send
+local function openCorePR() promptForUrl("https://github.com/DeepResponse/core/pull/%s") end
+hs.hotkey.bind({}, "f16", openCorePR)
+hyperMode:bind("", "U", function()
+  hyperMode:exit()
+  openCorePR()
+end)
+
+--------------------------------------------------------------------------------
 -- MONITOR FOCUS (move mouse to monitor)
 --------------------------------------------------------------------------------
 
