@@ -2,7 +2,7 @@
 name: codex-review
 description:
   Get an OpenAI Codex review of the current change locally, in ~40s, instead of waiting for the
-  Codex GitHub bot. Typically use before opening a PR. Also handles free-text
+  Codex GitHub bot. Typically use on any PR over ~100 LOC, before or after opening it. Also handles free-text
   consults ("Codex, here's what I'm least sure about"). Codex is a different model lineage, so it
   has uncorrelated blind spots — that is the entire point.
 ---
@@ -39,7 +39,7 @@ mechanism → consequence → suggested fix.
 
 ## When to reach for it
 
-- **Before opening any PR** over ~100 LOC. This is the main use.
+- **On any PR over ~100 LOC**, before or after it's opened (repo rules may pick one). This is the main use.
 - **While writing code** if a decision or implementation is hard and you're uncertain.
 
 

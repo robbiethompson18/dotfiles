@@ -76,6 +76,7 @@ Caddy-routed apps (have a `*.localhost` hostname):
 | 7000 | `robbiewmthompson.localhost`                | `~/repos/personal-website` |
 | 7100 | `inbox.localhost`                           | `~/repos/inbox`            |
 | 7101 | `birds.localhost`                           | `~/repos/whimsy-projects/heard-today` |
+| 7102 | `autoresearch.localhost`                    | `~/repos/nd-rl` (`code/experiments/current/autoresearch/dashboard`) |
 | 7327 | `tinydiff.localhost`                        | `~/repos/tiny-diff`        |
 | 8765 | `cognitive.localhost`                       | `~/repos/cognitive-tests`  |
 | 8766 | `silkworm-aws-resource-dashboard.localhost` | `~/repos/silkworm`         |
@@ -209,6 +210,7 @@ Other reservations:
 | 5444–5462 | Postgres, one per `~/repos/deepresponse-core-N` checkout (N=2…20) (compose override; see deepresponse-core stack table) |
 | 18789 | OpenClaw gateway (bastion-forwarded)     |
 | 18443 | Bitcoin Core regtest RPC, llm-provider-canaries (loopback only; integration tests) |
+| 19443 | Dev ClickHouse SSM tunnel, `deepresponse-core*/projects/dev_serving_tier/tunnel.sh` (shared default; override with `LOCAL_PORT`) |
 
 **Rough convention** for picking a new port:
 
