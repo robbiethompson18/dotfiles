@@ -84,26 +84,12 @@ Caddy-routed apps (have a `*.localhost` hostname):
 | 8768 | `silkworm-experiments.localhost`            | `~/repos/silkworm`         |
 | 5173 | `silkworm-experiments-ui.localhost`         | `~/repos/silkworm`         |
 | 8770 | `sapient-2.localhost`                       | `~/repos/sapient-2`        |
-| 8772 | `sapient-3.localhost`                       | `~/repos/sapient-3`        |
-| 8774 | `sapient-4.localhost`                       | `~/repos/sapient-4`        |
-| 8776 | `sapient-5.localhost`                       | `~/repos/sapient-5`        |
-| 8778 | `sapient-6.localhost`                       | `~/repos/sapient-6`        |
-| 8780 | `sapient-7.localhost`                       | `~/repos/sapient-7`        |
-| 8782 | `sapient-8.localhost`                       | `~/repos/sapient-8`        |
 | 8090 | `bloomy.localhost`                          | `~/repos/bloomy-light-mode`   |
 | 8091 | `2.bloomy.localhost`                        | `~/repos/bloomy-light-mode-2` |
-| 8092 | `3.bloomy.localhost`                        | `~/repos/bloomy-light-mode-3` |
-| 8093 | `4.bloomy.localhost`                        | `~/repos/bloomy-light-mode-4` |
-| 8094 | `5.bloomy.localhost`                        | `~/repos/bloomy-light-mode-5` |
-| 8095 | `6.bloomy.localhost`                        | `~/repos/bloomy-light-mode-6` |
-| 8096 | `7.bloomy.localhost`                        | `~/repos/bloomy-light-mode-7` |
-| 8097 | `8.bloomy.localhost`                        | `~/repos/bloomy-light-mode-8` |
-| 8098 | `9.bloomy.localhost`                        | `~/repos/bloomy-light-mode-9` |
-| 54403 | `db.9.bloomy.localhost`                    | Supabase Studio, bloomy-light-mode-9 |
 
 Bloomy uses `N.bloomy.localhost` rather than the `bloomy-N.localhost` shape the Sapient rows use.
 That's deliberate: `localhost` is not in the public suffix list, so every checkout shares the
-registrable domain `bloomy.localhost` and **one 1Password item covers all eight checkouts**.
+registrable domain `bloomy.localhost` and **one 1Password item covers every checkout**.
 `bloomy-2.localhost` would be its own registrable domain and would need its own item.
 
 Bloomy's Vite config hardcodes `port: 8080` with `strictPort` off, so checkouts silently drift to
@@ -132,7 +118,6 @@ which leaves checkout 1 on the stock ports:
 | Checkout | project_id | API   | DB    | Studio |
 | -------- | ---------- | ----- | ----- | ------ |
 | (shared, legacy) | `tudrtkigpnmmccmudxwr` | 54321 | 54322 | 54323 |
-| `bloomy-light-mode-9` | `bloomy9` | 54401 | 54402 | 54403 |
 
 Point the app at it with a per-checkout `.env.local` (`VITE_SUPABASE_URL`,
 `VITE_SUPABASE_PUBLISHABLE_KEY`) — **not** the repo's `.env`, which is a symlink to
@@ -162,11 +147,11 @@ Postgres container (`POSTGRES_PORT`, read by `compose.yaml` via `${POSTGRES_PORT
 used to be one container shared by every checkout on a hardcoded 5435, which silently went stale
 (2026-07-27, see that repo's `CODE_SMELL.md`):
 
-| Service                | sapient | sapient-2 | sapient-3 | sapient-4 | sapient-5 | sapient-6 | sapient-7 | sapient-8 |
-| ---------------------- | ------- | --------- | --------- | --------- | --------- | --------- | --------- | --------- |
-| Web (Vite)              | 8767    | 8770      | 8772      | 8774      | 8776      | 8778      | 8780      | 8782      |
-| API (`API_PORT`)        | 8769    | 8771      | 8773      | 8775      | 8777      | 8779      | 8781      | 8783      |
-| Postgres (`POSTGRES_PORT`) | 5435 | 5436      | 5437      | 5438      | 5439      | 5440      | 5441      | 5442      |
+| Service                | sapient | sapient-2 |
+| ---------------------- | ------- | --------- |
+| Web (Vite)              | 8767    | 8770      |
+| API (`API_PORT`)        | 8769    | 8771      |
+| Postgres (`POSTGRES_PORT`) | 5435 | 5436      |
 
 deepresponse-core stack — ports are Makefile vars (`WEB_PORT`/`API_PORT`/`AGENT_PORT`) plus
 `ADMIN_PORT`, set per checkout in `.envrc.local` (main checkout uses the defaults; clone N is +100·(N-1)):
@@ -191,14 +176,14 @@ deepresponse-core stack — ports are Makefile vars (`WEB_PORT`/`API_PORT`/`AGEN
 
 Platform stack — each clone of `~/repos/platform*` claims one slot in each row:
 
-| Service         | platform | platform-2 | platform-frontend |
-| --------------- | -------- | ---------- | ----------------- |
-| API (`PORT`)    | 3000     | 3001       | 3002              |
-| AgentDrive      | 3010     | 3011       | 3012              |
-| Vite            | 5173     | 5175       | 5177              |
-| Vite AgentDrive | (n/a)    | 5176       | 5178              |
-| Vite Chrome ext | 5174     | 5179       | 5180              |
-| OpenClaw local  | (n/a)    | 18791      | 18793             |
+| Service         | platform | platform-frontend |
+| --------------- | -------- | ----------------- |
+| API (`PORT`)    | 3000     | 3002              |
+| AgentDrive      | 3010     | 3012              |
+| Vite            | 5173     | 5177              |
+| Vite AgentDrive | (n/a)    | 5178              |
+| Vite Chrome ext | 5174     | 5180              |
+| OpenClaw local  | (n/a)    | 18793             |
 
 Other reservations:
 
@@ -207,7 +192,7 @@ Other reservations:
 | 5432  | Postgres (local docker)                  |
 | 5433  | Postgres (bastion-forwarded staging RDS) |
 | 5434  | Postgres (bastion-forwarded prod RDS)    |
-| 5435–5442 | Postgres, one per sapient checkout (see Sapient stack table above) |
+| 5435–5436 | Postgres, one per sapient checkout (see Sapient stack table above) |
 | 5443  | Postgres, `~/repos/deepresponse-core` (compose override; repo default is 5432) |
 | 5444–5462 | Postgres, one per `~/repos/deepresponse-core-N` checkout (N=2…20) (compose override; see deepresponse-core stack table) |
 | 18789 | OpenClaw gateway (bastion-forwarded)     |
