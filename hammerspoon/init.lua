@@ -304,13 +304,22 @@ local function promptForUrl(template)
   chooser:show()
 end
 
--- F16 is what Kinesis macro key 4 is programmed to send
 local function openCorePR() promptForUrl("https://github.com/DeepResponse/core/pull/%s") end
-hs.hotkey.bind({}, "f16", openCorePR)
 hyperMode:bind("", "U", function()
   hyperMode:exit()
   openCorePR()
 end)
+
+--------------------------------------------------------------------------------
+-- KINESIS MACRO KEYS (hk1-5 send F16-F20, hk6-8 send F13-F15; see kinesis/)
+--------------------------------------------------------------------------------
+
+local function typer(text) return function() hs.eventtap.keyStrokes(text) end end
+
+hs.hotkey.bind({}, "f16", typer("robbiethompson2018@gmail.com"))  -- hk1
+hs.hotkey.bind({}, "f17", typer("rob0the0nerd@gmail.com"))        -- hk2
+hs.hotkey.bind({}, "f18", typer("robbie@asymmetricsecurity.com")) -- hk3
+hs.hotkey.bind({}, "f19", openCorePR)                             -- hk4
 
 --------------------------------------------------------------------------------
 -- MONITOR FOCUS (move mouse to monitor)

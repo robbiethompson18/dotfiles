@@ -1,0 +1,14 @@
+#!/bin/sh
+# Copy the git-tracked Kinesis Freestyle Edge RGB config onto the keyboard's v-Drive.
+# Mount the v-Drive first with SmartSet+F8; press it again to unmount and reload.
+set -e
+vdrive="/Volumes/FS EDGE RGB"
+src="$HOME/repos/dotfiles/kinesis"
+[ -d "$vdrive" ] || { echo "v-Drive not mounted (SmartSet+F8)" >&2; exit 1; }
+cp "$src"/layouts/*.txt "$vdrive/layouts/"
+cp "$src"/lighting/*.txt "$vdrive/lighting/"
+cp "$src"/settings/*.txt "$vdrive/settings/"
+# macOS writes ._ AppleDouble sidecars on any write to FAT; don't leave junk for the firmware
+find "$vdrive" -name '._*' -delete
+sync
+echo "Pushed. Press SmartSet+F8 to unmount so the keyboard reloads."
