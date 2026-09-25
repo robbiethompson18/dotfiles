@@ -177,6 +177,7 @@ deepresponse-core stack — ports are Makefile vars (`WEB_PORT`/`API_PORT`/`AGEN
 | Admin (`ADMIN_PORT`) | 3001 | 3101   | 3201   | 3301   | 3401   | 3501   | 3601   | 3701   | 3801   | 3901    |
 | API (`API_PORT`)     | 8000 | 8100   | 8200   | 8300   | 8400   | 8500   | 8600   | 8700   | 8800   | 8900    |
 | Agent (`AGENT_PORT`) | 8001 | 8101   | 8201   | 8301   | 8401   | 8501   | 8601   | 8701   | 8801   | 8901    |
+| LLM gateway (`GATEWAY_PORT`) | 8002 | 8102   | 8202   | 8302   | 8402   | 8502   | 8602   | 8702   | 8802   | 8902    |
 | Postgres             | 5443 | 5444   | 5445   | 5446   | 5447   | 5448   | 5449   | 5450   | 5451   | 5452    |
 
 | Service              | core-11 | core-12 | core-13 | core-14 | core-15 | core-16 | core-17 | core-18 | core-19 | core-20 |
@@ -185,6 +186,7 @@ deepresponse-core stack — ports are Makefile vars (`WEB_PORT`/`API_PORT`/`AGEN
 | Admin (`ADMIN_PORT`) | 4001    | 4101    | 4201    | 4301    | 4401    | 4501    | 4601    | 4701    | 4801    | 4901    |
 | API (`API_PORT`)     | 9000    | 9100    | 9200    | 9300    | 9400    | 9500    | 9600    | 9700    | 9800    | 9900    |
 | Agent (`AGENT_PORT`) | 9001    | 9101    | 9201    | 9301    | 9401    | 9501    | 9601    | 9701    | 9801    | 9901    |
+| LLM gateway (`GATEWAY_PORT`) | 9002    | 9102    | 9202    | 9302    | 9402    | 9502    | 9602    | 9702    | 9802    | 9902    |
 | Postgres             | 5453    | 5454    | 5455    | 5456    | 5457    | 5458    | 5459    | 5460    | 5461    | 5462    |
 
 Platform stack — each clone of `~/repos/platform*` claims one slot in each row:
