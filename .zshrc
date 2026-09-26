@@ -40,7 +40,7 @@ compdef _cdr cdr
 # cdr<letter> per repo (cdrb -> bloomy-light-mode), plus cdrX2, cdrX3... for extra
 # checkouts found on disk (cdrX1 = cdrX = main checkout). New checkouts get aliases on next
 # shell start; new repos need one letter:repo entry here (letters must stay unique).
-for spec in b:bloomy-light-mode s:sapient p:personal-website d:dotfiles v:vf-exercises a:deepresponse-core; do
+for spec in b:bloomy-light-mode s:sapient p:personal-website d:dotfiles v:vf-exercises a:deepresponse-core l:ai-misalignment; do
   letter=${spec%%:*} repo=${spec#*:}
   alias "cdr$letter"="cd ~/repos/$repo"
   alias "cdr${letter}1"="cd ~/repos/$repo"
