@@ -117,3 +117,7 @@ create_symlink "$HOME/repos/dotfiles/hammerspoon" "$HOME/.hammerspoon" "Hammersp
 # Ghostty config
 mkdir -p "$HOME/.config/ghostty"
 create_symlink "$HOME/repos/dotfiles/ghostty/config" "$HOME/.config/ghostty/config" "Ghostty config"
+
+# Terraform: shared provider cache (terraform refuses a plugin_cache_dir that doesn't exist)
+mkdir -p "$HOME/.terraform.d/plugin-cache"
+create_symlink "$HOME/repos/dotfiles/terraform/terraformrc" "$HOME/.terraformrc" ".terraformrc"
