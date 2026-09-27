@@ -27,8 +27,9 @@ gd() {
   fi
 }
 
-#Claude with chrome (the extension needs desktop Chrome, so macOS only)
-[[ "$OSTYPE" == darwin* ]] && alias claude="claude --dangerously-skip-permissions --chrome"
+#Claude with chrome. The extension needs a real (headed) Chrome: macOS, or a Linux box with
+# an X display (e.g. a VNC server that exports DISPLAY in ~/.zshenv.local).
+[[ "$OSTYPE" == darwin* || -n "$DISPLAY" ]] && alias claude="claude --dangerously-skip-permissions --chrome"
 
 # Shift+Tab to accept autosuggestions
 bindkey '^[[Z' autosuggest-accept
