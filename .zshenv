@@ -1,8 +1,10 @@
 # Homebrew (needed before fnm)
 export PATH="/opt/homebrew/bin:$PATH"
 
-# fnm (Fast Node Manager) - works in non-interactive shells unlike nvm
-eval "$(fnm env)"
+# fnm (Fast Node Manager) - works in non-interactive shells unlike nvm.
+# Linux: the fnm installer puts the binary here rather than on PATH.
+export PATH="$HOME/.local/share/fnm:$PATH"
+command -v fnm >/dev/null && eval "$(fnm env)"
 
 # Local machine secrets and overrides. Keep this file out of git.
 [ -f ~/.zshenv.local ] && source ~/.zshenv.local

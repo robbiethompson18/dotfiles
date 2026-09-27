@@ -106,17 +106,20 @@ for CODEX_DIR in "$HOME/.codex" "$HOME/.codex-work"; do
 done
 "$HOME/repos/dotfiles/bin/sync-codex-claude-skills"
 
-# VS Code config (used as the default file:// opener; see set-default-editor.sh)
-mkdir -p "$HOME/Library/Application Support/Code/User"
-create_symlink "$HOME/repos/dotfiles/vscode/settings.json" "$HOME/Library/Application Support/Code/User/settings.json" "VS Code settings.json"
-create_symlink "$HOME/repos/dotfiles/vscode/keybindings.json" "$HOME/Library/Application Support/Code/User/keybindings.json" "VS Code keybindings.json"
+# Desktop apps: macOS only
+if [[ "$OSTYPE" == darwin* ]]; then
+    # VS Code config (used as the default file:// opener; see set-default-editor.sh)
+    mkdir -p "$HOME/Library/Application Support/Code/User"
+    create_symlink "$HOME/repos/dotfiles/vscode/settings.json" "$HOME/Library/Application Support/Code/User/settings.json" "VS Code settings.json"
+    create_symlink "$HOME/repos/dotfiles/vscode/keybindings.json" "$HOME/Library/Application Support/Code/User/keybindings.json" "VS Code keybindings.json"
 
-# Hammerspoon config
-create_symlink "$HOME/repos/dotfiles/hammerspoon" "$HOME/.hammerspoon" "Hammerspoon"
+    # Hammerspoon config
+    create_symlink "$HOME/repos/dotfiles/hammerspoon" "$HOME/.hammerspoon" "Hammerspoon"
 
-# Ghostty config
-mkdir -p "$HOME/.config/ghostty"
-create_symlink "$HOME/repos/dotfiles/ghostty/config" "$HOME/.config/ghostty/config" "Ghostty config"
+    # Ghostty config
+    mkdir -p "$HOME/.config/ghostty"
+    create_symlink "$HOME/repos/dotfiles/ghostty/config" "$HOME/.config/ghostty/config" "Ghostty config"
+fi
 
 # Terraform: shared provider cache (terraform refuses a plugin_cache_dir that doesn't exist)
 mkdir -p "$HOME/.terraform.d/plugin-cache"

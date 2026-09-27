@@ -24,18 +24,14 @@ else
     echo "✅ zsh-syntax-highlighting already installed"
 fi
 
-# Install fzf via Homebrew
-if ! brew list fzf &> /dev/null; then
-    echo "📦 Installing fzf via Homebrew..."
-    brew install fzf
-else
-    echo "✅ fzf already installed"
-fi
-
-# Install direnv via Homebrew
-if ! brew list direnv &> /dev/null; then
-    echo "📦 Installing direnv via Homebrew..."
-    brew install direnv
-else
-    echo "✅ direnv already installed"
+# fzf + direnv. Linux gets them from install-linux.sh instead (apt's fzf is too old).
+if [[ "$OSTYPE" == darwin* ]]; then
+    for pkg in fzf direnv; do
+        if ! brew list $pkg &> /dev/null; then
+            echo "📦 Installing $pkg via Homebrew..."
+            brew install $pkg
+        else
+            echo "✅ $pkg already installed"
+        fi
+    done
 fi

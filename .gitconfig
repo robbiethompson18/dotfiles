@@ -2,11 +2,11 @@
 	name = Robbie
 	email = robbiethompson2018@gmail.com
 [credential "https://github.com"]
-	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper =
+	helper = !gh auth git-credential
 [credential "https://gist.github.com"]
-	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper =
+	helper = !gh auth git-credential
 [core]
 	pager = delta
 [interactive]
@@ -24,3 +24,8 @@
 	# Show binary plists (e.g. iTerm2 prefs) as readable XML in diffs.
 	# git appends the file path; plutil converts to xml1 on stdout without touching the file.
 	textconv = plutil -convert xml1 -o -
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

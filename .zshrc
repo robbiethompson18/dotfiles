@@ -27,8 +27,8 @@ gd() {
   fi
 }
 
-#Claude with chrome
-alias claude="claude --dangerously-skip-permissions --chrome"
+#Claude with chrome (the extension needs desktop Chrome, so macOS only)
+[[ "$OSTYPE" == darwin* ]] && alias claude="claude --dangerously-skip-permissions --chrome"
 
 # Shift+Tab to accept autosuggestions
 bindkey '^[[Z' autosuggest-accept
@@ -54,21 +54,25 @@ unset spec letter repo dir
 alias pip="pip3"
 alias python="python3"
 
-# Source fzf directly from Homebrew installation
-source <(fzf --zsh)
+# fzf key bindings (Ctrl+R history). Needs fzf >= 0.48 for --zsh; Ubuntu's apt one is too old.
+command -v fzf >/dev/null && source <(fzf --zsh)
 
 # Don't save commands starting with a space to history
 setopt HIST_IGNORE_SPACE
 
 # pnpm
-export PNPM_HOME="$HOME/Library/pnpm"
+if [[ "$OSTYPE" == darwin* ]]; then
+  export PNPM_HOME="$HOME/Library/pnpm"
+else
+  export PNPM_HOME="$HOME/.local/share/pnpm"
+fi
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 
 # bun completions
-[ -s "/Users/robbie/.bun/_bun" ] && source "/Users/robbie/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"

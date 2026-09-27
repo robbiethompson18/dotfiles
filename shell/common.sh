@@ -145,5 +145,11 @@ lg() {
   local log_file="$log_dir/$slug.log"
   : > "$log_file"
   echo "lg: logging to $log_file" >&2
-  script -q -F "$log_file" "$@"
+  if [[ "$OSTYPE" == darwin* ]]; then
+    script -q -F "$log_file" "$@"
+  else
+    # util-linux script takes one command string (-c) and flushes with -f;
+    # %q re-quotes the args so spaces survive the round trip.
+    script -q -f -e -c "$(printf '%q ' "$@")" "$log_file"
+  fi
 }

@@ -6,23 +6,32 @@ set -e  # Exit on error
 
 echo "🚀 Starting dotfiles installation..."
 
-# Install Homebrew
-./install-brew.sh
+# uname, not $OSTYPE: new_laptop_setup.md runs this with `sh`, which is dash on Ubuntu.
+if [ "$(uname)" = Darwin ]; then
+    # Install Homebrew
+    ./install-brew.sh
 
-# Install CLI tools
-./install-cli-tools.sh
+    # Install CLI tools
+    ./install-cli-tools.sh
 
-# Install common brew packages
-./install-common-brew-packages.sh
+    # Install common brew packages
+    ./install-common-brew-packages.sh
 
-# Install common applications
-./install-common-applications.sh
+    # Install common applications
+    ./install-common-applications.sh
 
-# Configure macOS settings
-./configure-macos-settings.sh
+    # Configure macOS settings
+    ./configure-macos-settings.sh
 
-# Set VS Code as default editor for code/text files
-./set-default-editor.sh
+    # Set VS Code as default editor for code/text files
+    ./set-default-editor.sh
+else
+    # apt packages, fzf, fnm, uv, zsh as login shell
+    ./install-linux.sh
+
+    # Oh My Zsh + plugins
+    ./install-cli-tools.sh
+fi
 
 # Setup symlinks
 ./setup-symlinks.sh

@@ -1,17 +1,39 @@
 #!/bin/bash
+# Installs the agent-reaper watcher: a launchd agent on macOS, a systemd user service on Linux.
 
 set -e
 
-PLIST_NAME="com.robert.agent-reaper.plist"
 REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-SOURCE="$REPO_DIR/$PLIST_NAME"
-DEST="$HOME/Library/LaunchAgents/$PLIST_NAME"
+mkdir -p /tmp/agent-reaper
 
-mkdir -p "$HOME/Library/LaunchAgents" /tmp/agent-reaper
-launchctl unload "$DEST" 2>/dev/null || true
-cp "$SOURCE" "$DEST"
-launchctl load "$DEST"
+if [[ "$OSTYPE" != darwin* ]]; then
+    UNIT_DIR="$HOME/.config/systemd/user"
+    mkdir -p "$UNIT_DIR"
+    cat > "$UNIT_DIR/agent-reaper.service" <<EOF
+[Service]
+ExecStart=$REPO_DIR/bin/agent-reaper watch
+Restart=always
+StandardOutput=append:/tmp/agent-reaper-launchd.log
+StandardError=append:/tmp/agent-reaper-launchd.log
 
-echo "Installed and loaded $PLIST_NAME"
+[Install]
+WantedBy=default.target
+EOF
+    systemctl --user daemon-reload
+    systemctl --user enable --now agent-reaper.service
+    echo "Installed agent-reaper.service"
+else
+    PLIST_NAME="com.robert.agent-reaper.plist"
+    SOURCE="$REPO_DIR/$PLIST_NAME"
+    DEST="$HOME/Library/LaunchAgents/$PLIST_NAME"
+
+    mkdir -p "$HOME/Library/LaunchAgents"
+    launchctl unload "$DEST" 2>/dev/null || true
+    cp "$SOURCE" "$DEST"
+    launchctl load "$DEST"
+
+    echo "Installed and loaded $PLIST_NAME"
+fi
+
 echo "Agents can request retirement with: agent-reaper request --reason done"
 echo "Check /tmp/agent-reaper/agent-reaper.log for decisions"

@@ -1,8 +1,35 @@
 #!/bin/bash
-# Installs the dotfiles-pull launchd agent
+# Installs the weekly dotfiles pull: a launchd agent on macOS, a systemd user timer on Linux.
+
+REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+
+if [[ "$OSTYPE" != darwin* ]]; then
+    UNIT_DIR="$HOME/.config/systemd/user"
+    mkdir -p "$UNIT_DIR"
+    cat > "$UNIT_DIR/dotfiles-pull.service" <<EOF
+[Service]
+Type=oneshot
+ExecStart=/bin/bash $REPO_DIR/bin/pull-dotfiles
+StandardOutput=append:/tmp/dotfiles-pull.log
+StandardError=append:/tmp/dotfiles-pull.log
+EOF
+    # Persistent=true catches up a run missed while the machine was off, like launchd's RunAtLoad.
+    cat > "$UNIT_DIR/dotfiles-pull.timer" <<EOF
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=1w
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+EOF
+    systemctl --user daemon-reload
+    systemctl --user enable --now dotfiles-pull.timer
+    echo "Installed dotfiles-pull.timer (weekly + on boot); output in /tmp/dotfiles-pull.log"
+    exit 0
+fi
 
 PLIST_NAME="com.robert.dotfiles-pull.plist"
-REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 SOURCE="$REPO_DIR/$PLIST_NAME"
 DEST="$HOME/Library/LaunchAgents/$PLIST_NAME"
 
