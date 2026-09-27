@@ -4,6 +4,9 @@
 
 set -e  # Exit on error
 
+# Claude's native installer, uv and (on Linux) fzf land here; a fresh shell may not have it yet.
+export PATH="$HOME/.local/bin:$PATH"
+
 echo "🚀 Starting dotfiles installation..."
 
 # uname, not $OSTYPE: new_laptop_setup.md runs this with `sh`, which is dash on Ubuntu.
