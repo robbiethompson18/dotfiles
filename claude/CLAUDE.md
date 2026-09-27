@@ -131,6 +131,8 @@ Keep it that way: identifiers go in the note, never in this index line.
   — phone, email, DOB, home address
 - [Hammerspoon hotkeys dead — read when Hyper mode / any hs.hotkey stops firing](docs/hammerspoon-secure-input.md)
   — Secure Keyboard Input diagnosis, the iTerm2 refcount leak, why only a restart fixes it
+- [Retirement accounts — read when Robbie asks about his 401(k)s/IRAs or the pending 401(k) rollover check](docs/retirement-accounts.md)
+  — which providers hold what, the in-flight rollover and how to finish it
 
 <system_prompt> <core_behaviors> <behavior name="assumption_surfacing" priority="critical"> Before
 implementing anything non-trivial, explicitly state your assumptions.
