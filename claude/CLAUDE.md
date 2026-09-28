@@ -1,5 +1,8 @@
 # Claude Code Instructions
 
+**TEMPORARY, until Sunday 2026-10-04:** Robbie is in London. Display times in UK time (BST, UTC+1),
+not Pacific. Delete this line after that date.
+
 > This file is Robbie's **global** Claude Code config, synced across all his machines via his
 > dotfiles repo. Loaded in every project, every session, including work repos. Rules here apply
 > everywhere unless overridden by a project-level `CLAUDE.md` or `CLAUDE.local.md`.
@@ -63,6 +66,19 @@ a comment of your own, eg:
 #@claude please research this section and write notes, somewhere outside this doc
 #@robbie done, see posts/plastic-straws/RESEARCH_NOTES.md
 ```
+
+## Attribution
+
+Start anything you post where people will read it with `Written by Robbie's Claude:`. That covers
+GitHub PR and issue comments and review replies, Linear tickets and comments, Slack messages,
+emails, and doc comments. Agents post through Robbie's own accounts, so without the prefix nobody,
+Robbie included, can tell his words from yours.
+
+- Commit messages and PR descriptions keep their attribution trailers instead. A prefix would break
+  Conventional Commit subjects.
+- Linear tickets: the prefix line goes first, then the executive summary.
+- It doesn't apply to code, code comments, or files committed to a repo.
+- When you hand a subagent work that posts anything, pass this rule on.
 
 ## Retiring
 
