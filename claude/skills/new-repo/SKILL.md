@@ -196,8 +196,14 @@ packages = ["src/<name_snake>"]
 line-length = 140
 
 [tool.ruff.lint]
-extend-select = ["I"]   # isort — ruff owns import ordering too
+extend-select = [
+  "I",     # isort — ruff owns import ordering too
+  "E501",  # line too long — not in ruff's defaults, and `ruff format` never wraps strings/comments
+]
 ```
+
+Files that embed a big non-Python blob (e.g. an HTML/JS template string) should opt out via
+`[tool.ruff.lint.per-file-ignores]` (`"path/to/file.py" = ["E501"]`) rather than wrapping the blob.
 
 ## Template: `package.json`
 
