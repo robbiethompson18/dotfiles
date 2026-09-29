@@ -1,6 +1,11 @@
 # Global Variables
 export PATH="$HOME/repos/dotfiles/bin:$PATH"
 
+# An interactive shell is never inside a Claude session (Claude's Bash tool doesn't read .zshrc), so
+# any CLAUDE_* here leaked in, e.g. iTerm2 relaunched by the cc-status hook inherits a session's env.
+# Leaked CLAUDE_CODE_CHILD_SESSION turns off transcript saving and CLAUDE_CONFIG_DIR switches accounts.
+unset -m 'CLAUDE*'
+
 # OHMYZSH
 export ZSH="$HOME/repos/oh-my-zsh"
 ZSH_THEME="bira"
