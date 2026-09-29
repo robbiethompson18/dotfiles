@@ -100,6 +100,18 @@ When you kick off a long task (eg model training run, data generation) return co
 after starting the task. Guess how long the task will take based on initial throughput. If it will
 take longer than 30 minutes, explain any known inefficiencies causing this.
 
+## Memory limits (oom-guard)
+
+On Robbie's Macs, `oom-guard` (`~/repos/dotfiles/bin/oom-guard`) SIGKILLs processes you spawn,
+including backgrounded or orphaned ones, when one goes over a third of RAM (16 GB on a 48 GB Mac),
+when they total over 60% of RAM (it kills the biggest), or under critical memory pressure.
+Runaway agent scripts have hard-frozen the machine twice.
+
+- If a command exits 137 (SIGKILL) or a background job dies without explanation, run
+  `tail -20 ~/Library/Logs/oom-guard.log`. If the pid or command is there, it was killed for memory.
+- Don't re-run the same thing. Shrink the input, stream instead of materializing, or run fewer jobs
+  in parallel. Tell Robbie if the work genuinely needs more memory.
+
 ## Log checking
 
 - Never tell the user to check logs themselves (e.g."check `cat /tmp/logs/x`"). If you need to see
