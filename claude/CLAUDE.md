@@ -158,7 +158,8 @@ Keep it that way: identifiers go in the note, never in this index line.
 - [Personal info — read before filling in any form (bookings, signups) on Robbie's behalf](docs/personal-info.md)
   — phone, email, DOB, home address
 - [Hammerspoon hotkeys dead — read when Hyper mode / any hs.hotkey stops firing](docs/hammerspoon-secure-input.md)
-  — Secure Keyboard Input diagnosis, the iTerm2 refcount leak, why only a restart fixes it
+  — Secure Keyboard Input diagnosis, the iTerm2 refcount leak, when an iTerm2 restart fixes it and
+  when only a logout does (dead holder PID)
 - [Retirement accounts — read when Robbie asks about his 401(k)s/IRAs or the pending 401(k) rollover check](docs/retirement-accounts.md)
   — which providers hold what, the in-flight rollover and how to finish it
 

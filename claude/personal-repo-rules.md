@@ -43,8 +43,8 @@ repo's top-level `CODE_SMELL.md` instead of relying on memory.
 If asked to ship any changes, also ship unstaged or committed changes to markdown files, possibly in
 a separate commit. Do not worry about stashing these changes.
 
-When working in `/Users/robbie/repos/dotfiles`, after making a change, you are welcome to ship it
-without waiting for a separate ship request.
+When working in `/Users/robbie/repos/dotfiles` or `/Users/robbie/repos/dotfiles-private`, after
+making a change, you are welcome to ship it without waiting for a separate ship request.
 
 ## Other agents
 
