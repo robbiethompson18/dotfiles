@@ -5,7 +5,6 @@
   },
   "permissions": {
     "allow": [
-      "Bash(:*::*)",
       "Read(**)",
       "Edit(**)",
       "Task(*)",
