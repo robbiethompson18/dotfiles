@@ -4,7 +4,7 @@
 macOS gives unprivileged users no way to cap a process's memory (setrlimit is refused, jetsam limits
 need root), so this polls instead. Several times a second it reads phys_footprint (Activity Monitor's
 "Memory", which counts compressed pages; RSS doesn't) for every descendant of a claude/codex
-process and SIGKILLs:
+process, or process carrying Claude's CLAUDECODE=1 env tag, and SIGKILLs:
 
   1. any single descendant over PER_PROCESS_LIMIT,
   2. the largest descendant while all descendants together exceed TOTAL_LIMIT,
@@ -31,6 +31,8 @@ LOG_PATH = os.path.expanduser("~/Library/Logs/oom-guard.log")
 
 libc = ctypes.CDLL(None)
 libproc = ctypes.CDLL("/usr/lib/libproc.dylib")
+ARG_MAX = os.sysconf("SC_ARG_MAX")
+PROCARGS_BUFFER = ctypes.create_string_buffer(ARG_MAX)
 
 
 def sysctl_int(name):
@@ -70,8 +72,22 @@ def footprint(pid):
     return info.ri_phys_footprint
 
 
+def has_claude_env(pid):
+    """True if the process inherited CLAUDECODE=1, which Claude Code sets for every Bash command.
+
+    This catches children that escaped the process tree: `(cmd &)`, nohup and setsid re-parent them
+    to launchd, but the environment survives. macOS hides the environment of Apple platform binaries
+    (/bin/sleep etc.), which is fine: the runaways are uv/brew/venv Python and node.
+    """
+    mib = (ctypes.c_int * 3)(1, 49, pid)  # CTL_KERN, KERN_PROCARGS2: argc, exec path, argv, env
+    size = ctypes.c_size_t(ARG_MAX)
+    if libc.sysctl(mib, 3, PROCARGS_BUFFER, ctypes.byref(size), None, 0) != 0:
+        return False
+    return b"\0CLAUDECODE=1\0" in PROCARGS_BUFFER.raw[: size.value]
+
+
 def agent_descendants():
-    """Map pid -> command name for every process with a claude/codex ancestor."""
+    """Map pid -> command name for every process with a claude/codex ancestor or Claude's env tag."""
     out = subprocess.run(["ps", "-axo", "pid=,ppid=,comm="], capture_output=True, text=True).stdout
     parent, name = {}, {}
     for line in out.splitlines():
@@ -85,7 +101,7 @@ def agent_descendants():
         ancestor = parent.get(pid, 1)
         while ancestor > 1 and ancestor not in agents:
             ancestor = parent.get(ancestor, 1)
-        if ancestor in agents:
+        if ancestor in agents or has_claude_env(pid):
             found[pid] = name[pid]
     return found
 
