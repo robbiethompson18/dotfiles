@@ -28,6 +28,7 @@ AGENT_NAMES = {"claude", "codex"}
 POLL_SECONDS = 0.2
 TREE_REFRESH_SECONDS = 1.0
 LOG_PATH = os.path.expanduser("~/Library/Logs/oom-guard.log")
+PENDING_DIR = "/tmp/oom-guard/pending"  # read by bin/oom-guard-hook
 
 libc = ctypes.CDLL(None)
 libproc = ctypes.CDLL("/usr/lib/libproc.dylib")
@@ -72,6 +73,15 @@ def footprint(pid):
     return info.ri_phys_footprint
 
 
+def procargs(pid):
+    """The process's exec path, argv and environment as NUL-separated bytes, or b"" if unreadable."""
+    mib = (ctypes.c_int * 3)(1, 49, pid)  # CTL_KERN, KERN_PROCARGS2
+    size = ctypes.c_size_t(ARG_MAX)
+    if libc.sysctl(mib, 3, PROCARGS_BUFFER, ctypes.byref(size), None, 0) != 0:
+        return b""
+    return PROCARGS_BUFFER.raw[: size.value]
+
+
 def has_claude_env(pid):
     """True if the process inherited CLAUDECODE=1, which Claude Code sets for every Bash command.
 
@@ -79,11 +89,22 @@ def has_claude_env(pid):
     to launchd, but the environment survives. macOS hides the environment of Apple platform binaries
     (/bin/sleep etc.), which is fine: the runaways are uv/brew/venv Python and node.
     """
-    mib = (ctypes.c_int * 3)(1, 49, pid)  # CTL_KERN, KERN_PROCARGS2: argc, exec path, argv, env
-    size = ctypes.c_size_t(ARG_MAX)
-    if libc.sysctl(mib, 3, PROCARGS_BUFFER, ctypes.byref(size), None, 0) != 0:
-        return False
-    return b"\0CLAUDECODE=1\0" in PROCARGS_BUFFER.raw[: size.value]
+    return b"\0CLAUDECODE=1\0" in procargs(pid)
+
+
+def claude_session(pid):
+    """The CLAUDE_CODE_SESSION_ID the process inherited, or None."""
+    for entry in procargs(pid).split(b"\0"):
+        if entry.startswith(b"CLAUDE_CODE_SESSION_ID="):
+            return entry.split(b"=", 1)[1].decode(errors="replace")
+    return None
+
+
+def tell_session(session, message):
+    """Queue a message that bin/oom-guard-hook shows to that Claude session after its next tool call."""
+    os.makedirs(PENDING_DIR, exist_ok=True)
+    with open(os.path.join(PENDING_DIR, os.path.basename(session)), "a") as f:
+        f.write(message + "\n")
 
 
 def agent_descendants():
@@ -121,11 +142,19 @@ def describe(pid):
 
 def kill(pid, size, reason):
     command, cwd = describe(pid)  # before the kill, while the process still exists
+    session = claude_session(pid)
     try:
         os.kill(pid, signal.SIGKILL)
     except ProcessLookupError:
         return
     log(f"KILLED pid={pid} footprint={size / GB:.1f}GB reason={reason}\n    cwd={cwd}\n    cmd={command[:2000]}")
+    if session:
+        tell_session(session, (
+            f"oom-guard SIGKILLed pid {pid} at {size / GB:.1f} GB ({reason}). It was started from this "
+            f"session, possibly by a subagent or in the background.\n    cwd: {cwd}\n    cmd: {command[:500]}\n"
+            "Don't re-run it as-is: shrink the input, stream instead of materializing, or run fewer jobs "
+            "in parallel. If the agent that owns it isn't you, relay this to it."
+        ))
     title = f"oom-guard killed {os.path.basename(command.split(' ', 1)[0]) or pid}"
     body = f"{size / GB:.1f} GB, {reason}".replace('"', "'")
     subprocess.run(["osascript", "-e", f'display notification "{body}" with title "{title}"'], capture_output=True)

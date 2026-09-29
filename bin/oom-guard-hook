@@ -1,0 +1,16 @@
+#!/bin/sh
+# Claude Code PostToolUse hook: if oom-guard killed a process started by this session, show Claude
+# why (exit 2 sends stderr to the model). Runs after every tool call, so the common path is one
+# file test and no forks.
+
+sid="$CLAUDE_CODE_SESSION_ID"
+[ -n "$sid" ] || exit 0
+pending="/tmp/oom-guard/pending/$sid"
+[ -s "$pending" ] || exit 0
+
+# Claim atomically: parallel tool calls in one session each run this hook, and only one should report.
+claimed="$pending.$$"
+mv "$pending" "$claimed" 2>/dev/null || exit 0
+cat "$claimed" >&2
+rm -f "$claimed"
+exit 2

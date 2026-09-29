@@ -50,6 +50,10 @@
           {
             "type": "command",
             "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
+          },
+          {
+            "type": "command",
+            "command": "$HOME/repos/dotfiles/bin/oom-guard-hook"
           }
         ]
       }
