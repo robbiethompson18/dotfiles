@@ -1,0 +1,146 @@
+#!/usr/bin/python3
+"""Kill runaway processes spawned by Claude Code / Codex before they OOM the Mac.
+
+macOS gives unprivileged users no way to cap a process's memory (setrlimit is refused, jetsam limits
+need root), so this polls instead. Several times a second it reads phys_footprint (Activity Monitor's
+"Memory", which counts compressed pages; RSS doesn't) for every descendant of a claude/codex
+process and SIGKILLs:
+
+  1. any single descendant over PER_PROCESS_LIMIT,
+  2. the largest descendant while all descendants together exceed TOTAL_LIMIT,
+  3. the largest descendant over PRESSURE_FLOOR while the kernel reports critical memory pressure.
+
+The agent processes themselves are never killed, only their children. The agent sees exit 137.
+Runs as a LaunchAgent; see bin/install-oom-guard. Log: ~/Library/Logs/oom-guard.log.
+"""
+import ctypes
+import os
+import signal
+import subprocess
+import time
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
+GB = 2**30
+AGENT_NAMES = {"claude", "codex"}
+# A single `b"x" * n` fills ~14 GB/s, so footprints are re-read often (cheap syscalls); the process
+# tree needs a `ps` fork (~30 ms), so it refreshes less often.
+POLL_SECONDS = 0.2
+TREE_REFRESH_SECONDS = 1.0
+LOG_PATH = os.path.expanduser("~/Library/Logs/oom-guard.log")
+
+libc = ctypes.CDLL(None)
+libproc = ctypes.CDLL("/usr/lib/libproc.dylib")
+
+
+def sysctl_int(name):
+    value = ctypes.c_int64(0)
+    size = ctypes.c_size_t(ctypes.sizeof(value))
+    libc.sysctlbyname(name.encode(), ctypes.byref(value), ctypes.byref(size), None, 0)
+    return value.value
+
+
+RAM = sysctl_int("hw.memsize")
+PER_PROCESS_LIMIT = RAM // 3  # 16 GB on a 48 GB machine
+TOTAL_LIMIT = RAM * 3 // 5  # ~29 GB on a 48 GB machine
+PRESSURE_FLOOR = 2 * GB
+PRESSURE_CRITICAL = 4  # kern.memorystatus_vm_pressure_level: 1 normal, 2 warn, 4 critical
+
+
+class RusageInfoV2(ctypes.Structure):
+    # <sys/resource.h> rusage_info_v2; only the prefix up to ri_phys_footprint matters, the rest pads.
+    _fields_ = [
+        ("ri_uuid", ctypes.c_uint8 * 16),
+        ("ri_user_time", ctypes.c_uint64),
+        ("ri_system_time", ctypes.c_uint64),
+        ("ri_pkg_idle_wkups", ctypes.c_uint64),
+        ("ri_interrupt_wkups", ctypes.c_uint64),
+        ("ri_pageins", ctypes.c_uint64),
+        ("ri_wired_size", ctypes.c_uint64),
+        ("ri_resident_size", ctypes.c_uint64),
+        ("ri_phys_footprint", ctypes.c_uint64),
+        ("_rest", ctypes.c_uint64 * 32),
+    ]
+
+
+def footprint(pid):
+    info = RusageInfoV2()
+    if libproc.proc_pid_rusage(pid, 2, ctypes.byref(info)) != 0:  # 2 = RUSAGE_INFO_V2
+        return 0  # exited, or not ours
+    return info.ri_phys_footprint
+
+
+def agent_descendants():
+    """Map pid -> command name for every process with a claude/codex ancestor."""
+    out = subprocess.run(["ps", "-axo", "pid=,ppid=,comm="], capture_output=True, text=True).stdout
+    parent, name = {}, {}
+    for line in out.splitlines():
+        pid, ppid, comm = line.split(None, 2)
+        parent[int(pid)], name[int(pid)] = int(ppid), comm
+    agents = {pid for pid, comm in name.items() if os.path.basename(comm) in AGENT_NAMES}
+    found = {}
+    for pid in name:
+        if pid in agents:
+            continue
+        ancestor = parent.get(pid, 1)
+        while ancestor > 1 and ancestor not in agents:
+            ancestor = parent.get(ancestor, 1)
+        if ancestor in agents:
+            found[pid] = name[pid]
+    return found
+
+
+def log(message):
+    stamp = datetime.now(ZoneInfo("America/Los_Angeles")).strftime("%Y-%m-%d %H:%M:%S %Z")
+    with open(LOG_PATH, "a") as f:
+        f.write(f"{stamp} {message}\n")
+
+
+def describe(pid):
+    command = subprocess.run(["ps", "-o", "command=", "-p", str(pid)], capture_output=True, text=True).stdout.strip()
+    lsof = subprocess.run(["lsof", "-a", "-p", str(pid), "-d", "cwd", "-Fn"], capture_output=True, text=True).stdout
+    cwd = next((line[1:] for line in lsof.splitlines() if line.startswith("n")), "?")
+    return command, cwd
+
+
+def kill(pid, size, reason):
+    command, cwd = describe(pid)  # before the kill, while the process still exists
+    try:
+        os.kill(pid, signal.SIGKILL)
+    except ProcessLookupError:
+        return
+    log(f"KILLED pid={pid} footprint={size / GB:.1f}GB reason={reason}\n    cwd={cwd}\n    cmd={command[:2000]}")
+    title = f"oom-guard killed {os.path.basename(command.split(' ', 1)[0]) or pid}"
+    body = f"{size / GB:.1f} GB, {reason}".replace('"', "'")
+    subprocess.run(["osascript", "-e", f'display notification "{body}" with title "{title}"'], capture_output=True)
+
+
+def tick(pids):
+    sizes = {pid: footprint(pid) for pid in pids}
+    for pid, size in sizes.items():
+        if size > PER_PROCESS_LIMIT:
+            kill(pid, size, f"over per-process limit {PER_PROCESS_LIMIT / GB:.0f}GB")
+            sizes[pid] = 0
+    ranked = sorted(sizes.items(), key=lambda item: -item[1])
+    total = sum(sizes.values())
+    if ranked and total > TOTAL_LIMIT:
+        kill(*ranked[0], f"agent descendants total {total / GB:.1f}GB over {TOTAL_LIMIT / GB:.0f}GB")
+    elif ranked and ranked[0][1] > PRESSURE_FLOOR and sysctl_int("kern.memorystatus_vm_pressure_level") >= PRESSURE_CRITICAL:
+        kill(*ranked[0], "critical memory pressure")
+
+
+def main():
+    log(f"started: per-process {PER_PROCESS_LIMIT / GB:.0f}GB, total {TOTAL_LIMIT / GB:.0f}GB, RAM {RAM / GB:.0f}GB")
+    pids, refreshed = [], 0.0
+    while True:
+        try:
+            if time.monotonic() - refreshed >= TREE_REFRESH_SECONDS:
+                pids, refreshed = list(agent_descendants()), time.monotonic()
+            tick(pids)
+        except Exception as error:  # a transient ps/lsof failure must not kill the guard
+            log(f"tick failed: {error!r}")
+        time.sleep(POLL_SECONDS)
+
+
+if __name__ == "__main__":
+    main()

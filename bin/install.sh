@@ -48,6 +48,9 @@ fi
 # Install launchd agent that lets Claude/Codex sessions request retirement
 ./install-agent-reaper
 
+# Install launchd agent that kills runaway Claude/Codex child processes before they OOM the Mac
+./install-oom-guard
+
 echo ""
 echo "✨ Installation complete!"
 echo ""

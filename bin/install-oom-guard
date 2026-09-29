@@ -1,0 +1,21 @@
+#!/bin/bash
+# Installs the oom-guard watcher as a launchd agent. macOS only: Linux has cgroups and earlyoom.
+
+set -e
+
+if [[ "$OSTYPE" != darwin* ]]; then
+    echo "oom-guard is macOS-only; skipping"
+    exit 0
+fi
+
+REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+PLIST_NAME="com.robert.oom-guard.plist"
+DEST="$HOME/Library/LaunchAgents/$PLIST_NAME"
+
+mkdir -p "$HOME/Library/LaunchAgents"
+launchctl unload "$DEST" 2>/dev/null || true
+cp "$REPO_DIR/$PLIST_NAME" "$DEST"
+launchctl load "$DEST"
+
+echo "Installed and loaded $PLIST_NAME"
+echo "Check ~/Library/Logs/oom-guard.log for kills"
