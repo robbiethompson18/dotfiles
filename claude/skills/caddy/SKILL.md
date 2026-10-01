@@ -164,6 +164,7 @@ deepresponse-core stack — ports are Makefile vars (`WEB_PORT`/`API_PORT`/`AGEN
 | Agent (`AGENT_PORT`) | 8001 | 8101   | 8201   | 8301   | 8401   | 8501   | 8601   | 8701   | 8801   | 8901    |
 | LLM gateway (`GATEWAY_PORT`) | 8002 | 8102   | 8202   | 8302   | 8402   | 8502   | 8602   | 8702   | 8802   | 8902    |
 | Postgres             | 5443 | 5444   | 5445   | 5446   | 5447   | 5448   | 5449   | 5450   | 5451   | 5452    |
+| ClickHouse tunnel (`CLICKHOUSE_TUNNEL_PORT`) | 19443 | 19444 | 19445 | 19446 | 19447 | 19448 | 19449 | 19450 | 19451 | 19452 |
 
 | Service              | core-11 | core-12 | core-13 | core-14 | core-15 | core-16 | core-17 | core-18 | core-19 | core-20 |
 | -------------------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
@@ -173,6 +174,7 @@ deepresponse-core stack — ports are Makefile vars (`WEB_PORT`/`API_PORT`/`AGEN
 | Agent (`AGENT_PORT`) | 9001    | 9101    | 9201    | 9301    | 9401    | 9501    | 9601    | 9701    | 9801    | 9901    |
 | LLM gateway (`GATEWAY_PORT`) | 9002    | 9102    | 9202    | 9302    | 9402    | 9502    | 9602    | 9702    | 9802    | 9902    |
 | Postgres             | 5453    | 5454    | 5455    | 5456    | 5457    | 5458    | 5459    | 5460    | 5461    | 5462    |
+| ClickHouse tunnel (`CLICKHOUSE_TUNNEL_PORT`) | 19453 | 19454 | 19455 | 19456 | 19457 | 19458 | 19459 | 19460 | 19461 | 19462 |
 
 Platform stack — each clone of `~/repos/platform*` claims one slot in each row:
 
@@ -197,13 +199,13 @@ Other reservations:
 | 5444–5462 | Postgres, one per `~/repos/deepresponse-core-N` checkout (N=2…20) (compose override; see deepresponse-core stack table) |
 | 18789 | OpenClaw gateway (bastion-forwarded)     |
 | 18443 | Bitcoin Core regtest RPC, llm-provider-canaries (loopback only; integration tests) |
-| 19443 | Dev ClickHouse SSM tunnel, `deepresponse-core*/projects/dev_serving_tier/tunnel.sh` (shared default; override with `LOCAL_PORT`) |
+| 19443–19462 | Dev ClickHouse SSM tunnel, one per `deepresponse-core*` checkout (`CLICKHOUSE_TUNNEL_PORT` in `.envrc.local`, read by `projects/dev_serving_tier/tunnel.sh` and `development/local_serving.py`; see deepresponse-core stack table) |
 
 **Rough convention** for picking a new port:
 
 - One-off hobby web apps → `7XXX` (next free) or `8XXX` (next free).
 - Platform-style stacks → claim the next column in the platform table.
-- Avoid 3000–3019, 3100–4901 (deepresponse-core web/admin), 5173–5180, 5432–5462, 8000–9901 (deepresponse-core api/agent), 18789–18793.
+- Avoid 3000–3019, 3100–4901 (deepresponse-core web/admin), 5173–5180, 5432–5462, 8000–9901 (deepresponse-core api/agent), 18789–18793, 19443–19462 (deepresponse-core ClickHouse tunnels).
 
 ## Troubleshooting
 
