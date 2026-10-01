@@ -51,6 +51,9 @@ fi
 # Install launchd agent that kills runaway Claude/Codex child processes before they OOM the Mac
 ./install-oom-guard
 
+# Install hourly launchd agent that deletes idle Claude scratchpads and stale Docker images
+./install-disk-sweep
+
 echo ""
 echo "✨ Installation complete!"
 echo ""

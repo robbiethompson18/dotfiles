@@ -1,0 +1,21 @@
+#!/bin/bash
+# Installs the hourly disk-sweep as a launchd agent. macOS only: Linux clears /tmp itself.
+
+set -e
+
+if [[ "$OSTYPE" != darwin* ]]; then
+    echo "disk-sweep is macOS-only; skipping"
+    exit 0
+fi
+
+REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+PLIST_NAME="com.robert.disk-sweep.plist"
+DEST="$HOME/Library/LaunchAgents/$PLIST_NAME"
+
+mkdir -p "$HOME/Library/LaunchAgents"
+launchctl unload "$DEST" 2>/dev/null || true
+cp "$REPO_DIR/$PLIST_NAME" "$DEST"
+launchctl load "$DEST"
+
+echo "Installed and loaded $PLIST_NAME"
+echo "Check ~/Library/Logs/disk-sweep.log for what it removed"

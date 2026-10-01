@@ -1,0 +1,51 @@
+#!/bin/bash
+# Hourly disk sweep, run as a LaunchAgent (see bin/install-disk-sweep). Log: ~/Library/Logs/disk-sweep.log.
+#
+# 1. Claude Code scratchpads, /tmp/claude-$UID/<project>/<session-uuid>. macOS 26 has no periodic /tmp
+#    cleanup, so these only cleared on reboot and reached ~70 GB after 40 h of uptime. A scratchpad goes
+#    once its session's transcript and its own contents have both been idle for IDLE_HOURS.
+# 2. Leaked dfir-parse tempdirs in $TMPDIR, same idle rule.
+# 3. Docker images that no container uses and are older than 48 h. Build cache is capped separately by
+#    BuildKit GC (builder.gc.defaultKeepStorage in ~/.docker/daemon.json).
+#
+# DRY_RUN=1 logs what would be deleted without deleting.
+
+IDLE_MIN=$((12 * 60))
+LOG=~/Library/Logs/disk-sweep.log
+UUID_RE='^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+
+log() { echo "$(date '+%F %T') $*" >> "$LOG"; }
+
+# ctime, not mtime: extracted archives keep their original mtimes but get a fresh ctime.
+recently_changed() { [ -n "$(find "$1" -cmin -$IDLE_MIN -print -quit 2>/dev/null)" ]; }
+
+remove() {
+    log "$([ -n "$DRY_RUN" ] && echo 'would remove' || echo removed) $(du -sh "$1" 2>/dev/null | cut -f1) $1"
+    [ -n "$DRY_RUN" ] || rm -rf "$1"
+}
+
+for dir in /private/tmp/claude-$UID/*/*/; do
+    dir=${dir%/}
+    session=$(basename "$dir")
+    [[ $session =~ $UUID_RE ]] || continue
+    # The transcript sits in whichever config dir ran the session, under the project it started in.
+    # That isn't always the scratchpad's project: a session that cds elsewhere gets a second scratchpad.
+    transcript_active=$(find ~/.claude/projects ~/.claude-work/projects -maxdepth 2 \
+        -name "$session.jsonl" -mmin -$IDLE_MIN 2>/dev/null)
+    [ -n "$transcript_active" ] && continue
+    recently_changed "$dir" && continue
+    remove "$dir"
+done
+
+for dir in "$(getconf DARWIN_USER_TEMP_DIR)"dfir-parse-*; do
+    [ -d "$dir" ] && ! recently_changed "$dir" && remove "$dir"
+done
+
+DOCKER=/usr/local/bin/docker
+if "$DOCKER" info >/dev/null 2>&1; then
+    if [ -n "$DRY_RUN" ]; then
+        log "would prune docker images unused by any container and older than 48h"
+    else
+        log "docker image prune: $("$DOCKER" image prune -af --filter until=48h | tail -1)"
+    fi
+fi

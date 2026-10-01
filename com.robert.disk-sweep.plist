@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.robert.disk-sweep</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/robbie/repos/dotfiles/bin/disk-sweep</string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>StartInterval</key>
+    <integer>3600</integer>
+
+    <key>StandardOutPath</key>
+    <string>/tmp/disk-sweep-launchd.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/tmp/disk-sweep-launchd.log</string>
+</dict>
+</plist>
