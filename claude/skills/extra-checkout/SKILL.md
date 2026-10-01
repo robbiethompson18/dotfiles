@@ -38,12 +38,24 @@ new checkouts (default 1). Numbering continues from the highest existing suffix 
    `CLAUDE.local.md`, `.claude/settings.local.json`, `docs/local/` (or legacy `.claude/notes/local/`). Skip build outputs,
    `node_modules/`, caches, and local app state (`data/`, `tmp/`) — those regenerate or shouldn't be
    shared.
-4. **Symlink each candidate**, preferring relative links:
+   **If sibling clones already exist, the newest one is the template, not the main checkout.** Diff
+   its local files against main's: anything that is a real file there instead of a symlink (e.g.
+   `.envrc.local`, `apps/*/.env.local`, `docker-compose.override.yml`) is a per-checkout divergent
+   copy. Generate the new checkout's version from it, bumping every checkout-specific value (ports,
+   DB port, container/compose name) per the repo's scheme in `CLAUDE.local.md` or the `caddy`
+   registry. Don't fall back to a symlink: that silently puts the new clone on main's ports and DB.
+4. **Symlink each remaining candidate**, preferring relative links:
    ```bash
    ln -s ../<repo>/.envrc.local ~/repos/<repo>-N/.envrc.local
    ```
-5. **direnv allow** the new checkout: `direnv allow ~/repos/<repo>-N`.
-6. **Install deps** with whatever the repo uses (`pnpm install`, etc.) and run any required codegen
+5. **Exclude everything you created.** A fresh clone's `.git/info/exclude` is git's blank template,
+   so any file that main hides via its own exclude (not `.gitignore`) shows up as untracked. Copy the
+   template checkout's exclude, then make sure every symlink and divergent file is listed. Write
+   symlinked paths **without a trailing slash**: git treats a symlink as a file, so `dir/` won't
+   match it even when the target is a directory. Verify with `git -C ~/repos/<repo>-N status
+   --porcelain`, which must be empty.
+6. **direnv allow** the new checkout: `direnv allow ~/repos/<repo>-N`.
+7. **Install deps** with whatever the repo uses (`pnpm install`, etc.) and run any required codegen
    (e.g. `prisma generate`) to verify the checkout actually works. For npm/yarn repos (no
    `pnpm-lock.yaml`), first APFS-clone the main checkout's `node_modules` so the new checkout shares
    its disk blocks instead of writing a ~1 GB copy, then use `npm install`, not `npm ci` (`ci` deletes
@@ -53,7 +65,7 @@ new checkouts (default 1). Numbering continues from the highest existing suffix 
    ```
    Repeat for workspace-level `node_modules` dirs (e.g. `apps/*/node_modules`) if the main checkout
    has them. uv venvs and pnpm already share blocks with their global caches; nothing to do there.
-7. **Report back:** path of each new checkout, what was symlinked, and the port-conflict caveat
+8. **Report back:** path of each new checkout, what was symlinked, and the port-conflict caveat
    below if it applies.
 
 ## Port / DB conflicts (important caveat)
@@ -68,8 +80,8 @@ resolutions, by precedent:
   ports, its own DB branch/org, etc. If picking new ports, consult and update the port registry in
   the `caddy` skill.
 
-Default to the symlink and mention the caveat; only diverge if the user wants concurrent dev
-servers.
+For a repo's first extra checkout, default to the symlink and mention the caveat; only diverge if
+the user wants concurrent dev servers. After that, follow whatever the existing clones do (step 3).
 
 ## Don't
 
