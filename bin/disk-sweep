@@ -7,6 +7,8 @@
 # 2. Leaked dfir-parse tempdirs in $TMPDIR, same idle rule.
 # 3. Docker images that no container uses and are older than 48 h. Build cache is capped separately by
 #    BuildKit GC (builder.gc.defaultKeepStorage in ~/.docker/daemon.json).
+# 4. Git LFS working files in ~/repos/*, re-cloned from .git/lfs by bin/lfs-dedup. Every checkout,
+#    rebase or pull writes them as full second copies (ai-misalignment: 9.9 GB from one rebase).
 #
 # DRY_RUN=1 logs what would be deleted without deleting.
 
@@ -49,3 +51,9 @@ if "$DOCKER" info >/dev/null 2>&1; then
         log "docker image prune: $("$DOCKER" image prune -af --filter until=48h | tail -1)"
     fi
 fi
+
+[ -n "$DRY_RUN" ] && exit 0
+for lfs_objects in ~/repos/*/.git/lfs/objects; do
+    summary=$(~/repos/dotfiles/bin/lfs-dedup "${lfs_objects%/.git/lfs/objects}" 2>&1 | tail -1)
+    [[ $summary == *"cloned 0 files"* ]] || log "lfs-dedup $summary"
+done
