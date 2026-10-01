@@ -44,7 +44,15 @@ new checkouts (default 1). Numbering continues from the highest existing suffix 
    ```
 5. **direnv allow** the new checkout: `direnv allow ~/repos/<repo>-N`.
 6. **Install deps** with whatever the repo uses (`pnpm install`, etc.) and run any required codegen
-   (e.g. `prisma generate`) to verify the checkout actually works.
+   (e.g. `prisma generate`) to verify the checkout actually works. For npm/yarn repos (no
+   `pnpm-lock.yaml`), first APFS-clone the main checkout's `node_modules` so the new checkout shares
+   its disk blocks instead of writing a ~1 GB copy, then use `npm install`, not `npm ci` (`ci` deletes
+   `node_modules` first, throwing the clones away):
+   ```bash
+   cp -c -R ~/repos/<repo>/node_modules ~/repos/<repo>-N/ && (cd ~/repos/<repo>-N && npm install)
+   ```
+   Repeat for workspace-level `node_modules` dirs (e.g. `apps/*/node_modules`) if the main checkout
+   has them. uv venvs and pnpm already share blocks with their global caches; nothing to do there.
 7. **Report back:** path of each new checkout, what was symlinked, and the port-conflict caveat
    below if it applies.
 
