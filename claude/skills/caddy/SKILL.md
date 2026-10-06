@@ -86,6 +86,7 @@ Caddy-routed apps (have a `*.localhost` hostname):
 | 8770 | `sapient-2.localhost`                       | `~/repos/sapient-2`        |
 | 8090 | `bloomy.localhost`                          | `~/repos/bloomy-light-mode`   |
 | 8091 | `2.bloomy.localhost`                        | `~/repos/bloomy-light-mode-2` |
+| 5181 | `platform-public.localhost`                | `~/repos/platform-public` (API 3020; Postgres 5463) |
 
 Bloomy uses `N.bloomy.localhost` rather than the `bloomy-N.localhost` shape the Sapient rows use.
 That's deliberate: `localhost` is not in the public suffix list, so every checkout shares the

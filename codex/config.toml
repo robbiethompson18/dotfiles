@@ -214,6 +214,87 @@ trust_level = "trusted"
 [projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/dfir-eyes-on-data"]
 trust_level = "trusted"
 
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout/text/dfir-eyes-on-data"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout/ese/dfir-eyes-on-data"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout/sqlite/dfir-eyes-on-data"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout/binfiles/dfir-eyes-on-data"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout/registry/dfir-eyes-on-data"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout/ntfs/dfir-eyes-on-data"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout2/u1/repo"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout2/l1/repo"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout2/l2/repo"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout2/l3/repo"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/review/pr77"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout2/e1/repo"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout2/u3/repo"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout2/u2/repo"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout2/u5/repo"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout2/u4/repo"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout2/u6/repo"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout2/u7/repo"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout2/u8/repo"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout2/u9/repo"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout2/e2/repo"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout2/u10/repo"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/e9fd4d63-af59-4a4c-8f73-d40cee5c48f7/scratchpad/fanout2/w1/repo"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-13/14392254-7325-4308-b4ba-daa188714cd8/scratchpad/dfir-eyes-on-data"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/dfir-eyes-on-data"]
+trust_level = "trusted"
+
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-8/25cfba94-536b-4776-9590-537e94f162b8/scratchpad/backend-rm"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/platform-public"]
+trust_level = "trusted"
+
 [plugins."slack@openai-curated"]
 enabled = true
 
@@ -260,6 +341,7 @@ screen_reader_detection_done = true
 "gpt-5.5" = 4
 "gpt-5.6-sol" = 4
 gpt-6-astra = 4
+"gpt-6.1-sol" = 1
 
 [features]
 apps = false
