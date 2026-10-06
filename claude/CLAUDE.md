@@ -1,8 +1,5 @@
 # Claude Code Instructions
 
-**TEMPORARY, until Sunday 2026-10-04:** Robbie is in London. Display times in UK time (BST, UTC+1),
-not Pacific. Delete this line after that date.
-
 > This file is Robbie's **global** Claude Code config, synced across all his machines via his
 > dotfiles repo. Loaded in every project, every session, including work repos. Rules here apply
 > everywhere unless overridden by a project-level `CLAUDE.md` or `CLAUDE.local.md`.
