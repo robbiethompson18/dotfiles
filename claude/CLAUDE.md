@@ -36,7 +36,9 @@ bed.
 
 ## Tool restrictions
 
-- Never use `sed` for file editing. Always use the Edit tool instead.
+- On macOS, put `pkill`/`pgrep` options before the pattern. BSD stops parsing options at the first
+  pattern, so `pkill -f foo -P 1` kills everything matching `foo` OR `-P` OR `1`. This has killed
+  Chrome and Slack.
 
 ## File links:
 
