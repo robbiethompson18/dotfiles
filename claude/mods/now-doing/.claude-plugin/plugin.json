@@ -1,0 +1,6 @@
+{
+  "name": "now-doing",
+  "version": "0.1.0",
+  "description": "A short plain-language line above the prompt saying what the main session is working on and why, written by a cheap model.",
+  "types": "./types/index.d.ts"
+}
