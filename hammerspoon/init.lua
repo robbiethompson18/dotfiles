@@ -356,8 +356,9 @@ hyperMode:bind("", "4", function() focusScreen(4) end)
 local hScrollPixelsPerTick = 25
 local hScrollTickSeconds = 0.016
 
-local function scrollHorizontally(direction) -- -1 = left, 1 = right
-  hs.eventtap.event.newScrollEvent({-direction * hScrollPixelsPerTick, 0}, {}, "pixel"):post()
+local function scrollHorizontally(direction, speedMultiplier) -- -1 = left, 1 = right
+  local pixels = hScrollPixelsPerTick * (speedMultiplier or 1)
+  hs.eventtap.event.newScrollEvent({-direction * pixels, 0}, {}, "pixel"):post()
 end
 
 -- Buttons 3/4 are the thumb back/forward buttons. Scrolls for as long as one is held.
@@ -384,7 +385,7 @@ ThumbScrollTap = hs.eventtap.new(
   end
 ):start()
 
-local function scrollLeft() scrollHorizontally(-1) end
-local function scrollRight() scrollHorizontally(1) end
+local function scrollLeft() scrollHorizontally(-1, 2) end
+local function scrollRight() scrollHorizontally(1, 2) end
 hs.hotkey.bind({"ctrl", "alt", "cmd"}, "Left", scrollLeft, nil, scrollLeft)
 hs.hotkey.bind({"ctrl", "alt", "cmd"}, "Right", scrollRight, nil, scrollRight)
