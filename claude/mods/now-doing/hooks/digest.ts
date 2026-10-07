@@ -6,6 +6,9 @@ const USER_PROMPTS = 3
 const ASSISTANT_NOTES = 4
 const TOOL_USES = 15
 const DIGEST_LIMIT = 7000
+const LINKS = 3
+// A local dev-server URL, or an absolute file path. The lookbehind keeps the path half from matching inside a URL or a relative path.
+const LINK = /https?:\/\/(?:localhost|127\.0\.0\.1|0\.0\.0\.0|[\w.-]+\.localhost)(?::\d+)?[^\s`'"()<>[\]]*|(?<![\w/.~-])(?:file:\/\/)?\/(?:Users|tmp|private)\/[^\s`'"()<>[\]]+/g
 
 export const SYSTEM = `You write a one-glance status for someone supervising an AI coding agent. They are not following the details. From the session excerpt, say what the agent is working on right now and why, at a bird's-eye level, in plain everyday language.
 
@@ -68,6 +71,20 @@ export function buildDigest(messages: readonly SessionMessage[], previous: Summa
   }
   const digest = parts.join('\n\n')
   return digest.length <= DIGEST_LIMIT ? digest : digest.slice(-DIGEST_LIMIT)
+}
+
+/** The dev-server URLs and absolute file paths the agent most recently wrote to the user, newest first. Taken verbatim from its prose, never from the model, so they are always exact. */
+export function extractLinks(messages: readonly SessionMessage[]): string[] {
+  const found = messages
+    .filter(m => m.role === 'assistant')
+    .flatMap(m => m.text.match(LINK) ?? [])
+    .map(link => link.replace(/^file:\/\//, '').replace(/[.,;:!?*]+$/, ''))
+  return [...new Set(found.reverse())].slice(0, LINKS)
+}
+
+/** What a click on a link opens: the URL itself, or the file without its \`:line\` suffix. */
+export function hrefFor(link: string): string {
+  return link.startsWith('/') ? `file://${link.replace(/(:\d+)+$/, '')}` : link
 }
 
 /** Reads the model's reply as `{ doing, why }`, accepting a bare sentence when it skipped the JSON. */

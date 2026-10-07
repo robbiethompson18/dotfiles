@@ -1,9 +1,10 @@
 import { atom, read, update } from 'claude-code'
 import type { Register } from 'claude-code'
 
-import { buildDigest, parseReply, SYSTEM } from './digest'
+import { buildDigest, extractLinks, hrefFor, parseReply, SYSTEM } from './digest'
 
 const summary = atom({ plugin: 'now-doing', key: 'summary' } as const, null)
+const links = atom({ plugin: 'now-doing', key: 'links' } as const, [])
 const isHidden = atom({ plugin: 'now-doing', key: 'isHidden' } as const, false)
 
 const MODEL = 'haiku'
@@ -42,6 +43,7 @@ export const register: Register = on => {
         if (messages.length === 0) {
           return
         }
+        await update($, links, () => extractLinks(messages))
         const reply = await $.model.complete({
           model: MODEL,
           system: SYSTEM,
@@ -105,7 +107,8 @@ export const register: Register = on => {
     if (e.props.hasSurvey || current === null || (await read($, isHidden))) {
       return next(e)
     }
-    const { Box, Text } = $.ui.resolve(e)
+    const { Box, Link, Text } = $.ui.resolve(e)
+    const currentLinks = await read($, links)
 
     return (
       <Box flexDirection="column">
@@ -117,6 +120,11 @@ export const register: Register = on => {
             <Text bold>Why:</Text> {current.why}
           </Text>
         )}
+        {currentLinks.map((link, i) => (
+          <Text key={link} wrap="truncate-end">
+            <Text bold>{i === 0 ? 'Links:' : '      '}</Text> <Link href={hrefFor(link)}>{link}</Link>
+          </Text>
+        ))}
       </Box>
     )
   })

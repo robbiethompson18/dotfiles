@@ -109,3 +109,27 @@ test('/now-doing off hides the line and stops model calls', async ($, on) => {
   await clock.advance(60_000)
   expect(calls).toBe(1)
 })
+
+test('links the agent gave show under the summary, newest first, and are never sent through the model', async ($, on) => {
+  const clock = mock.clock(on, { now: 1_000_000 })
+  stubEngine(on)
+  const transcript: SessionMessage[] = [
+    ...TRANSCRIPT,
+    { role: 'assistant', text: 'Old one: http://localhost:3000/old. See `src/login.ts:12` and /api/users too.', toolUses: [] },
+    { role: 'assistant', text: 'Dev server is at http://app.localhost/login, notes in **/Users/robbie/repos/app/docs/login.md:40**.', toolUses: [] },
+    { role: 'assistant', text: 'Also /tmp/report.html and https://example.com/x.', toolUses: [] },
+  ]
+  on('session.messages', () => ({ value: transcript }))
+  on('model.complete', () => ({ value: { isAnswered: true as const, text: '{"doing": "Working", "why": "Asked"}', usage: USAGE } }))
+
+  await $.session.start({ cwd: '/', surface: 'terminal', isInteractive: true })
+  await $.turn.complete({ answer: 'Done', durationMs: 10, isAborted: false, turnId: 'a', reason: 'answer' })
+  await clock.advance(5_000)
+
+  const band = await $.ui.mount({ ...BAND, surface: 'terminal' })
+  expect(await band.find({ type: 'Link', text: '/tmp/report.html' })).toBeDefined()
+  expect(await band.find({ type: 'Link', text: '/Users/robbie/repos/app/docs/login.md:40' })).toBeDefined()
+  expect(await band.find({ type: 'Link', text: 'http://app.localhost/login' })).toBeDefined()
+  expect(await band.find({ text: /old|example\.com|api\/users|src\/login/ })).toBeUndefined()
+  await band.unmount()
+})
