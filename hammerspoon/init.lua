@@ -348,3 +348,43 @@ hyperMode:bind("", "1", function() focusScreen(1) end)
 hyperMode:bind("", "2", function() focusScreen(2) end)
 hyperMode:bind("", "3", function() focusScreen(3) end)
 hyperMode:bind("", "4", function() focusScreen(4) end)
+
+--------------------------------------------------------------------------------
+-- HORIZONTAL SCROLL (mouse thumb buttons, or ctrl+alt+cmd+Left/Right)
+--------------------------------------------------------------------------------
+
+local hScrollPixelsPerTick = 25
+local hScrollTickSeconds = 0.016
+
+local function scrollHorizontally(direction) -- -1 = left, 1 = right
+  hs.eventtap.event.newScrollEvent({-direction * hScrollPixelsPerTick, 0}, {}, "pixel"):post()
+end
+
+-- Buttons 3/4 are the thumb back/forward buttons. Scrolls for as long as one is held.
+local thumbButtonDirections = { [3] = -1, [4] = 1 }
+local hScrollTimer
+
+-- Global so the tap isn't garbage collected.
+ThumbScrollTap = hs.eventtap.new(
+  { hs.eventtap.event.types.otherMouseDown, hs.eventtap.event.types.otherMouseUp },
+  function(event)
+    local button = event:getProperty(hs.eventtap.event.properties.mouseEventButtonNumber)
+    local direction = thumbButtonDirections[button]
+    if not direction then return false end
+
+    if hScrollTimer then
+      hScrollTimer:stop()
+      hScrollTimer = nil
+    end
+    if event:getType() == hs.eventtap.event.types.otherMouseDown then
+      scrollHorizontally(direction)
+      hScrollTimer = hs.timer.doEvery(hScrollTickSeconds, function() scrollHorizontally(direction) end)
+    end
+    return true -- swallow, so Chrome doesn't also navigate back/forward
+  end
+):start()
+
+local function scrollLeft() scrollHorizontally(-1) end
+local function scrollRight() scrollHorizontally(1) end
+hs.hotkey.bind({"ctrl", "alt", "cmd"}, "Left", scrollLeft, nil, scrollLeft)
+hs.hotkey.bind({"ctrl", "alt", "cmd"}, "Right", scrollRight, nil, scrollRight)
