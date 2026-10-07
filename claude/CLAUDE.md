@@ -40,6 +40,10 @@ bed.
   pattern, so `pkill -f foo -P 1` kills everything matching `foo` OR `-P` OR `1`. This has killed
   Chrome and Slack.
 
+## UI libraries
+
+Never use MUI (`@mui/*`, including DataGridPro); for tables use Robbie's native `LogViewer` (`packages/ui/src/components/log-viewer`, imported as `@asymmetric/ui/log-viewer` in deepresponse-core).
+
 ## File links:
 
 When Robbie asks for a link to a file, give the full path so that the link in his editor works. Eg:
