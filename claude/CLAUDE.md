@@ -163,6 +163,8 @@ Keep it that way: identifiers go in the note, never in this index line.
 - [Hammerspoon hotkeys dead — read when Hyper mode / any hs.hotkey stops firing](docs/hammerspoon-secure-input.md)
   — Secure Keyboard Input diagnosis, the iTerm2 refcount leak, when an iTerm2 restart fixes it and
   when only a logout does (dead holder PID)
+- [Health insurance — read when Robbie asks about Covered California, his health plan, or paying a premium](docs/health-insurance.md)
+  — which carrier the plan is actually with, payment status and open items, how to reach the pay page
 - [Retirement accounts — read when Robbie asks about his 401(k)s/IRAs or the pending 401(k) rollover check](docs/retirement-accounts.md)
   — which providers hold what, the in-flight rollover and how to finish it
 
