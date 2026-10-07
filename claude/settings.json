@@ -66,6 +66,15 @@
             "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/repos/dotfiles/bin/pkill-guard-hook"
+          }
+        ]
       }
     ],
     "SessionEnd": [

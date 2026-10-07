@@ -1,0 +1,61 @@
+#!/bin/sh
+# Claude Code PreToolUse hook: block pkill/pgrep calls with an option after the pattern. BSD pkill
+# (macOS) stops parsing options at the first pattern, so `pkill -f foo -U 501` kills everything
+# matching `foo` OR `-U` OR `501`. Every Chromium/Electron helper has `--lang=en-US` in its argv,
+# so this has killed Chrome, Slack and VS Code. Exit 2 sends stderr to the model and blocks.
+
+input=$(cat)
+case "$input" in
+  *pkill*|*pgrep*) ;;
+  *) exit 0 ;;
+esac
+
+printf '%s' "$input" | exec python3 -I -c '
+import json, re, shlex, sys
+
+cmd = json.load(sys.stdin).get("tool_input", {}).get("command", "")
+# Collapse $(...) and `...` to one word so shlex does not split them into ( ) tokens.
+prev = None
+while prev != cmd:
+    prev, cmd = cmd, re.sub(r"\$\([^()]*\)|`[^`]*`", "SUBST", cmd)
+
+# Newlines separate commands too; shlex would treat them as plain whitespace.
+cmd = cmd.replace("\\\n", " ").replace("\n", " ; ")
+
+lexer = shlex.shlex(cmd, posix=True, punctuation_chars=True)
+lexer.whitespace_split = True
+try:
+    tokens = list(lexer)
+except ValueError:  # unbalanced quotes; let bash report it
+    sys.exit(0)
+
+SEPARATORS = {";", "&&", "||", "|", "&", "(", ")"}
+TAKES_ARG = set("FGgjPstUu")  # BSD pkill/pgrep options that consume the next word
+
+for i, tok in enumerate(tokens):
+    if tok.rsplit("/", 1)[-1] not in ("pkill", "pgrep"):
+        continue
+    pattern = None
+    skip_next = False
+    for arg in tokens[i + 1:]:
+        if arg in SEPARATORS or arg[0] in "<>" or arg[:2] in ("2>", "1>", "&>"):
+            break
+        if skip_next:
+            skip_next = False
+        elif arg == "--":
+            break
+        elif pattern is None and arg.startswith("-"):
+            skip_next = arg[-1] in TAKES_ARG and len(arg) == 2
+        elif pattern is None:
+            pattern = arg
+        elif arg.startswith("-"):
+            print(
+                f"Blocked: `{arg}` comes after the pattern `{pattern}` in a {tok} call. macOS "
+                f"(BSD) {tok} stops parsing options at the first pattern, so `{arg}` would be "
+                "treated as another pattern and match unrelated processes (e.g. `-U` matches "
+                "`--lang=en-US` in every Chrome/Slack/VS Code helper). Put all options before "
+                "the pattern and rerun.",
+                file=sys.stderr,
+            )
+            sys.exit(2)
+'
