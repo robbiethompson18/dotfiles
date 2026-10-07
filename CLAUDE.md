@@ -10,3 +10,7 @@ holds the conventions that only apply in his personal repos.
 
 - [Kinesis keyboard — read before changing macro keys or the keyboard layout](kinesis/README.md)
   — hk→F-key map, v-Drive push workflow, layout file syntax
+
+## Tests
+
+Don't write tests in this repo. It's too small for them to pay off; verify changes by running them.
