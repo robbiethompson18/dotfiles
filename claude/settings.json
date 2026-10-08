@@ -2,7 +2,7 @@
   "cleanupPeriodDays": 365,
   "env": {
     "CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION": "1000",
-    "CLAUDE_CODE_PLUGIN_DIRS": "~/repos/dotfiles/claude/mods/now-doing"
+    "CLAUDE_CODE_PLUGIN_DIRS": "~/repos/dotfiles/claude/mods/now-doing:~/repos/dotfiles/claude/mods/pane-status"
   },
   "permissions": {
     "allow": [
@@ -29,17 +29,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
-          }
-        ]
-      }
-    ],
-    "PermissionRequest": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
+            "command": "$HOME/repos/dotfiles/bin/cc-state hook Notification"
           }
         ]
       }
@@ -49,7 +39,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
+            "command": "$HOME/repos/dotfiles/bin/cc-state hook PostToolUse"
           },
           {
             "type": "command",
@@ -60,10 +50,11 @@
     ],
     "PreToolUse": [
       {
+        "matcher": "AskUserQuestion",
         "hooks": [
           {
             "type": "command",
-            "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
+            "command": "$HOME/repos/dotfiles/bin/cc-state hook PreToolUse"
           }
         ]
       },
@@ -82,7 +73,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
+            "command": "$HOME/repos/dotfiles/bin/cc-state hook SessionEnd"
           }
         ]
       }
@@ -100,7 +91,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
+            "command": "$HOME/repos/dotfiles/bin/cc-state hook SessionStart"
           }
         ]
       }
@@ -110,7 +101,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
+            "command": "$HOME/repos/dotfiles/bin/cc-state hook Stop"
           }
         ]
       }
@@ -120,7 +111,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
+            "command": "$HOME/repos/dotfiles/bin/cc-state hook StopFailure"
           }
         ]
       }
@@ -130,7 +121,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
+            "command": "$HOME/repos/dotfiles/bin/cc-state hook SubagentStop"
           }
         ]
       }
@@ -140,7 +131,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -x \"$HOME/.config/iterm2/cc-status\" ] && \"$HOME/.config/iterm2/cc-status\" || true"
+            "command": "$HOME/repos/dotfiles/bin/cc-state hook UserPromptSubmit"
           }
         ]
       }

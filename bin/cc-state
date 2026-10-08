@@ -1,0 +1,178 @@
+#!/usr/bin/env bash
+# cc-state — iTerm2 status for the Claude Code session in this pane.
+#
+#   cc-state ideating|implementing|review|overnight   workflow state (dot color + status text)
+#   cc-state blocked [reason]                          red blinking dot until the next prompt
+#   cc-state clear                                     drop the workflow state
+#   cc-state priority p0|p1|p2|p3|none                 tab color
+#   cc-state hook <Event>                              called by the hooks in claude/settings.json
+#
+# Workflow state is set by the agent (see claude/CLAUDE.md); activity (working / waiting for you /
+# subagents running) comes from the hooks. State lives in ~/.cache/cc-state/<iTerm session uuid>.*
+set -u
+
+it2="/Applications/iTerm 2.app/Contents/Resources/utilities/it2"
+[ -n "${ITERM_SESSION_ID:-}" ] && [ -x "$it2" ] || exit 0
+session=${ITERM_SESSION_ID#*:}
+mkdir -p "$HOME/.cache/cc-state"
+f="$HOME/.cache/cc-state/$session"
+
+RED="#ef4444"
+DIM_RED="#450a0a"
+
+workflow_color() {
+  case "$1" in
+    ideating) echo "#3b82f6" ;;
+    implementing) echo "#eab308" ;;
+    review) echo "#22c55e" ;;
+    overnight) echo "#a855f7" ;;
+    *) echo "#8e8e93" ;;
+  esac
+}
+
+set_status() { # status, dot color, detail
+  "$it2" session set-status --session "$session" --status "$1" --dot-color "$2" --detail "$3" >/dev/null 2>&1
+}
+
+# Sets STATUS, COLOR, DETAIL from the state files.
+compute() {
+  local workflow activity
+  workflow=$(cat "$f.workflow" 2>/dev/null)
+  activity=$(cat "$f.activity" 2>/dev/null)
+  if [ -e "$f.blocked" ]; then
+    STATUS=blocked
+    COLOR=$RED
+    DETAIL=$(sed -n 2p "$f.blocked")
+    [ -n "$workflow" ] && DETAIL="$workflow${DETAIL:+ — $DETAIL}"
+  elif [ -n "$workflow" ]; then
+    STATUS=$workflow
+    COLOR=$(workflow_color "$workflow")
+    DETAIL=$activity
+  else
+    STATUS=${activity:-idle}
+    COLOR=$(workflow_color "")
+    DETAIL=""
+  fi
+}
+
+render() {
+  compute
+  # Hooks fire on every tool call and it2 takes ~150 ms, so skip the call when nothing changed.
+  local key="$STATUS|$COLOR|$DETAIL"
+  [ "$key" = "$(cat "$f.last" 2>/dev/null)" ] && return
+  echo "$key" >"$f.last"
+  set_status "$STATUS" "$COLOR" "$DETAIL"
+  if [ -e "$f.blocked" ] && ! kill -0 "$(cat "$f.blinkpid" 2>/dev/null)" 2>/dev/null; then
+    nohup "$0" _blink </dev/null >/dev/null 2>&1 &
+    echo $! >"$f.blinkpid"
+  fi
+}
+
+# Runs detached. Ends when the block is lifted or the pane is gone (it2 fails).
+blink() {
+  while [ -e "$f.blocked" ]; do
+    compute
+    set_status "$STATUS" "$DIM_RED" "$DETAIL" || exit 0
+    sleep 0.5
+    [ -e "$f.blocked" ] || break
+    set_status "$STATUS" "$RED" "$DETAIL" || exit 0
+    sleep 0.5
+  done
+  rm -f "$f.last" "$f.blinkpid"
+  render
+}
+
+block() { # auto|manual, reason
+  printf '%s\n%s\n' "$1" "$2" >"$f.blocked"
+}
+
+hook() {
+  case "$1" in
+    SessionStart)
+      case "$(jq -r '.source // empty')" in
+        startup | clear) rm -f "$f.workflow" "$f.blocked" ;;
+      esac
+      echo idle >"$f.activity"
+      ;;
+    UserPromptSubmit)
+      rm -f "$f.blocked"
+      echo working >"$f.activity"
+      ;;
+    PreToolUse) # only wired up for AskUserQuestion
+      block auto "question for you"
+      ;;
+    PostToolUse)
+      [ "$(sed -n 1p "$f.blocked" 2>/dev/null)" = auto ] && rm -f "$f.blocked"
+      case "$(cat "$f.activity" 2>/dev/null)" in
+        working) ;;
+        # The main turn has ended, so a tool call can only be a background subagent's.
+        waiting*) echo "subagents running" >"$f.activity" ;;
+        "subagents running") ;;
+        *) echo working >"$f.activity" ;;
+      esac
+      ;;
+    SubagentStop)
+      [ "$(cat "$f.activity" 2>/dev/null)" = "subagents running" ] && echo "waiting for you" >"$f.activity"
+      ;;
+    Notification)
+      [ "$(jq -r '.notification_type // empty')" = permission_prompt ] || return
+      block auto "needs permission"
+      ;;
+    Stop)
+      echo "waiting for you" >"$f.activity"
+      ;;
+    StopFailure)
+      block auto "turn failed"
+      ;;
+    SessionEnd)
+      rm -f "$f".*
+      set_status idle "$(workflow_color "")" ""
+      return
+      ;;
+    *) return ;;
+  esac
+  render
+}
+
+priority() {
+  local color
+  case "$1" in
+    p0) color="#ef4444" ;;
+    p1) color="#f97316" ;;
+    p2) color="#eab308" ;;
+    p3) color="#3b82f6" ;;
+    none)
+      # it2 can only set a color; resetting it takes iTerm2's escape code.
+      printf '\033]6;1;bg;*;default\a' >/dev/tty
+      return
+      ;;
+    *)
+      echo "cc-state: unknown priority '$1' (p0, p1, p2, p3, none)" >&2
+      exit 2
+      ;;
+  esac
+  "$it2" session set-color "$color" --session "$session" >/dev/null
+}
+
+case "${1:-}" in
+  ideating | implementing | review | overnight)
+    echo "$1" >"$f.workflow"
+    rm -f "$f.blocked"
+    render
+    ;;
+  blocked)
+    block manual "${2:-}"
+    render
+    ;;
+  clear)
+    rm -f "$f.workflow" "$f.blocked"
+    render
+    ;;
+  priority) priority "${2:-}" ;;
+  hook) hook "${2:-}" ;;
+  _blink) blink ;;
+  *)
+    sed -n '2,8p' "$0" | sed 's/^# \{0,1\}//' >&2
+    exit 2
+    ;;
+esac

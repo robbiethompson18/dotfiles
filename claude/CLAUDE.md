@@ -97,6 +97,21 @@ Writing "retiring now" without the command is a no-op. Run it as the last action
 Only retire when the work finished. If it failed, is blocked, or I owe you an answer, stay alive and
 say so. `kas` is the automatic-after-ship case; this applies either way.
 
+## Workflow state
+
+Robbie reads each session's state off its iTerm2 status. Hooks handle working / waiting / subagents
+running. You set the workflow state by running `cc-state <state>` whenever it changes:
+
+- `cc-state ideating`: exploring options or planning, no code changes yet (blue)
+- `cc-state implementing`: writing or changing code (yellow)
+- `cc-state review`: the change is up and you're waiting on or addressing bot reviews (green)
+- `cc-state overnight`: running unattended in overnight mode (purple)
+- `cc-state blocked "<reason>"`: you can't continue without Robbie, e.g. a login, a decision, a
+  missing permission (blinking red). Run it before ending the turn. It clears on his next message.
+- `cc-state clear`: the work is finished
+
+Only the main session sets this, never a subagent.
+
 ## Speed
 
 When you kick off a long task (eg model training run, data generation) return control to Robbie

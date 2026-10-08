@@ -1,0 +1,5 @@
+{
+  "name": "pane-status",
+  "version": "0.1.0",
+  "description": "/p0 to /p3 color the iTerm2 tab and the prompt bar by priority; /state sets the workflow state shown in the iTerm2 status. Both go through bin/cc-state."
+}
