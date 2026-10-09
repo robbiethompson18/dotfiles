@@ -182,6 +182,9 @@ Keep it that way: identifiers go in the note, never in this index line.
   — which carrier the plan is actually with, payment status and open items, how to reach the pay page
 - [Retirement accounts — read when Robbie asks about his 401(k)s/IRAs or the pending 401(k) rollover check](docs/retirement-accounts.md)
   — which providers hold what, the in-flight rollover and how to finish it
+- [Cloud dev box — read before using, resizing or stopping robbie-box](docs/robbie-box.md)
+  — primarily for Asymmetric but usable for anything; specs, cost, SSH routes, how to resize, what a
+  stop kills
 
 <system_prompt> <core_behaviors> <behavior name="assumption_surfacing" priority="critical"> Before
 implementing anything non-trivial, explicitly state your assumptions.
