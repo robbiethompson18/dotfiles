@@ -103,9 +103,11 @@ export const register: Register = on => {
   })
 
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
+    // This mod is listed first in CLAUDE_CODE_PLUGIN_DIRS, so it is outermost: the mods beneath only draw if their tree is kept.
+    const below = await next(e)
     const current = await read($, summary)
     if (e.props.hasSurvey || current === null || (await read($, isHidden))) {
-      return next(e)
+      return below
     }
     const { Box, Link, Text } = $.ui.resolve(e)
     const currentLinks = await read($, links)
@@ -125,6 +127,7 @@ export const register: Register = on => {
             <Text bold>{i === 0 ? 'Links:' : '      '}</Text> <Link href={hrefFor(link)}>{link}</Link>
           </Text>
         ))}
+        {below}
       </Box>
     )
   })
