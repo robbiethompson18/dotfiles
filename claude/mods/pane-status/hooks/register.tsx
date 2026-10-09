@@ -9,6 +9,7 @@ const CC_STATE = 'repos/dotfiles/bin/cc-state'
 const IT2 = '/Applications/iTerm 2.app/Contents/Resources/utilities/it2'
 const LABEL_PREFIX = /^(IDEA|IMPL|REVIEW|NIGHT|BLOCK): /
 const POLL_MS = 1_000
+const BLINK_MS = 500
 
 // The mod API has no getter for the session's name, so read it off the pane title, which iTerm2
 // reports as `"✳ my title (claude)"`: quoted, behind Claude Code's status glyph, with the job name.
@@ -23,6 +24,8 @@ function paneTitle(paneName: string): string {
 export const register: Register = on => {
   // A command.run hook can't run another command, so /p0 leaves the color here for the next tick.
   let pendingColor: string | undefined
+  let isBlocked = false
+  let isLit = false
 
   on('session.start', async ($, e, next) => {
     for (const name of PRIORITIES) {
@@ -61,6 +64,7 @@ export const register: Register = on => {
           return
         }
         const label = (await $.fs.read(labelFile).catch(() => '')).trim()
+        isBlocked = label === 'BLOCK'
         if (label === applied) {
           return
         }
@@ -80,7 +84,39 @@ export const register: Register = on => {
       }
     })
 
+    $.clock.every(BLINK_MS, () => {
+      if (isBlocked || isLit) {
+        isLit = isBlocked && !isLit
+        $.ui.invalidate('ui.render')
+      }
+    })
+
     return next(e)
+  })
+
+  // The prompt bar's own color can only change through /color, which prints to the transcript, so the blink is a row of its own right above the bar.
+  on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
+    const below = await next(e)
+    if (!isBlocked || e.props.hasSurvey) {
+      return below
+    }
+    const { Box, Text } = $.ui.resolve(e)
+    const row = ' BLOCKED: waiting on you'.padEnd(e.props.bodyColumns)
+
+    return (
+      <Box flexDirection="column">
+        {below}
+        {isLit ? (
+          <Text key="blocked" bold color="inverseText" backgroundColor="error" wrap="truncate-end">
+            {row}
+          </Text>
+        ) : (
+          <Text key="blocked" bold color="error" wrap="truncate-end">
+            {row}
+          </Text>
+        )}
+      </Box>
+    )
   })
 
   for (const name of PRIORITIES) {
