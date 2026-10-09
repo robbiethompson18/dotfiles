@@ -77,6 +77,7 @@ Caddy-routed apps (have a `*.localhost` hostname):
 | 7100 | `inbox.localhost`                           | `~/repos/inbox`            |
 | 7101 | `birds.localhost`                           | `~/repos/whimsy-projects/heard-today` |
 | 7102 | `autoresearch.localhost`                    | `~/repos/nd-rl` (`code/experiments/current/autoresearch/dashboard`) |
+| 7103 | `stego.localhost`                           | `~/repos/cot-codenames` (`uv run python -m cot_codenames.stego.dash`) |
 | 7327 | `tinydiff.localhost`                        | `~/repos/tiny-diff`        |
 | 8765 | `cognitive.localhost`                       | `~/repos/cognitive-tests`  |
 | 8766 | `silkworm-aws-resource-dashboard.localhost` | `~/repos/silkworm`         |
