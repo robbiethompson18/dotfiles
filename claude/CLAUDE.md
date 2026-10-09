@@ -99,18 +99,19 @@ say so. `kas` is the automatic-after-ship case; this applies either way.
 
 ## Workflow state
 
-Robbie reads each session's state off its iTerm2 status. Hooks handle working / waiting / subagents
-running. You set the workflow state by running `cc-state <state>` whenever it changes:
+Robbie reads each session's state off its prompt bar: the session title gets a prefix like
+`BLOCK: <title>`. Set it by running `cc-state <state>` whenever the state changes:
 
-- `cc-state ideating`: exploring options or planning, no code changes yet (blue)
-- `cc-state implementing`: writing or changing code (yellow)
-- `cc-state review`: the change is up and you're waiting on or addressing bot reviews (green)
-- `cc-state overnight`: running unattended in overnight mode (purple)
-- `cc-state blocked "<reason>"`: you can't continue without Robbie, e.g. a login, a decision, a
-  missing permission (blinking red). Run it before ending the turn. It clears on his next message.
+- `cc-state ideating`: exploring options or planning, no code changes yet (`IDEA`)
+- `cc-state implementing`: writing or changing code (`IMPL`)
+- `cc-state review`: the change is up and you're waiting on or addressing bot reviews (`REVIEW`)
+- `cc-state overnight`: running unattended in overnight mode (`NIGHT`)
+- `cc-state blocked`: you can't continue without Robbie, e.g. a login, a decision, a missing
+  permission (`BLOCK`). Run it before ending the turn. It clears on his next message.
 - `cc-state clear`: the work is finished
 
-Only the main session sets this, never a subagent.
+The title updates when the turn ends. Only the main session sets this, never a subagent. Don't
+`/rename` the prefix away or copy it into the title yourself.
 
 ## Speed
 

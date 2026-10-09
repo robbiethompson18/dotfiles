@@ -24,56 +24,13 @@
   },
   "model": "opus",
   "hooks": {
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/repos/dotfiles/bin/cc-state hook Notification"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/repos/dotfiles/bin/cc-state hook PostToolUse"
-          },
-          {
-            "type": "command",
-            "command": "$HOME/repos/dotfiles/bin/oom-guard-hook"
-          }
-        ]
-      }
-    ],
     "PreToolUse": [
-      {
-        "matcher": "AskUserQuestion",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/repos/dotfiles/bin/cc-state hook PreToolUse"
-          }
-        ]
-      },
       {
         "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
             "command": "$HOME/repos/dotfiles/bin/pkill-guard-hook"
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/repos/dotfiles/bin/cc-state hook SessionEnd"
           }
         ]
       }
@@ -96,16 +53,6 @@
         ]
       }
     ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/repos/dotfiles/bin/cc-state hook Stop"
-          }
-        ]
-      }
-    ],
     "StopFailure": [
       {
         "hooks": [
@@ -116,22 +63,22 @@
         ]
       }
     ],
-    "SubagentStop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/repos/dotfiles/bin/cc-state hook SubagentStop"
-          }
-        ]
-      }
-    ],
     "UserPromptSubmit": [
       {
         "hooks": [
           {
             "type": "command",
             "command": "$HOME/repos/dotfiles/bin/cc-state hook UserPromptSubmit"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/repos/dotfiles/bin/oom-guard-hook"
           }
         ]
       }
