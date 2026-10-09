@@ -1,10 +1,5 @@
 import type { Register } from 'claude-code'
 
-// Claude Code's own /color names.
-const PRIORITY_COLORS = { p0: 'red', p1: 'orange', p2: 'yellow', p3: 'blue', pnone: 'default' } as const
-type Priority = keyof typeof PRIORITY_COLORS
-const PRIORITIES = Object.keys(PRIORITY_COLORS) as Priority[]
-
 const CC_STATE = 'repos/dotfiles/bin/cc-state'
 const IT2 = '/Applications/iTerm 2.app/Contents/Resources/utilities/it2'
 const LABEL_PREFIX = /^(IDEA|IMPL|REVIEW|NIGHT|BLOCK): /
@@ -21,19 +16,9 @@ function paneTitle(paneName: string): string {
 }
 
 export const register: Register = on => {
-  // A command.run hook can't run another command, so /p0 leaves the color here for the next tick.
-  let pendingColor: string | undefined
   let isBlocked = false
 
   on('session.start', async ($, e, next) => {
-    for (const name of PRIORITIES) {
-      await $.command.register({
-        name,
-        description:
-          name === 'pnone' ? 'Clear the priority color' : `Mark this session ${name}: ${PRIORITY_COLORS[name]} prompt bar`,
-        immediate: true,
-      })
-    }
     await $.command.register({
       name: 'state',
       description: 'Set the workflow state shown before the session title',
@@ -45,18 +30,13 @@ export const register: Register = on => {
     const labelFile = `${await $.env.get('HOME')}/.cache/cc-state/${pane}.label`
     let applied: string | undefined
     let isBusy = false
-    // Both commands are queued by the engine until the session is idle, so a change made mid-turn lands when the turn ends.
+    // /rename is queued by the engine until the session is idle, so a change made mid-turn lands when the turn ends.
     $.clock.every(POLL_MS, async () => {
       if (isBusy) {
         return
       }
       isBusy = true
       try {
-        if (pendingColor !== undefined) {
-          const color = pendingColor
-          pendingColor = undefined
-          await $.command.run({ command: 'color', args: color })
-        }
         // bin/cc-state writes the label; this mirrors it into the title as `LABEL: title`.
         if (pane === undefined) {
           return
@@ -106,14 +86,6 @@ export const register: Register = on => {
       </Box>
     )
   })
-
-  for (const name of PRIORITIES) {
-    on('command.run', { command: name }, () => {
-      pendingColor = PRIORITY_COLORS[name]
-
-      return { text: `Priority: ${name === 'pnone' ? 'none' : name}` }
-    })
-  }
 
   on('command.run', { command: 'state' }, async ($, e) => {
     const state = e.args.trim()
