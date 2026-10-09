@@ -57,29 +57,28 @@ compute() {
 
 render() {
   compute
+  if [ -e "$f.blocked" ] && ! kill -0 "$(cat "$f.blinkpid" 2>/dev/null)" 2>/dev/null; then
+    nohup "$0" _blink </dev/null >/dev/null 2>&1 &
+    echo $! >"$f.blinkpid"
+  fi
   # Hooks fire on every tool call and it2 takes ~150 ms, so skip the call when nothing changed.
   local key="$STATUS|$COLOR|$DETAIL"
   [ "$key" = "$(cat "$f.last" 2>/dev/null)" ] && return
   echo "$key" >"$f.last"
   set_status "$STATUS" "$COLOR" "$DETAIL"
-  if [ -e "$f.blocked" ] && ! kill -0 "$(cat "$f.blinkpid" 2>/dev/null)" 2>/dev/null; then
-    nohup "$0" _blink </dev/null >/dev/null 2>&1 &
-    echo $! >"$f.blinkpid"
-  fi
 }
 
-# Runs detached. Ends when the block is lifted or the pane is gone (it2 fails).
+# Runs detached. Ends when the block is lifted or the pane is gone (it2 keeps failing).
 blink() {
-  while [ -e "$f.blocked" ]; do
+  local color=$DIM_RED failures=0
+  while [ -e "$f.blocked" ] && [ "$failures" -lt 20 ]; do
     compute
-    set_status "$STATUS" "$DIM_RED" "$DETAIL" || exit 0
-    sleep 0.5
-    [ -e "$f.blocked" ] || break
-    set_status "$STATUS" "$RED" "$DETAIL" || exit 0
+    if set_status "$STATUS" "$color" "$DETAIL"; then failures=0; else failures=$((failures + 1)); fi
+    if [ "$color" = "$RED" ]; then color=$DIM_RED; else color=$RED; fi
     sleep 0.5
   done
   rm -f "$f.last" "$f.blinkpid"
-  render
+  [ "$failures" -lt 20 ] && render
 }
 
 block() { # auto|manual, reason
