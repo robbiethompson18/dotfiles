@@ -58,9 +58,13 @@ mkdir -p "$OUT"
 run_codex() {
   command codex "$@" > "$OUT/raw.log" 2>&1 &
   local pid=$!
-  ( sleep "$TIMEOUT"; kill -TERM $pid 2>/dev/null; sleep 5; kill -KILL $pid 2>/dev/null ) &
+  # Killing the subshell orphans its `sleep`, which would otherwise hold our stdout open and stall
+  # any `codex-review.sh | tail` for the full $TIMEOUT after Codex finishes. Hence the redirect
+  # and the `pkill -P`.
+  ( sleep "$TIMEOUT"; kill -TERM $pid 2>/dev/null; sleep 5; kill -KILL $pid 2>/dev/null ) >/dev/null 2>&1 &
   local dog=$!
   wait $pid; local rc=$?
+  pkill -P $dog 2>/dev/null
   kill $dog 2>/dev/null
   return $rc
 }

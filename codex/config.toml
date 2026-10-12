@@ -295,6 +295,12 @@ trust_level = "trusted"
 [projects."/Users/robbie/repos/platform-public"]
 trust_level = "trusted"
 
+[projects."/private/tmp/claude-501/-Users-robbie-repos-deepresponse-core-3/493434b8-96f9-46c4-9116-f8484e46fc73/scratchpad/pr2"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/pkill-forensics"]
+trust_level = "trusted"
+
 [plugins."slack@openai-curated"]
 enabled = true
 
@@ -341,7 +347,7 @@ screen_reader_detection_done = true
 "gpt-5.5" = 4
 "gpt-5.6-sol" = 4
 gpt-6-astra = 4
-"gpt-6.1-sol" = 1
+"gpt-6.1-sol" = 2
 
 [features]
 apps = false
