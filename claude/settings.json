@@ -22,7 +22,7 @@
     "deny": [],
     "defaultMode": "bypassPermissions"
   },
-  "model": "opus",
+  "model": "fable",
   "hooks": {
     "PreToolUse": [
       {
