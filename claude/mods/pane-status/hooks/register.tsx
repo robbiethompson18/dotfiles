@@ -2,8 +2,15 @@ import type { Register } from 'claude-code'
 
 const CC_STATE = 'repos/dotfiles/bin/cc-state'
 const IT2 = '/Applications/iTerm 2.app/Contents/Resources/utilities/it2'
-const LABEL_PREFIX = /^(IDEA|IMPL|REVIEW|NIGHT|BLOCK): /
+const LABEL_PREFIX = /^(IDEA|IMPL|REVIEW|NIGHT|COMPUTE|BLOCK): /
 const POLL_MS = 1_000
+// Labels that also get a colored banner above the prompt bar. IDEA and NIGHT only prefix the title.
+const BANNERS: Record<string, { text: string; backgroundColor: string }> = {
+  BLOCK: { text: 'BLOCKED: waiting on you', backgroundColor: 'error' },
+  REVIEW: { text: 'REVIEW: waiting on bot reviews', backgroundColor: 'success' },
+  IMPL: { text: 'CODING', backgroundColor: 'warning' },
+  COMPUTE: { text: 'BABYSITTING COMPUTE', backgroundColor: 'blue' },
+}
 
 // The mod API has no getter for the session's name, so read it off the pane title, which iTerm2
 // reports as `"✳ my title (claude)"`: quoted, behind Claude Code's status glyph, with the job name.
@@ -16,13 +23,13 @@ function paneTitle(paneName: string): string {
 }
 
 export const register: Register = on => {
-  let isBlocked = false
+  let banner: string | undefined
 
   on('session.start', async ($, e, next) => {
     await $.command.register({
       name: 'state',
       description: 'Set the workflow state shown before the session title',
-      argumentHint: 'ideating | implementing | review | overnight | blocked | clear',
+      argumentHint: 'ideating | implementing | review | overnight | babysitting | blocked | clear',
       immediate: true,
     })
 
@@ -42,8 +49,9 @@ export const register: Register = on => {
           return
         }
         const label = (await $.fs.read(labelFile).catch(() => '')).trim()
-        if (isBlocked !== (label === 'BLOCK')) {
-          isBlocked = label === 'BLOCK'
+        const wantedBanner = label in BANNERS ? label : undefined
+        if (banner !== wantedBanner) {
+          banner = wantedBanner
           $.ui.invalidate('ui.render')
         }
         if (label === applied) {
@@ -71,16 +79,17 @@ export const register: Register = on => {
   // The prompt bar's own color can only change through /color, which prints to the transcript, so the banner is a row of its own right above the bar.
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
     const below = await next(e)
-    if (!isBlocked || e.props.hasSurvey) {
+    if (banner === undefined || e.props.hasSurvey) {
       return below
     }
     const { Box, Text } = $.ui.resolve(e)
-    const row = ' BLOCKED: waiting on you'.padEnd(e.props.bodyColumns)
+    const { text, backgroundColor } = BANNERS[banner]
+    const row = ` ${text}`.padEnd(e.props.bodyColumns)
 
     return (
       <Box flexDirection="column">
         {below}
-        <Text key="blocked" bold color="inverseText" backgroundColor="error" wrap="truncate-end">
+        <Text key="banner" bold color="inverseText" backgroundColor={backgroundColor} wrap="truncate-end">
           {row}
         </Text>
       </Box>

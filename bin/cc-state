@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # cc-state — workflow state of the Claude Code session in this iTerm2 pane.
 #
-#   cc-state ideating|implementing|review|overnight   set the workflow state
+#   cc-state ideating|implementing|review|overnight|babysitting   set the workflow state
 #   cc-state blocked                                   blocked on Robbie, until his next prompt
 #   cc-state clear                                     drop the workflow state
 #   cc-state hook <Event>                              called by the hooks in claude/settings.json
 #
-# Writes the label (IDEA, IMPL, REVIEW, NIGHT, BLOCK or nothing) to
+# Writes the label (IDEA, IMPL, REVIEW, NIGHT, COMPUTE, BLOCK or nothing) to
 # ~/.cache/cc-state/<iTerm session uuid>.label. The pane-status mod polls that file and prefixes the
 # session title in the prompt bar with it, because only a mod can rename a session.
 set -u
@@ -25,13 +25,14 @@ write_label() {
       implementing) label=IMPL ;;
       review) label=REVIEW ;;
       overnight) label=NIGHT ;;
+      babysitting) label=COMPUTE ;;
     esac
   fi
   echo "$label" >"$f.label"
 }
 
 case "${1:-}" in
-  ideating | implementing | review | overnight)
+  ideating | implementing | review | overnight | babysitting)
     echo "$1" >"$f.workflow"
     rm -f "$f.blocked"
     ;;

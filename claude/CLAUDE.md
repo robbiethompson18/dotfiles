@@ -100,12 +100,14 @@ say so. `kas` is the automatic-after-ship case; this applies either way.
 ## Workflow state
 
 Robbie reads each session's state off its prompt bar: the session title gets a prefix like
-`BLOCK: <title>`. Set it by running `cc-state <state>` whenever the state changes:
+`BLOCK: <title>`, and IMPL, REVIEW, COMPUTE and BLOCK also draw a colored banner above the prompt.
+Set it by running `cc-state <state>` whenever the state changes:
 
 - `cc-state ideating`: exploring options or planning, no code changes yet (`IDEA`)
 - `cc-state implementing`: writing or changing code (`IMPL`)
 - `cc-state review`: the change is up and you're waiting on or addressing bot reviews (`REVIEW`)
 - `cc-state overnight`: running unattended in overnight mode (`NIGHT`)
+- `cc-state babysitting`: waiting on a long-running job you started, e.g. a training run (`COMPUTE`)
 - `cc-state blocked`: you can't continue without Robbie, e.g. a login, a decision, a missing
   permission (`BLOCK`). Run it before ending the turn. It clears on his next message.
 - `cc-state clear`: the work is finished
