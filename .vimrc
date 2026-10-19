@@ -242,16 +242,17 @@ augroup myformat
         autocmd BufWritePre *.ts,*.tsx,*.js,*.jsx,*.py :CocCommand prettier.formatFile
 augroup END
 
-" Claude Code's ctrl+g editor opens <claude temp dir>/claude-prompt-<hash>.md, outside any repo,
-" so prettier finds no config there. Point it at this repo's Markdown settings explicitly. A sync
-" shell filter rather than coc-prettier so :wq can't exit before the format lands.
-function! s:PrettierClaudePrompt() abort
+" Prettier on Markdown save, mirroring vscode/settings.json: a repo prettier config wins outright;
+" with none (e.g. Claude Code's ctrl+g claude-prompt-*.md temp files) fall back to 100 cols +
+" proseWrap always. A sync shell filter rather than coc-prettier so :wq can't exit before the
+" format lands.
+function! s:PrettierMarkdown() abort
   let l:view = winsaveview()
-  silent %!prettier --stdin-filepath %:p --config ~/repos/dotfiles/.prettierrc.json5
+  silent %!prettier --stdin-filepath %:p --config-precedence prefer-file --print-width 100 --prose-wrap always
   if v:shell_error | silent undo | endif
   call winrestview(l:view)
 endfunction
-autocmd BufWritePre claude-prompt-*.md call s:PrettierClaudePrompt()
+autocmd BufWritePre *.md,*.mdx call s:PrettierMarkdown()
 
 " Setup shellcheck for shell scripts
 let g:coc_filetype_map = {'sh': 'shellscript'}
