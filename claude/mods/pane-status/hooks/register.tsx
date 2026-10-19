@@ -2,7 +2,8 @@ import type { Register } from 'claude-code'
 
 const CC_STATE = 'repos/dotfiles/bin/cc-state'
 const IT2 = '/Applications/iTerm 2.app/Contents/Resources/utilities/it2'
-const LABEL_PREFIX = /^(IDEA|IMPL|REVIEW|NIGHT|COMPUTE|BLOCK): /
+const DEFAULT_TITLE = 'Claude Code'
+const LABEL_PREFIX =/^(IDEA|IMPL|REVIEW|NIGHT|COMPUTE|BLOCK): /
 const POLL_MS = 1_000
 // Labels that also get a colored banner above the prompt bar. IDEA and NIGHT only prefix the title.
 const BANNERS: Record<string, { text: string; backgroundColor: string }> = {
@@ -62,7 +63,11 @@ export const register: Register = on => {
           return
         }
         const title = paneTitle(paneName.stdout)
-        const base = title.replace(LABEL_PREFIX, '')
+        let base = title.replace(LABEL_PREFIX, '')
+        // An untitled session's pane is just "Claude Code"; name it after the project instead.
+        if (base === DEFAULT_TITLE) {
+          base = (await $.session.root()).split('/').pop() ?? base
+        }
         const wanted = label === '' ? base : `${label}: ${base}`
         if (title !== wanted) {
           await $.command.run({ command: 'rename', args: wanted })
