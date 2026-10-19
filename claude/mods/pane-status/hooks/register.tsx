@@ -8,7 +8,7 @@ const POLL_MS = 1_000
 // Labels that also get a colored banner above the prompt bar. IDEA and NIGHT only prefix the title.
 const BANNERS: Record<string, { text: string; backgroundColor: string }> = {
   BLOCK: { text: 'BLOCKED: waiting on you', backgroundColor: 'error' },
-  REVIEW: { text: 'REVIEW: awaiting review', backgroundColor: 'success' },
+  REVIEW: { text: 'IN REVIEW', backgroundColor: 'success' },
   IMPL: { text: 'CODING', backgroundColor: 'warning' },
   COMPUTE: { text: 'BABYSITTING COMPUTE', backgroundColor: 'blue' },
 }
