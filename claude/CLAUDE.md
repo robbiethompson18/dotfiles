@@ -50,6 +50,8 @@ When Robbie asks for a link to a file, give the full path so that the link in hi
 
 `Users/robbie/Desktop/example.md`
 
+"Deeplink" means the same thing: the full local path to the file, not a URL.
+
 ## Citations
 
 When citing or linking to a paper, always include its publication year.
