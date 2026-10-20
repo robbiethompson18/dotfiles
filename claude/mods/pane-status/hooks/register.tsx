@@ -1,26 +1,16 @@
 import type { Register } from 'claude-code'
 
 const CC_STATE = 'repos/dotfiles/bin/cc-state'
-const IT2 = '/Applications/iTerm 2.app/Contents/Resources/utilities/it2'
-const DEFAULT_TITLE = 'Claude Code'
-const LABEL_PREFIX =/^(IDEA|IMPL|REVIEW|NIGHT|COMPUTE|BLOCK): /
 const POLL_MS = 1_000
-// Labels that also get a colored banner above the prompt bar. IDEA and NIGHT only prefix the title.
+// Keyed by the state bin/cc-state writes to the label file.
 const BANNERS: Record<string, { text: string; backgroundColor: string }> = {
-  BLOCK: { text: 'BLOCKED: waiting on you', backgroundColor: 'error' },
-  REVIEW: { text: 'IN REVIEW', backgroundColor: 'success' },
-  IMPL: { text: 'CODING', backgroundColor: 'warning' },
-  COMPUTE: { text: 'BABYSITTING COMPUTE', backgroundColor: 'blue' },
-}
-
-// The mod API has no getter for the session's name, so read it off the pane title, which iTerm2
-// reports as `"✳ my title (claude)"`: quoted, behind Claude Code's status glyph, with the job name.
-function paneTitle(paneName: string): string {
-  return paneName
-    .trim()
-    .replace(/^"|"$/g, '')
-    .replace(/^[^\p{L}\p{N}]+/u, '')
-    .replace(/ \(claude\)$/, '')
+  coding: { text: 'CODING', backgroundColor: 'warning' },
+  'review-bots': { text: 'REVIEW (CI/bots)', backgroundColor: 'success' },
+  'review-robbie': { text: 'REVIEW (robbie)', backgroundColor: 'cyan' },
+  results: { text: 'RESULTS', backgroundColor: 'blue' },
+  quiz: { text: 'QUIZ', backgroundColor: '#ff5fd7' },
+  questions: { text: 'QUESTIONS', backgroundColor: 'claude' },
+  blocked: { text: 'BLOCKED', backgroundColor: 'error' },
 }
 
 export const register: Register = on => {
@@ -29,52 +19,22 @@ export const register: Register = on => {
   on('session.start', async ($, e, next) => {
     await $.command.register({
       name: 'state',
-      description: 'Set the workflow state shown before the session title',
-      argumentHint: 'ideating | implementing | review | overnight | babysitting | blocked | clear',
+      description: 'Set the workflow state shown in the banner above the prompt',
+      argumentHint: 'coding | review-bots | review-robbie | results | quiz | questions | blocked | clear',
       immediate: true,
     })
 
     const pane = (await $.env.get('ITERM_SESSION_ID'))?.split(':')[1]
+    if (pane === undefined) {
+      return next(e)
+    }
     const labelFile = `${await $.env.get('HOME')}/.cache/cc-state/${pane}.label`
-    let applied: string | undefined
-    let isBusy = false
-    // /rename is queued by the engine until the session is idle, so a change made mid-turn lands when the turn ends.
     $.clock.every(POLL_MS, async () => {
-      if (isBusy) {
-        return
-      }
-      isBusy = true
-      try {
-        // bin/cc-state writes the label; this mirrors it into the title as `LABEL: title`.
-        if (pane === undefined) {
-          return
-        }
-        const label = (await $.fs.read(labelFile).catch(() => '')).trim()
-        const wantedBanner = label in BANNERS ? label : undefined
-        if (banner !== wantedBanner) {
-          banner = wantedBanner
-          $.ui.invalidate('ui.render')
-        }
-        if (label === applied) {
-          return
-        }
-        const paneName = await $.process.run([IT2, 'session', 'get-var', 'name', '--session', pane])
-        if (paneName.exitCode !== 0) {
-          return
-        }
-        const title = paneTitle(paneName.stdout)
-        let base = title.replace(LABEL_PREFIX, '')
-        // An untitled session's pane is just "Claude Code"; name it after the project instead.
-        if (base === DEFAULT_TITLE) {
-          base = (await $.session.root()).split('/').pop() ?? base
-        }
-        const wanted = label === '' ? base : `${label}: ${base}`
-        if (title !== wanted) {
-          await $.command.run({ command: 'rename', args: wanted })
-        }
-        applied = label
-      } finally {
-        isBusy = false
+      const label = (await $.fs.read(labelFile).catch(() => '')).trim()
+      const wantedBanner = label in BANNERS ? label : undefined
+      if (banner !== wantedBanner) {
+        banner = wantedBanner
+        $.ui.invalidate('ui.render')
       }
     })
 

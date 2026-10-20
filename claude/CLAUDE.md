@@ -101,21 +101,25 @@ say so. `kas` is the automatic-after-ship case; this applies either way.
 
 ## Workflow state
 
-Robbie reads each session's state off its prompt bar: the session title gets a prefix like
-`BLOCK: <title>`, and IMPL, REVIEW, COMPUTE and BLOCK also draw a colored banner above the prompt.
-Set it by running `cc-state <state>` whenever the state changes:
+Robbie reads each session's state off a colored banner above its prompt bar. Set it by running
+`cc-state <state>` whenever the state changes. Two states stick until you change them:
 
-- `cc-state ideating`: exploring options or planning, no code changes yet (`IDEA`)
-- `cc-state implementing`: writing or changing code (`IMPL`)
-- `cc-state review`: the change is up and you're waiting on or addressing bot reviews (`REVIEW`)
-- `cc-state overnight`: running unattended in overnight mode (`NIGHT`)
-- `cc-state babysitting`: waiting on a long-running job you started, e.g. a training run (`COMPUTE`)
+- `cc-state coding`: writing or changing code (`CODING`)
+- `cc-state review-bots`: the change is up and you're waiting on or addressing CI and bot reviews
+  (`REVIEW (CI/bots)`)
+
+Five mean you're handing the turn to Robbie. Run one right before ending the turn. It clears on his
+next message and the banner falls back to the sticky state:
+
+- `cc-state review-robbie`: the change is ready for Robbie to review (`REVIEW (robbie)`)
+- `cc-state results`: you finished and are reporting results or findings (`RESULTS`)
+- `cc-state quiz`: you asked him a quiz question, e.g. in `socratic-quiz` (`QUIZ`)
+- `cc-state questions`: you have clarifying questions he should answer (`QUESTIONS`)
 - `cc-state blocked`: you can't continue without Robbie, e.g. a login, a decision, a missing
-  permission (`BLOCK`). Run it before ending the turn. It clears on his next message.
-- `cc-state clear`: the work is finished
+  permission (`BLOCKED`)
 
-The title updates when the turn ends. Only the main session sets this, never a subagent. Don't
-`/rename` the prefix away or copy it into the title yourself.
+`cc-state clear` drops the banner. Only the main session sets this, never a subagent. Never rename
+the session: Robbie names sessions himself.
 
 ## Speed
 

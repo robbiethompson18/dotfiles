@@ -1,52 +1,36 @@
 #!/usr/bin/env bash
 # cc-state — workflow state of the Claude Code session in this iTerm2 pane.
 #
-#   cc-state ideating|implementing|review|overnight|babysitting   set the workflow state
-#   cc-state blocked                                   blocked on Robbie, until his next prompt
-#   cc-state clear                                     drop the workflow state
-#   cc-state hook <Event>                              called by the hooks in claude/settings.json
+#   cc-state coding|review-bots                           set the workflow state
+#   cc-state review-robbie|results|quiz|questions|blocked waiting on Robbie, until his next prompt
+#   cc-state clear                                        drop the state
+#   cc-state hook <Event>                                 called by the hooks in claude/settings.json
 #
-# Writes the label (IDEA, IMPL, REVIEW, NIGHT, COMPUTE, BLOCK or nothing) to
-# ~/.cache/cc-state/<iTerm session uuid>.label. The pane-status mod polls that file and prefixes the
-# session title in the prompt bar with it, because only a mod can rename a session.
+# Writes the state to ~/.cache/cc-state/<iTerm session uuid>.label: the waiting state if there is
+# one, else the workflow state, else nothing. The pane-status mod polls that file and draws a
+# colored banner above the prompt bar.
 set -u
 
 [ -n "${ITERM_SESSION_ID:-}" ] || exit 0
 mkdir -p "$HOME/.cache/cc-state"
 f="$HOME/.cache/cc-state/${ITERM_SESSION_ID#*:}"
 
-write_label() {
-  local label=""
-  if [ -e "$f.blocked" ]; then
-    label=BLOCK
-  else
-    case "$(cat "$f.workflow" 2>/dev/null)" in
-      ideating) label=IDEA ;;
-      implementing) label=IMPL ;;
-      review) label=REVIEW ;;
-      overnight) label=NIGHT ;;
-      babysitting) label=COMPUTE ;;
-    esac
-  fi
-  echo "$label" >"$f.label"
-}
-
 case "${1:-}" in
-  ideating | implementing | review | overnight | babysitting)
+  coding | review-bots)
     echo "$1" >"$f.workflow"
-    rm -f "$f.blocked"
+    rm -f "$f.waiting"
     ;;
-  blocked) touch "$f.blocked" ;;
-  clear) rm -f "$f.workflow" "$f.blocked" ;;
+  review-robbie | results | quiz | questions | blocked) echo "$1" >"$f.waiting" ;;
+  clear) rm -f "$f.workflow" "$f.waiting" ;;
   hook)
     case "${2:-}" in
       SessionStart)
         case "$(jq -r '.source // empty')" in
-          startup | clear) rm -f "$f.workflow" "$f.blocked" ;;
+          startup | clear) rm -f "$f.workflow" "$f.waiting" ;;
         esac
         ;;
-      UserPromptSubmit) rm -f "$f.blocked" ;;
-      StopFailure) touch "$f.blocked" ;;
+      UserPromptSubmit) rm -f "$f.waiting" ;;
+      StopFailure) echo blocked >"$f.waiting" ;;
     esac
     ;;
   *)
@@ -54,4 +38,4 @@ case "${1:-}" in
     exit 2
     ;;
 esac
-write_label
+cat "$f.waiting" "$f.workflow" 2>/dev/null | head -1 >"$f.label"
