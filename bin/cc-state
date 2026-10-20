@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # cc-state — workflow state of the Claude Code session in this iTerm2 pane.
 #
-#   cc-state coding|review-bots|review-robbie|results|quiz|questions|blocked   set the state
-#   cc-state clear                                                             drop the state
+#   cc-state coding|experiment|review-bots|review-robbie|intermediate-results|results|quiz|questions|blocked
+#                                            set the state
+#   cc-state clear                           drop the state
 #   cc-state hook <Event>                    called by the hooks in claude/settings.json
 #
 # Writes the state to ~/.cache/cc-state/<iTerm session uuid>.label until Robbie's next prompt clears
@@ -14,7 +15,7 @@ mkdir -p "$HOME/.cache/cc-state"
 f="$HOME/.cache/cc-state/${ITERM_SESSION_ID#*:}.label"
 
 case "${1:-}" in
-  coding | review-bots | review-robbie | results | quiz | questions | blocked) echo "$1" >"$f" ;;
+  coding | experiment | review-bots | review-robbie | intermediate-results | results | quiz | questions | blocked) echo "$1" >"$f" ;;
   clear) rm -f "$f" ;;
   hook)
     case "${2:-}" in
@@ -23,7 +24,7 @@ case "${1:-}" in
     esac
     ;;
   *)
-    sed -n '2,6p' "$0" | sed 's/^# \{0,1\}//' >&2
+    sed -n '2,7p' "$0" | sed 's/^# \{0,1\}//' >&2
     exit 2
     ;;
 esac

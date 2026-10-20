@@ -106,10 +106,14 @@ Robbie reads each session's state off a colored banner above its prompt bar. Set
 it again each turn:
 
 - `cc-state coding`: writing or changing code (`CODING`)
+- `cc-state experiment`: waiting on a long-running job you started, e.g. a training run or eval
+  (`MID EXPERIMENT`)
 - `cc-state review-bots`: the change is up and you're waiting on or addressing CI and bot reviews
   (`REVIEW (CI/bots)`)
 - `cc-state review-robbie`: the change is ready for Robbie to review (`REVIEW (robbie)`)
-- `cc-state results`: you finished and are reporting results or findings (`RESULTS`)
+- `cc-state intermediate-results`: reporting partial results while the work continues, e.g. early
+  numbers from a run that's still going (`INTERMEDIATE RESULTS`)
+- `cc-state results`: you finished and are reporting final results or findings (`FINAL RESULTS`)
 - `cc-state quiz`: you asked him a quiz question, e.g. in `socratic-quiz` (`QUIZ`)
 - `cc-state questions`: you have clarifying questions he should answer (`QUESTIONS`)
 - `cc-state blocked`: you can't continue without Robbie, e.g. a login, a decision, a missing

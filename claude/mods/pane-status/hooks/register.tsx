@@ -5,9 +5,11 @@ const POLL_MS = 1_000
 // Keyed by the state bin/cc-state writes to the label file.
 const BANNERS: Record<string, { text: string; backgroundColor: string }> = {
   coding: { text: 'CODING', backgroundColor: 'warning' },
+  experiment: { text: 'MID EXPERIMENT', backgroundColor: '#af87ff' },
   'review-bots': { text: 'REVIEW (CI/bots)', backgroundColor: 'success' },
   'review-robbie': { text: 'REVIEW (robbie)', backgroundColor: 'cyan' },
-  results: { text: 'RESULTS', backgroundColor: 'blue' },
+  'intermediate-results': { text: 'INTERMEDIATE RESULTS', backgroundColor: '#87d7ff' },
+  results: { text: 'FINAL RESULTS', backgroundColor: 'blue' },
   quiz: { text: 'QUIZ', backgroundColor: '#ff5fd7' },
   questions: { text: 'QUESTIONS', backgroundColor: 'claude' },
   blocked: { text: 'BLOCKED', backgroundColor: 'error' },
@@ -20,7 +22,8 @@ export const register: Register = on => {
     await $.command.register({
       name: 'state',
       description: 'Set the workflow state shown in the banner above the prompt',
-      argumentHint: 'coding | review-bots | review-robbie | results | quiz | questions | blocked | clear',
+      argumentHint:
+        'coding | experiment | review-bots | review-robbie | intermediate-results | results | quiz | questions | blocked | clear',
       immediate: true,
     })
 
