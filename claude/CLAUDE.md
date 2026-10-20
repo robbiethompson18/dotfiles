@@ -102,15 +102,12 @@ say so. `kas` is the automatic-after-ship case; this applies either way.
 ## Workflow state
 
 Robbie reads each session's state off a colored banner above its prompt bar. Set it by running
-`cc-state <state>` whenever the state changes. Two states stick until you change them:
+`cc-state <state>` whenever the state changes. Every state clears on Robbie's next message, so set
+it again each turn:
 
 - `cc-state coding`: writing or changing code (`CODING`)
 - `cc-state review-bots`: the change is up and you're waiting on or addressing CI and bot reviews
   (`REVIEW (CI/bots)`)
-
-Five mean you're handing the turn to Robbie. Run one right before ending the turn. It clears on his
-next message and the banner falls back to the sticky state:
-
 - `cc-state review-robbie`: the change is ready for Robbie to review (`REVIEW (robbie)`)
 - `cc-state results`: you finished and are reporting results or findings (`RESULTS`)
 - `cc-state quiz`: you asked him a quiz question, e.g. in `socratic-quiz` (`QUIZ`)

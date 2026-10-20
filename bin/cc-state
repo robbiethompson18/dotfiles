@@ -1,41 +1,29 @@
 #!/usr/bin/env bash
 # cc-state — workflow state of the Claude Code session in this iTerm2 pane.
 #
-#   cc-state coding|review-bots                           set the workflow state
-#   cc-state review-robbie|results|quiz|questions|blocked waiting on Robbie, until his next prompt
-#   cc-state clear                                        drop the state
-#   cc-state hook <Event>                                 called by the hooks in claude/settings.json
+#   cc-state coding|review-bots|review-robbie|results|quiz|questions|blocked   set the state
+#   cc-state clear                                                             drop the state
+#   cc-state hook <Event>                    called by the hooks in claude/settings.json
 #
-# Writes the state to ~/.cache/cc-state/<iTerm session uuid>.label: the waiting state if there is
-# one, else the workflow state, else nothing. The pane-status mod polls that file and draws a
-# colored banner above the prompt bar.
+# Writes the state to ~/.cache/cc-state/<iTerm session uuid>.label until Robbie's next prompt clears
+# it. The pane-status mod polls that file and draws a colored banner above the prompt bar.
 set -u
 
 [ -n "${ITERM_SESSION_ID:-}" ] || exit 0
 mkdir -p "$HOME/.cache/cc-state"
-f="$HOME/.cache/cc-state/${ITERM_SESSION_ID#*:}"
+f="$HOME/.cache/cc-state/${ITERM_SESSION_ID#*:}.label"
 
 case "${1:-}" in
-  coding | review-bots)
-    echo "$1" >"$f.workflow"
-    rm -f "$f.waiting"
-    ;;
-  review-robbie | results | quiz | questions | blocked) echo "$1" >"$f.waiting" ;;
-  clear) rm -f "$f.workflow" "$f.waiting" ;;
+  coding | review-bots | review-robbie | results | quiz | questions | blocked) echo "$1" >"$f" ;;
+  clear) rm -f "$f" ;;
   hook)
     case "${2:-}" in
-      SessionStart)
-        case "$(jq -r '.source // empty')" in
-          startup | clear) rm -f "$f.workflow" "$f.waiting" ;;
-        esac
-        ;;
-      UserPromptSubmit) rm -f "$f.waiting" ;;
-      StopFailure) echo blocked >"$f.waiting" ;;
+      SessionStart | UserPromptSubmit) rm -f "$f" ;;
+      StopFailure) echo blocked >"$f" ;;
     esac
     ;;
   *)
-    sed -n '2,7p' "$0" | sed 's/^# \{0,1\}//' >&2
+    sed -n '2,6p' "$0" | sed 's/^# \{0,1\}//' >&2
     exit 2
     ;;
 esac
-cat "$f.waiting" "$f.workflow" 2>/dev/null | head -1 >"$f.label"
