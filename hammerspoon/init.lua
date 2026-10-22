@@ -270,6 +270,9 @@ local function promptForUrl(template)
 end
 
 local function openCorePR() promptForUrl("https://github.com/DeepResponse/core/pull/%s") end
+local function openCounterfactualPR()
+  promptForUrl("https://github.com/robbiethompson18/counterfactual-investigator-agent-with-olens/pull/%s")
+end
 hyperMode:bind("", "U", function()
   hyperMode:exit()
   openCorePR()
@@ -284,7 +287,7 @@ local function typer(text) return function() hs.eventtap.keyStrokes(text) end en
 hs.hotkey.bind({}, "f16", typer("robbiethompson2018@gmail.com"))  -- hk1
 hs.hotkey.bind({}, "f17", typer("rob0the0nerd@gmail.com"))        -- hk2
 hs.hotkey.bind({}, "f18", typer("robbie@asymmetricsecurity.com")) -- hk3
-hs.hotkey.bind({}, "f19", openCorePR)                             -- hk4
+hs.hotkey.bind({}, "f19", openCounterfactualPR)                   -- hk4
 hs.hotkey.bind({}, "f13", typer("🔮-lens"))                        -- hk6
 -- hk7 is Wispr push-to-talk. Wispr's event tap still sees F20; this no-op just swallows it so
 -- iTerm doesn't type F20's escape sequence into the terminal.
