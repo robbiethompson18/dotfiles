@@ -32,7 +32,7 @@ for dir in /private/tmp/claude-$UID/*/*/; do
     [[ $session =~ $UUID_RE ]] || continue
     # The transcript sits in whichever config dir ran the session, under the project it started in.
     # That isn't always the scratchpad's project: a session that cds elsewhere gets a second scratchpad.
-    transcript_active=$(find ~/.claude/projects ~/.claude-work/projects -maxdepth 2 \
+    transcript_active=$(find ~/.claude/projects ~/.claude-work/projects ~/.claude-spar/projects -maxdepth 2 \
         -name "$session.jsonl" -mmin -$IDLE_MIN 2>/dev/null)
     [ -n "$transcript_active" ] && continue
     recently_changed "$dir" && continue

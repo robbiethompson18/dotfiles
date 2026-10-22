@@ -34,7 +34,8 @@ This will download:
 - Make Claude global settings and plugins symlinks to this repo
   - Likewise about just pulling to update. Not sure if this works perfectly yet.
   - Log in twice: `clp` then `/login` with the personal account, `clw` then `/login` with the
-    work account. They live in `~/.claude` and `~/.claude-work` respectively.
+    work account, `cls` then `/login` with the SPAR account. They live in `~/.claude`,
+    `~/.claude-work` and `~/.claude-spar` respectively.
 - Holding down keys works as you'd think, ie actually repeats the key (ran:
   `defaults write -g ApplePressAndHoldEnabled -bool false`)
 - Install launchd agent that auto-pulls this repo weekly (catches up after sleep/shutdown)

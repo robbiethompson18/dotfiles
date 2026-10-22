@@ -18,6 +18,9 @@ alias clpr="claude --resume"
 # settings/CLAUDE.md/skills into it. `claude` here still expands to the alias above.
 alias clw="CLAUDE_CONFIG_DIR=\$HOME/.claude-work claude"
 alias clwr="CLAUDE_CONFIG_DIR=\$HOME/.claude-work claude --resume"
+# SPAR-account Claude, same setup as clw.
+alias cls="CLAUDE_CONFIG_DIR=\$HOME/.claude-spar claude"
+alias clsr="CLAUDE_CONFIG_DIR=\$HOME/.claude-spar claude --resume"
 # Codex mirrors the Claude split: `co` + p/w, never a bare `co`, so the account is
 # always explicit. CODEX_HOME gives the work root its own auth.json and session
 # history; setup-symlinks.sh links the shared config.toml/AGENTS.md/skills into
