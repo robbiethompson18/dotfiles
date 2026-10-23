@@ -3,7 +3,6 @@ name: nc
 description:
   No code. Robbie wants an answer, not an implementation. Research is allowed, writing or changing
   code or files is not. Only when Robbie runs /nc.
-disable-model-invocation: true
 ---
 
 # No Code

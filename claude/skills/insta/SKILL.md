@@ -3,7 +3,6 @@ name: insta
 description:
   Instant answer. Reply from what's already in context and from your own knowledge, with zero tool
   calls. Only when Robbie runs /insta.
-disable-model-invocation: true
 ---
 
 # Instant Answer
