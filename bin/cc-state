@@ -5,12 +5,15 @@
 #                                            set the state
 #   cc-state ask "<question>" ["<question>"...]
 #                                            show non-blocking questions, one row each
+#   cc-state ack                             drop the questions once Robbie has answered them
 #   cc-state clear                           drop the state and the questions
 #   cc-state hook <Event>                    called by the hooks in claude/settings.json
 #
 # Writes the state to ~/.cache/cc-state/<iTerm session uuid>.label and the questions to .question
-# next to it, until Robbie's next prompt clears them. The pane-status mod polls those files and draws
-# colored banners above the prompt bar.
+# next to it. Robbie's next prompt clears the state; the questions stay until `ack`, and every prompt
+# reminds the model of them, since a wakeup (task notification, etc.) also fires UserPromptSubmit and
+# can't be told apart from an answer. The pane-status mod polls both files and draws colored banners
+# above the prompt bar.
 set -u
 
 [ -n "${ITERM_SESSION_ID:-}" ] || exit 0
@@ -24,10 +27,24 @@ case "${1:-}" in
     shift
     printf '%s\n' "${@//$'\n'/ }" >"$q"
     ;;
+  ack) rm -f "$q" ;;
   clear) rm -f "$f" "$q" ;;
   hook)
     case "${2:-}" in
-      SessionStart | UserPromptSubmit) rm -f "$f" "$q" ;;
+      SessionStart)
+        rm -f "$f"
+        # A compacted or resumed session still owns its questions; a fresh one doesn't.
+        case "$(jq -r .source)" in compact | resume) ;; *) rm -f "$q" ;; esac
+        ;;
+      UserPromptSubmit)
+        rm -f "$f"
+        # Hook stdout lands in the model's context.
+        if [ -s "$q" ]; then
+          echo "Your non-blocking questions are still in Robbie's banner:"
+          sed 's/^/- /' "$q"
+          echo 'If this message answers them, acknowledge the answer and run `cc-state ack` (or re-run `cc-state ask` with just the ones still open). If it does not, or the answer is insufficient, leave them up; you are welcome to ask again or sharpen the question.'
+        fi
+        ;;
       StopFailure) echo blocked >"$f" ;;
     esac
     ;;

@@ -123,7 +123,9 @@ Questions you ask mid-work get buried in the feed. When you want Robbie's input 
 keep working without it (while coding, running subagents, babysitting compute), also run
 `cc-state ask "<the full question>"`. It shows `NON-BLOCKING QUESTION: <question>` above the state
 banner, wrapped to fit. Pass several quoted args for several questions; each call replaces the
-last set. It clears on Robbie's next message too, so if he didn't answer, ask again. If you can't
+last set. It stays up until you run `cc-state ack`, which you do once you've acknowledged his
+answer in your reply; while it's up, each prompt reminds you of it. If he didn't answer or the
+answer was insufficient, leave it up, and feel free to ask again or sharpen it. If you can't
 continue without the answer, that's `blocked` or `questions`, not this.
 
 `cc-state clear` drops the banner and the questions. Only the main session sets this, never a
