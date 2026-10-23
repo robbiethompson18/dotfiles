@@ -3,28 +3,36 @@
 #
 #   cc-state coding|experiment|review-bots|review-robbie|intermediate-results|results|quiz|questions|blocked
 #                                            set the state
-#   cc-state clear                           drop the state
+#   cc-state ask "<question>" ["<question>"...]
+#                                            show non-blocking questions, one row each
+#   cc-state clear                           drop the state and the questions
 #   cc-state hook <Event>                    called by the hooks in claude/settings.json
 #
-# Writes the state to ~/.cache/cc-state/<iTerm session uuid>.label until Robbie's next prompt clears
-# it. The pane-status mod polls that file and draws a colored banner above the prompt bar.
+# Writes the state to ~/.cache/cc-state/<iTerm session uuid>.label and the questions to .question
+# next to it, until Robbie's next prompt clears them. The pane-status mod polls those files and draws
+# colored banners above the prompt bar.
 set -u
 
 [ -n "${ITERM_SESSION_ID:-}" ] || exit 0
 mkdir -p "$HOME/.cache/cc-state"
 f="$HOME/.cache/cc-state/${ITERM_SESSION_ID#*:}.label"
+q="${f%.label}.question"
 
 case "${1:-}" in
   coding | experiment | review-bots | review-robbie | intermediate-results | results | quiz | questions | blocked) echo "$1" >"$f" ;;
-  clear) rm -f "$f" ;;
+  ask)
+    shift
+    printf '%s\n' "${@//$'\n'/ }" >"$q"
+    ;;
+  clear) rm -f "$f" "$q" ;;
   hook)
     case "${2:-}" in
-      SessionStart | UserPromptSubmit) rm -f "$f" ;;
+      SessionStart | UserPromptSubmit) rm -f "$f" "$q" ;;
       StopFailure) echo blocked >"$f" ;;
     esac
     ;;
   *)
-    sed -n '2,7p' "$0" | sed 's/^# \{0,1\}//' >&2
+    sed -n '2,9p' "$0" | sed 's/^# \{0,1\}//' >&2
     exit 2
     ;;
 esac

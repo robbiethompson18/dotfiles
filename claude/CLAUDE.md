@@ -119,8 +119,15 @@ it again each turn:
 - `cc-state blocked`: you can't continue without Robbie, e.g. a login, a decision, a missing
   permission (`BLOCKED`)
 
-`cc-state clear` drops the banner. Only the main session sets this, never a subagent. Never rename
-the session: Robbie names sessions himself.
+Questions you ask mid-work get buried in the feed. When you want Robbie's input on something but
+keep working without it (while coding, running subagents, babysitting compute), also run
+`cc-state ask "<the full question>"`. It shows `NON-BLOCKING QUESTION: <question>` above the state
+banner, wrapped to fit. Pass several quoted args for several questions; each call replaces the
+last set. It clears on Robbie's next message too, so if he didn't answer, ask again. If you can't
+continue without the answer, that's `blocked` or `questions`, not this.
+
+`cc-state clear` drops the banner and the questions. Only the main session sets this, never a
+subagent. Never rename the session: Robbie names sessions himself.
 
 ## Speed
 

@@ -14,9 +14,26 @@ const BANNERS: Record<string, { text: string; backgroundColor: string }> = {
   questions: { text: 'QUESTIONS', backgroundColor: 'claude' },
   blocked: { text: 'BLOCKED', backgroundColor: 'error' },
 }
+const QUESTION_COLOR = '#ffaf5f'
+
+// Greedy word wrap, so each banner row can be padded to the full width and the background stays solid.
+function wrapRows(text: string, width: number): string[] {
+  const rows: string[] = []
+  let row = ''
+  for (const word of text.split(' ')) {
+    if (row !== '' && row.length + 1 + word.length > width) {
+      rows.push(row)
+      row = word
+    } else {
+      row = row === '' ? word : `${row} ${word}`
+    }
+  }
+  return [...rows, row].map(r => ` ${r}`.padEnd(width + 1))
+}
 
 export const register: Register = on => {
   let banner: string | undefined
+  let questions: string[] = []
 
   on('session.start', async ($, e, next) => {
     await $.command.register({
@@ -32,11 +49,20 @@ export const register: Register = on => {
       return next(e)
     }
     const labelFile = `${await $.env.get('HOME')}/.cache/cc-state/${pane}.label`
+    const questionFile = labelFile.replace(/\.label$/, '.question')
     $.clock.every(POLL_MS, async () => {
       const label = (await $.fs.read(labelFile).catch(() => '')).trim()
       const wantedBanner = label in BANNERS ? label : undefined
       if (banner !== wantedBanner) {
         banner = wantedBanner
+        $.ui.invalidate('ui.render')
+      }
+      const wantedQuestions = (await $.fs.read(questionFile).catch(() => ''))
+        .split('\n')
+        .map(q => q.trim())
+        .filter(q => q !== '')
+      if (wantedQuestions.join('\n') !== questions.join('\n')) {
+        questions = wantedQuestions
         $.ui.invalidate('ui.render')
       }
     })
@@ -47,19 +73,27 @@ export const register: Register = on => {
   // The prompt bar's own color can only change through /color, which prints to the transcript, so the banner is a row of its own right above the bar.
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
     const below = await next(e)
-    if (banner === undefined || e.props.hasSurvey) {
+    const state = banner === undefined ? undefined : BANNERS[banner]
+    if ((state === undefined && questions.length === 0) || e.props.hasSurvey) {
       return below
     }
     const { Box, Text } = $.ui.resolve(e)
-    const { text, backgroundColor } = BANNERS[banner]
-    const row = ` ${text}`.padEnd(e.props.bodyColumns)
+    const width = e.props.bodyColumns
+    const questionRows = questions.flatMap(q => wrapRows(`NON-BLOCKING QUESTION: ${q}`, width - 1))
 
     return (
       <Box flexDirection="column">
         {below}
-        <Text key="banner" bold color="inverseText" backgroundColor={backgroundColor} wrap="truncate-end">
-          {row}
-        </Text>
+        {questionRows.map((row, i) => (
+          <Text key={`question-${i}`} bold color="inverseText" backgroundColor={QUESTION_COLOR} wrap="truncate-end">
+            {row}
+          </Text>
+        ))}
+        {state !== undefined && (
+          <Text key="banner" bold color="inverseText" backgroundColor={state.backgroundColor} wrap="truncate-end">
+            {` ${state.text}`.padEnd(width)}
+          </Text>
+        )}
       </Box>
     )
   })
