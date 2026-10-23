@@ -102,8 +102,8 @@ say so. `kas` is the automatic-after-ship case; this applies either way.
 ## Workflow state
 
 Robbie reads each session's state off a colored banner above its prompt bar. Set it by running
-`cc-state <state>` whenever the state changes. Every state clears on Robbie's next message, so set
-it again each turn:
+`cc-state <state>` whenever the state changes. It stays until you replace it, so when Robbie's reply
+or a wakeup changes what you're doing (e.g. from `results` back to `coding`), set the new state:
 
 - `cc-state coding`: writing or changing code (`CODING`)
 - `cc-state experiment`: waiting on a long-running job you started, e.g. a training run or eval

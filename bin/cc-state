@@ -10,10 +10,10 @@
 #   cc-state hook <Event>                    called by the hooks in claude/settings.json
 #
 # Writes the state to ~/.cache/cc-state/<iTerm session uuid>.label and the questions to .question
-# next to it. Robbie's next prompt clears the state; the questions stay until `ack`, and every prompt
-# reminds the model of them, since a wakeup (task notification, etc.) also fires UserPromptSubmit and
-# can't be told apart from an answer. The pane-status mod polls both files and draws colored banners
-# above the prompt bar.
+# next to it. Neither clears on a prompt, since a wakeup (task notification, etc.) also fires
+# UserPromptSubmit; the model replaces the state itself and drops the questions with `ack`, and every
+# prompt reminds it of both. The pane-status mod polls both files and draws colored banners above the
+# prompt bar.
 set -u
 
 [ -n "${ITERM_SESSION_ID:-}" ] || exit 0
@@ -32,13 +32,12 @@ case "${1:-}" in
   hook)
     case "${2:-}" in
       SessionStart)
-        rm -f "$f"
-        # A compacted or resumed session still owns its questions; a fresh one doesn't.
-        case "$(jq -r .source)" in compact | resume) ;; *) rm -f "$q" ;; esac
+        # A compacted or resumed session still owns its state and questions; a fresh one doesn't.
+        case "$(jq -r .source)" in compact | resume) ;; *) rm -f "$f" "$q" ;; esac
         ;;
       UserPromptSubmit)
-        rm -f "$f"
         # Hook stdout lands in the model's context.
+        [ -s "$f" ] && echo "Robbie's banner shows your state as \`$(cat "$f")\`. If that is no longer true, run \`cc-state <state>\`."
         if [ -s "$q" ]; then
           echo "Your non-blocking questions are still in Robbie's banner:"
           sed 's/^/- /' "$q"
