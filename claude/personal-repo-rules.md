@@ -15,6 +15,14 @@ by content type:
   `docs/*.md` in the current repo. Flat by default; add a topic subfolder (`docs/runbooks/`,
   `docs/investigations/`) only once several docs of one kind pile up. Local-only docs go in
   `docs/local/` (gitignored).
+- **How to use one directory's code** (commands, formats, conventions, nothing dated) → that
+  directory's `CLAUDE.md`, with an `AGENTS.md -> CLAUDE.md` symlink beside it. Claude Code loads a
+  nested `CLAUDE.md` whenever an agent reads or edits a file in that directory, so keep it to usage
+  and keep it short.
+- **No `README.md` files.** Agents are the readers, not GitHub visitors. Usage goes in the nearest
+  `CLAUDE.md`, results and write-ups go in `docs/`. A results table beside the code rots unseen,
+  because whoever makes the next run never looks there. Env fixtures that ship a README to a model
+  are not docs and keep their name.
 - **Cross-project rules** → `~/.claude/CLAUDE.md` (global) or this file (personal repos only). Only
   when Robbie explicitly asks — don't assume something is global.
 

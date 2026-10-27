@@ -56,6 +56,7 @@ Ruff, `prd`) apply without copying them into each repo.
    ```bash
    cd ~/repos/<name> && ln -s CLAUDE.md AGENTS.md
    ```
+   Every nested `CLAUDE.md` added later gets the same symlink beside it.
 6. **Scaffold Python** (if `--python` or `--both`). Write `pyproject.toml` from the template, then:
    ```bash
    cd ~/repos/<name>
@@ -121,6 +122,8 @@ Durable lessons about this repo go in git:
   (gitignored).
 - **Longer reference docs** (5–300 lines) → `docs/*.md`, with a one-line index entry below.
 - **Local-only docs** (not in git) → `docs/local/*.md`.
+- **How to use one directory's code** → that directory's `CLAUDE.md` plus an `AGENTS.md` symlink.
+  No `README.md` files anywhere: usage lives in `CLAUDE.md` files, results in `docs/`.
 
 See `~/.claude/personal-repo-rules.md` (imported above) for the full convention.
 
@@ -265,7 +268,9 @@ Files that embed a big non-Python blob (e.g. an HTML/JS template string) should 
   agents see the same instructions.
 - Don't use ESLint/Prettier for code, npm/yarn, pyright, mypy, or pip/poetry. The stack above is the
   stack.
-- Don't scaffold a test framework, CI, README, license, pre-commit/lefthook, or Dockerfile. Robbie
-  adds what he actually needs.
+- Don't scaffold a test framework, CI, license, pre-commit/lefthook, or Dockerfile. Robbie adds
+  what he actually needs.
+- Don't create a `README.md`, now or later. Agents are the readers: usage goes in the directory's
+  `CLAUDE.md` (with its `AGENTS.md` symlink), results in `docs/`.
 - Don't skip the confirmation on `<description>` or the toolchain flag if they weren't supplied —
   both are annoying to change later.
