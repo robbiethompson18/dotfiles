@@ -24,3 +24,6 @@ claude/plugins/marketplaces/
 
 # Skills synced from claude.ai - runtime state keyed by org/user UUID, regenerated per login
 claude/skills/synced/
+
+# Claude Code soft-deletes bundled skills here when it migrates them to the plugin namespace
+claude/skills/.trash/
