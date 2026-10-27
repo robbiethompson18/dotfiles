@@ -97,7 +97,7 @@ A daemon kills the session from outside its process tree, because a session can'
 Writing "retiring now" without the command is a no-op. Run it as the last action of your final turn.
 
 Only retire when the work finished. If it failed, is blocked, or I owe you an answer, stay alive and
-say so. `kas` is the automatic-after-ship case; this applies either way.
+say so. `ras` is the automatic-after-ship case; this applies either way.
 
 ## Workflow state
 
