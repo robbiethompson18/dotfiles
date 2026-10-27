@@ -1,5 +1,5 @@
 {
   "name": "pane-status",
   "version": "0.1.0",
-  "description": "The workflow state and non-blocking questions bin/cc-state records are shown as colored banners above the prompt bar."
+  "description": "The workflow state and non-blocking questions bin/cc-state records are shown as colored banners above the prompt bar, with a gray row per live subagent above them in place of the footer's background-task pills."
 }
