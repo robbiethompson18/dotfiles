@@ -26,10 +26,8 @@ by content type:
 - **Cross-project rules** → `~/.claude/CLAUDE.md` (global) or this file (personal repos only). Only
   when Robbie explicitly asks — don't assume something is global.
 
-Agent-written docs go in `docs/` alongside human docs — that's the convention in most repos, and it
-keeps them visible to humans and to non-Claude agents. If `docs/` is a published site (Mintlify
-`docs.json`, `mkdocs.yml`), check how it builds before adding files so internal docs don't get
-published.
+Agent-written docs go in `docs/` alongside human docs. Make sure `docs/` isn't a published site
+(Mintlify `docs.json`, `mkdocs.yml`).
 
 Every agent-relevant doc must be indexed by a one-line reference under a `## Docs` section in the
 nearest `CLAUDE.md`, so future sessions know the file exists:
@@ -37,8 +35,6 @@ nearest `CLAUDE.md`, so future sessions know the file exists:
 ```
 - [Title — when to read this](docs/thing.md) — short gloss of contents
 ```
-
-Kebab-case filenames (`thing-name.md`, not `thing_name.md`).
 
 Behavioral rules (one-liners) do **not** go into docs — docs are lazy-loaded, but behavioral rules
 need to always apply, so they go directly in `CLAUDE.md`.

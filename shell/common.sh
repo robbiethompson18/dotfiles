@@ -156,3 +156,21 @@ lg() {
     script -q -f -e -c "$(printf '%q ' "$@")" "$log_file"
   fi
 }
+
+# Inspect AI log viewer: `iv` views ./, `iv logs/` a dir, `iv run.eval` the
+# file's dir. Takes the first free port from 7575 (inspect's default) so it
+# doesn't collide with an agent's viewer, and opens the browser on macOS.
+iv() {
+  if ! command -v inspect >/dev/null; then
+    echo "iv: inspect not found; run: uv tool install inspect-ai" >&2
+    return 1
+  fi
+  local target="${1:-.}"
+  [[ -f "$target" ]] && target=$(dirname "$target")
+  local port=7575
+  while lsof -iTCP:"$port" -sTCP:LISTEN >/dev/null 2>&1; do
+    port=$((port + 1))
+  done
+  [[ "$OSTYPE" == darwin* ]] && (sleep 2 && open "http://localhost:$port" &)
+  inspect view --log-dir "$target" --port "$port"
+}

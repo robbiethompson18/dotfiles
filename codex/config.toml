@@ -301,6 +301,21 @@ trust_level = "trusted"
 [projects."/Users/robbie/repos/pkill-forensics"]
 trust_level = "trusted"
 
+[projects."/Users/robbie/repos/counterfactual-investigator-agent-with-olens-6"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/counterfactual-investigator-agent-with-olens-13"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/counterfactual-investigator-agent-with-olens"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/counterfactual-investigator-agent-with-olens-11"]
+trust_level = "trusted"
+
+[projects."/Users/robbie/repos/counterfactual-investigator-agent-with-olens-3"]
+trust_level = "trusted"
+
 [plugins."slack@openai-curated"]
 enabled = true
 
@@ -347,7 +362,7 @@ screen_reader_detection_done = true
 "gpt-5.5" = 4
 "gpt-5.6-sol" = 4
 gpt-6-astra = 4
-"gpt-6.1-sol" = 2
+"gpt-6.1-sol" = 4
 
 [features]
 apps = false
