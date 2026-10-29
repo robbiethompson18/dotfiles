@@ -363,3 +363,9 @@ You have unlimited stamina. Robbie does not. Use your persistence wisely—loop 
 </meta>
 </system_prompt>
 ```
+
+## Current focus (NN sprint, O-lens repo)
+
+- **Hints are out (2026-10-29).** In `counterfactual-investigator-agent-with-olens`, don't work on
+  hint counterfactuals (hinted MCQs, hint-follow rates, hint gates). Solve the simpler problem first:
+  can an investigator guess the MCQ answer Qwen gives without seeing it in the transcript.
