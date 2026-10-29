@@ -1,0 +1,24 @@
+#!/bin/bash
+# Every 5 minutes, fast-forwards reference-only main checkouts to origin/main. Driven by
+# com.robert.main-checkout-pull.plist. In these repos agents work in numbered pool checkouts
+# (repo-N) and only read the main one, but sessions launched there load its CLAUDE.md, so it must
+# not go stale. A checkout that is missing, off main or has tracked changes is left alone with a
+# loud !!! line saying why: that is how drift shows up.
+
+for repo in "$HOME/repos/counterfactual-investigator-agent-with-olens"; do
+    if [ ! -d "$repo/.git" ]; then
+        echo "!!! $(date) SKIPPED $repo: no checkout there"
+        continue
+    fi
+    branch=$(git -C "$repo" branch --show-current)
+    if [ "$branch" != main ]; then
+        echo "!!! $(date) SKIPPED $repo: on '${branch:-detached HEAD}', not main"
+    # --ignore-submodules: pull doesn't move submodules, so after a submodule pointer bump on main
+    # a plain status reports them as changed and this job would skip forever.
+    elif [ -n "$(git -C "$repo" status --porcelain --untracked-files=no --ignore-submodules)" ]; then
+        echo "!!! $(date) SKIPPED $repo: tracked changes"
+    else
+        echo "--- $(date) $repo"
+        git -C "$repo" pull --ff-only origin main || echo "!!! $(date) FAILED $repo: pull --ff-only"
+    fi
+done
