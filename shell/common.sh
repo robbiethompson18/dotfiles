@@ -158,10 +158,6 @@ lg() {
 # file's dir. Takes the first free port from 7575 (inspect's default) so it
 # doesn't collide with an agent's viewer, and opens the browser on macOS.
 iv() {
-  if ! command -v inspect >/dev/null; then
-    echo "iv: inspect not found; run: uv tool install inspect-ai" >&2
-    return 1
-  fi
   local target="${1:-.}"
   [[ -f "$target" ]] && target=$(dirname "$target")
   local port=7575
