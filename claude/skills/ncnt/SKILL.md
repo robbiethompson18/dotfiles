@@ -1,8 +1,7 @@
 ---
-name: ncnt
 description:
   No code, no tools. Reply instantly in plain prose, from context and your own knowledge, so Robbie
-  and you can reach mutual understanding before anything gets built. Only when Robbie runs /ncnt.
+  and you can reach mutual understanding before anything gets built. Only when Robbie runs /ncnt or /insta (aliases).
 ---
 
 # No Code, No Tools
