@@ -121,7 +121,7 @@ or a wakeup changes what you're doing (e.g. from `results` back to `coding`), se
 
 Robbie's mode is a separate row stacked above your state: `INSTA` (white), `DISCOVERING` (pale
 blue) or `IMPLEMENTING` (green). Only his `/insta`, `/discover` and `/go` skills set it, via
-`cc-state mode`; never run that yourself. His mode doesn't change your state, and you keep managing
+`cc-state mode`; never run that yourself. Setting his mode clears your state. Then you keep managing
 your state under it, except in `INSTA`, where you run no `cc-state` at all.
 
 Questions you ask mid-work get buried in the feed. When you want Robbie's input on something but

@@ -4,8 +4,8 @@
 #   cc-state coding|experiment|review-bots|review-robbie|intermediate-results|results|quiz|questions|blocked
 #                                            set the state (the model's)
 #   cc-state mode insta|discovering|implementing
-#                                            set Robbie's mode row above the state; only the /insta,
-#                                            /discover and /go skills run this
+#                                            set Robbie's mode row above the state and drop the state;
+#                                            only the /insta, /discover and /go skills run this
 #   cc-state ask "<question>" ["<question>"...]
 #                                            show non-blocking questions, one row each
 #   cc-state ack                             drop the questions once Robbie has answered them
@@ -13,7 +13,7 @@
 #   cc-state hook <Event>                    called by the hooks in claude/settings.json
 #
 # Writes the state to ~/.cache/cc-state/<iTerm session uuid>.label, the questions to .question and
-# the mode to .mode next to it. The mode stacks: the state underneath keeps showing and survives it. Neither clears on a prompt, since a wakeup (task notification, etc.) also fires
+# the mode to .mode next to it. The mode stacks above the state, and setting it drops the state. Neither clears on a prompt, since a wakeup (task notification, etc.) also fires
 # UserPromptSubmit; the model replaces the state itself and drops the questions with `ack`, and every
 # prompt reminds it of both. The pane-status mod polls the files and draws colored banners above the
 # prompt bar.
@@ -33,7 +33,7 @@ case "${1:-}" in
     ;;
   mode)
     case "${2:-}" in
-      insta | discovering | implementing) echo "$2" >"$m" ;;
+      insta | discovering | implementing) echo "$2" >"$m" && rm -f "$f" ;;
       *) exit 2 ;;
     esac
     ;;
