@@ -3,7 +3,7 @@
   "env": {
     "CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION": "100000",
     "CLAUDE_CODE_WEB_SEARCH_REFILLS_PER_HOUR": "100000",
-    "CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS": "50",
+    "CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS": "200",
     "CLAUDE_CODE_PLUGIN_DIRS": "~/repos/dotfiles/claude/mods/now-doing:~/repos/dotfiles/claude/mods/pane-status"
   },
   "permissions": {
