@@ -64,10 +64,3 @@ else
     echo "✅ Hammerspoon already installed"
 fi
 
-# Install Ghostty (terminal)
-if [ ! -d "/Applications/Ghostty.app" ]; then
-    echo "📦 Installing Ghostty..."
-    brew install --cask ghostty
-else
-    echo "✅ Ghostty already installed"
-fi

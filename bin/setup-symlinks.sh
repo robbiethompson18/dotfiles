@@ -116,10 +116,6 @@ if [[ "$OSTYPE" == darwin* ]]; then
 
     # Hammerspoon config
     create_symlink "$HOME/repos/dotfiles/hammerspoon" "$HOME/.hammerspoon" "Hammerspoon"
-
-    # Ghostty config
-    mkdir -p "$HOME/.config/ghostty"
-    create_symlink "$HOME/repos/dotfiles/ghostty/config" "$HOME/.config/ghostty/config" "Ghostty config"
 fi
 
 # Terraform: shared provider cache (terraform refuses a plugin_cache_dir that doesn't exist)
