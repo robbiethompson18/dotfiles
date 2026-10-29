@@ -13,8 +13,8 @@ const BANNERS: Record<string, { text: string; backgroundColor: string }> = {
   quiz: { text: 'QUIZ', backgroundColor: '#ff5fd7' },
   questions: { text: 'QUESTIONS', backgroundColor: 'claude' },
   blocked: { text: 'BLOCKED', backgroundColor: 'error' },
-  insta: { text: 'INSTA', backgroundColor: '#ffffff' },
 }
+const INSTA_COLOR = '#ffffff'
 const QUESTION_COLOR = '#ffaf5f'
 const SUBAGENT_COLOR = '#6c6c6c'
 const MAX_SUBAGENT_ROWS = 5
@@ -36,6 +36,7 @@ function wrapRows(text: string, width: number): string[] {
 
 export const register: Register = on => {
   let banner: string | undefined
+  let insta = false
   let questions: string[] = []
   let subagents: string[] = []
 
@@ -44,7 +45,7 @@ export const register: Register = on => {
       name: 'state',
       description: 'Set the workflow state shown in the banner above the prompt',
       argumentHint:
-        'coding | experiment | review-bots | review-robbie | intermediate-results | results | quiz | questions | blocked | insta | clear',
+        'coding | experiment | review-bots | review-robbie | intermediate-results | results | quiz | questions | blocked | insta | insta-off | clear',
       immediate: true,
     })
 
@@ -54,11 +55,17 @@ export const register: Register = on => {
     }
     const labelFile = `${await $.env.get('HOME')}/.cache/cc-state/${pane}.label`
     const questionFile = labelFile.replace(/\.label$/, '.question')
+    const instaFile = labelFile.replace(/\.label$/, '.insta')
     $.clock.every(POLL_MS, async () => {
       const label = (await $.fs.read(labelFile).catch(() => '')).trim()
       const wantedBanner = label in BANNERS ? label : undefined
       if (banner !== wantedBanner) {
         banner = wantedBanner
+        $.ui.invalidate('ui.render')
+      }
+      const wantedInsta = (await $.fs.read(instaFile).catch(() => '')).trim() !== ''
+      if (insta !== wantedInsta) {
+        insta = wantedInsta
         $.ui.invalidate('ui.render')
       }
       const wantedQuestions = (await $.fs.read(questionFile).catch(() => ''))
@@ -86,7 +93,7 @@ export const register: Register = on => {
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
     const below = await next(e)
     const state = banner === undefined ? undefined : BANNERS[banner]
-    if ((state === undefined && questions.length === 0 && subagents.length === 0) || e.props.hasSurvey) {
+    if ((state === undefined && !insta && questions.length === 0 && subagents.length === 0) || e.props.hasSurvey) {
       return below
     }
     const { Box, Text } = $.ui.resolve(e)
@@ -109,6 +116,11 @@ export const register: Register = on => {
             {` SUB: ${row}`.padEnd(width)}
           </Text>
         ))}
+        {insta && (
+          <Text key="insta" bold color="inverseText" backgroundColor={INSTA_COLOR} wrap="truncate-end">
+            {' INSTA'.padEnd(width)}
+          </Text>
+        )}
         {state !== undefined && (
           <Text key="banner" bold color="inverseText" backgroundColor={state.backgroundColor} wrap="truncate-end">
             {` ${state.text}`.padEnd(width)}

@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
 # cc-state — workflow state of the Claude Code session in this iTerm2 pane.
 #
-#   cc-state coding|experiment|review-bots|review-robbie|intermediate-results|results|quiz|questions|blocked|insta
+#   cc-state coding|experiment|review-bots|review-robbie|intermediate-results|results|quiz|questions|blocked
 #                                            set the state
+#   cc-state insta | insta-off               show or drop the INSTA row above the state, set by the
+#                                            /insta skill and dropped by /discover and /go
 #   cc-state ask "<question>" ["<question>"...]
 #                                            show non-blocking questions, one row each
 #   cc-state ack                             drop the questions once Robbie has answered them
-#   cc-state clear                           drop the state and the questions
+#   cc-state clear                           drop the state, the questions and INSTA
 #   cc-state hook <Event>                    called by the hooks in claude/settings.json
 #
-# Writes the state to ~/.cache/cc-state/<iTerm session uuid>.label and the questions to .question
-# next to it. Neither clears on a prompt, since a wakeup (task notification, etc.) also fires
+# Writes the state to ~/.cache/cc-state/<iTerm session uuid>.label, the questions to .question and
+# the INSTA flag to .insta next to it. INSTA stacks: the state underneath keeps showing and survives it. Neither clears on a prompt, since a wakeup (task notification, etc.) also fires
 # UserPromptSubmit; the model replaces the state itself and drops the questions with `ack`, and every
 # prompt reminds it of both. The pane-status mod polls both files and draws colored banners above the
 # prompt bar.
@@ -20,29 +22,32 @@ set -u
 mkdir -p "$HOME/.cache/cc-state"
 f="$HOME/.cache/cc-state/${ITERM_SESSION_ID#*:}.label"
 q="${f%.label}.question"
+i="${f%.label}.insta"
 
 case "${1:-}" in
-  coding | experiment | review-bots | review-robbie | intermediate-results | results | quiz | questions | blocked | insta) echo "$1" >"$f" ;;
+  coding | experiment | review-bots | review-robbie | intermediate-results | results | quiz | questions | blocked) echo "$1" >"$f" ;;
   ask)
     shift
     printf '%s\n' "${@//$'\n'/ }" >"$q"
     ;;
+  insta) echo insta >"$i" ;;
+  insta-off) rm -f "$i" ;;
   ack) rm -f "$q" ;;
-  clear) rm -f "$f" "$q" ;;
+  clear) rm -f "$f" "$q" "$i" ;;
   hook)
     case "${2:-}" in
       SessionStart)
         # A compacted or resumed session still owns its state and questions; a fresh one doesn't.
-        case "$(jq -r .source)" in compact | resume) ;; *) rm -f "$f" "$q" ;; esac
+        case "$(jq -r .source)" in compact | resume) ;; *) rm -f "$f" "$q" "$i" ;; esac
         ;;
       UserPromptSubmit)
         # Hook stdout lands in the model's context.
-        # insta is set by the /insta skill and only /discover or /go may replace it.
-        if [ "$(cat "$f" 2>/dev/null)" = insta ]; then
+        # In /insta mode the model makes no tool calls, so the state and question reminders don't apply.
+        if [ -e "$i" ]; then
           echo "Robbie's banner shows INSTA: you are still in /insta mode (no tools, no code). Only /discover or /go ends it; don't run \`cc-state\`."
-        elif [ -s "$f" ]; then
-          echo "Robbie's banner shows your state as \`$(cat "$f")\`. If that is no longer true, run \`cc-state <state>\`."
+          exit 0
         fi
+        [ -s "$f" ] && echo "Robbie's banner shows your state as \`$(cat "$f")\`. If that is no longer true, run \`cc-state <state>\`."
         if [ -s "$q" ]; then
           echo "Your non-blocking questions are still in Robbie's banner:"
           sed 's/^/- /' "$q"
@@ -53,7 +58,7 @@ case "${1:-}" in
     esac
     ;;
   *)
-    sed -n '2,9p' "$0" | sed 's/^# \{0,1\}//' >&2
+    sed -n '2,11p' "$0" | sed 's/^# \{0,1\}//' >&2
     exit 2
     ;;
 esac

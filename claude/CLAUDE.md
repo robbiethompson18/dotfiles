@@ -119,8 +119,8 @@ or a wakeup changes what you're doing (e.g. from `results` back to `coding`), se
 - `cc-state blocked`: you can't continue without Robbie, e.g. a login, a decision, a missing
   permission (`BLOCKED`)
 
-`INSTA` (white) is set by the `/insta` skill and only `/discover` or `/go` replaces it. Never set
-or replace it yourself.
+`INSTA` (white) is a row stacked above the state banner. The `/insta` skill adds it and only
+`/discover` or `/go` removes it. Never add or remove it yourself.
 
 Questions you ask mid-work get buried in the feed. When you want Robbie's input on something but
 keep working without it (while coding, running subagents, babysitting compute), also run

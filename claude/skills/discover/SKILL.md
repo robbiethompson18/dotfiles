@@ -8,9 +8,9 @@ argument-hint: "[what to figure out]"
 
 # Discover
 
-!`cc-state clear`
+!`cc-state insta-off`
 
-/insta is over and its banner is cleared. Go use tools to figure out what the conversation so far
+/insta is over and its banner row is gone. Go use tools to figure out what the conversation so far
 left open, or what Robbie's argument asks.
 
 Allowed: read-only investigation. Read files, grep, `git log`/`git show`/`git diff`, web search,
