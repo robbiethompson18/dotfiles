@@ -7,10 +7,10 @@ argument-hint: "[extra instructions]"
 
 # Go
 
-!`cc-state insta-off`
-!`cc-state coding`
+!`cc-state mode implementing`
 
-/insta is over and the banner now reads `CODING`. Implement the thing the conversation so far
+/insta is over and Robbie's mode row now reads `IMPLEMENTING`. Your own state is still yours
+to set: run `cc-state coding` as you start. Implement the thing the conversation so far
 converged on, plus anything in Robbie's argument. If what to build is still ambiguous, ask instead
 of guessing.
 

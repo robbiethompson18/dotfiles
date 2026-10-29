@@ -6,12 +6,12 @@ description:
 
 # No Code, No Tools
 
-!`cc-state insta`
+!`cc-state mode insta`
 
 Robbie wants a conversation, not an implementation and not an investigation. Reply right now.
 
 Make zero tool calls: no Bash, Read, Grep, web search, subagents, or `cc-state`. Loading this skill
-already stacked an `INSTA` row on Robbie's banner. Answer from the conversation so far and your own knowledge.
+already set Robbie's mode row to `INSTA`. Answer from the conversation so far and your own knowledge.
 If you aren't sure, say so and say what you'd check, but don't check it. Mark guesses as guesses.
 
 Write prose. No code blocks, no implementation snippets, no file paths dressed up as a plan. A

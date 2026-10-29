@@ -14,7 +14,12 @@ const BANNERS: Record<string, { text: string; backgroundColor: string }> = {
   questions: { text: 'QUESTIONS', backgroundColor: 'claude' },
   blocked: { text: 'BLOCKED', backgroundColor: 'error' },
 }
-const INSTA_COLOR = '#ffffff'
+// Robbie's mode, keyed by what the /insta, /discover and /go skills write to the mode file. It stacks above the model's state.
+const MODES: Record<string, { text: string; backgroundColor: string }> = {
+  insta: { text: 'INSTA', backgroundColor: '#ffffff' },
+  discovering: { text: 'DISCOVERING', backgroundColor: '#afd7ff' },
+  implementing: { text: 'IMPLEMENTING', backgroundColor: '#5fd75f' },
+}
 const QUESTION_COLOR = '#ffaf5f'
 const SUBAGENT_COLOR = '#6c6c6c'
 const MAX_SUBAGENT_ROWS = 5
@@ -36,7 +41,7 @@ function wrapRows(text: string, width: number): string[] {
 
 export const register: Register = on => {
   let banner: string | undefined
-  let insta = false
+  let mode: string | undefined
   let questions: string[] = []
   let subagents: string[] = []
 
@@ -45,7 +50,7 @@ export const register: Register = on => {
       name: 'state',
       description: 'Set the workflow state shown in the banner above the prompt',
       argumentHint:
-        'coding | experiment | review-bots | review-robbie | intermediate-results | results | quiz | questions | blocked | insta | insta-off | clear',
+        'coding | experiment | review-bots | review-robbie | intermediate-results | results | quiz | questions | blocked | mode insta|discovering|implementing | clear',
       immediate: true,
     })
 
@@ -55,7 +60,7 @@ export const register: Register = on => {
     }
     const labelFile = `${await $.env.get('HOME')}/.cache/cc-state/${pane}.label`
     const questionFile = labelFile.replace(/\.label$/, '.question')
-    const instaFile = labelFile.replace(/\.label$/, '.insta')
+    const modeFile = labelFile.replace(/\.label$/, '.mode')
     $.clock.every(POLL_MS, async () => {
       const label = (await $.fs.read(labelFile).catch(() => '')).trim()
       const wantedBanner = label in BANNERS ? label : undefined
@@ -63,9 +68,10 @@ export const register: Register = on => {
         banner = wantedBanner
         $.ui.invalidate('ui.render')
       }
-      const wantedInsta = (await $.fs.read(instaFile).catch(() => '')).trim() !== ''
-      if (insta !== wantedInsta) {
-        insta = wantedInsta
+      const modeLabel = (await $.fs.read(modeFile).catch(() => '')).trim()
+      const wantedMode = modeLabel in MODES ? modeLabel : undefined
+      if (mode !== wantedMode) {
+        mode = wantedMode
         $.ui.invalidate('ui.render')
       }
       const wantedQuestions = (await $.fs.read(questionFile).catch(() => ''))
@@ -93,7 +99,8 @@ export const register: Register = on => {
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
     const below = await next(e)
     const state = banner === undefined ? undefined : BANNERS[banner]
-    if ((state === undefined && !insta && questions.length === 0 && subagents.length === 0) || e.props.hasSurvey) {
+    const modeBanner = mode === undefined ? undefined : MODES[mode]
+    if ((state === undefined && modeBanner === undefined && questions.length === 0 && subagents.length === 0) || e.props.hasSurvey) {
       return below
     }
     const { Box, Text } = $.ui.resolve(e)
@@ -116,9 +123,9 @@ export const register: Register = on => {
             {` SUB: ${row}`.padEnd(width)}
           </Text>
         ))}
-        {insta && (
-          <Text key="insta" bold color="inverseText" backgroundColor={INSTA_COLOR} wrap="truncate-end">
-            {' INSTA'.padEnd(width)}
+        {modeBanner !== undefined && (
+          <Text key="mode" bold color="inverseText" backgroundColor={modeBanner.backgroundColor} wrap="truncate-end">
+            {` ${modeBanner.text}`.padEnd(width)}
           </Text>
         )}
         {state !== undefined && (
@@ -141,7 +148,7 @@ export const register: Register = on => {
 
   on('command.run', { command: 'state' }, async ($, e) => {
     const state = e.args.trim()
-    const ran = await $.process.run([`${await $.env.get('HOME')}/${CC_STATE}`, state])
+    const ran = await $.process.run([`${await $.env.get('HOME')}/${CC_STATE}`, ...state.split(/\s+/)])
 
     return { text: ran.exitCode === 0 ? `State: ${state}` : ran.stderr.trim() }
   })

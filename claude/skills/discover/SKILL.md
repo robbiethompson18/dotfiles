@@ -8,9 +8,9 @@ argument-hint: "[what to figure out]"
 
 # Discover
 
-!`cc-state insta-off`
+!`cc-state mode discovering`
 
-/insta is over and its banner row is gone. Go use tools to figure out what the conversation so far
+/insta is over and Robbie's mode row now reads `DISCOVERING`. Go use tools to figure out what the conversation so far
 left open, or what Robbie's argument asks.
 
 Allowed: read-only investigation. Read files, grep, `git log`/`git show`/`git diff`, web search,

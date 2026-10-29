@@ -119,8 +119,10 @@ or a wakeup changes what you're doing (e.g. from `results` back to `coding`), se
 - `cc-state blocked`: you can't continue without Robbie, e.g. a login, a decision, a missing
   permission (`BLOCKED`)
 
-`INSTA` (white) is a row stacked above the state banner. The `/insta` skill adds it and only
-`/discover` or `/go` removes it. Never add or remove it yourself.
+Robbie's mode is a separate row stacked above your state: `INSTA` (white), `DISCOVERING` (pale
+blue) or `IMPLEMENTING` (green). Only his `/insta`, `/discover` and `/go` skills set it, via
+`cc-state mode`; never run that yourself. His mode doesn't change your state, and you keep managing
+your state under it, except in `INSTA`, where you run no `cc-state` at all.
 
 Questions you ask mid-work get buried in the feed. When you want Robbie's input on something but
 keep working without it (while coding, running subagents, babysitting compute), also run
@@ -131,8 +133,8 @@ answer in your reply; while it's up, each prompt reminds you of it. If he didn't
 answer was insufficient, leave it up, and feel free to ask again or sharpen it. If you can't
 continue without the answer, that's `blocked` or `questions`, not this.
 
-`cc-state clear` drops the banner and the questions. Only the main session sets this, never a
-subagent. Never rename the session: Robbie names sessions himself.
+`cc-state clear` drops your state and the questions, not Robbie's mode. Only the main session sets
+this, never a subagent. Never rename the session: Robbie names sessions himself.
 
 ## Speed
 

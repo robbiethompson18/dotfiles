@@ -35,5 +35,5 @@ must be re-cloned; `git pull --ff-only` will refuse to update it.
 
 ## Local mods
 
-`claude/mods/` holds local plugins (`now-doing`, `pane-status`), loaded via
+`claude/mods/` holds local plugins (`pane-status`), loaded via
 `CLAUDE_CODE_PLUGIN_DIRS` in `claude/settings.json`.
