@@ -292,6 +292,9 @@ hs.hotkey.bind({}, "f13", typer("🔮-lens"))                        -- hk6
 -- hk7 is Wispr push-to-talk. Wispr's event tap still sees F20; this no-op just swallows it so
 -- iTerm doesn't type F20's escape sequence into the terminal.
 hs.hotkey.bind({}, "f20", function() end)                         -- hk7
+-- hk8 opens Maccy (clipboard history). Maccy's own popup hotkey is Cmd+Ctrl+C; F15 only gets
+-- here because configure-macos-settings.sh turned off the F14/F15 brightness shortcuts.
+hs.hotkey.bind({}, "f15", function() hs.eventtap.keyStroke({"cmd", "ctrl"}, "c") end) -- hk8
 
 --------------------------------------------------------------------------------
 -- MONITOR FOCUS (move mouse to monitor)
