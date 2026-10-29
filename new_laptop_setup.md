@@ -1,41 +1,33 @@
-# 1) Mac Settings:
+# 1) Mac Settings
 
-- increase typing speed to max
-- mouse speed to fourth from max
-- Caps lock mapped to escape
-- Have doc disappear, move between monitors, make it small
+- Increase key repeat speed to max
+- Mouse speed to fourth from max
+- Caps Lock mapped to Escape
+- Dock: auto-hide, small, allowed on every monitor
 
-# 2) Run install.sh, Change App Settings
+# 2) Run install.sh
 
-Just run `cd bin && sh install.sh` from the root of this repo.
+`cd bin && sh install.sh` from the root of this repo. It:
 
-This will download:
+- Installs Homebrew, then fzf, direnv, Oh My Zsh (bira theme, autosuggestions, syntax
+  highlighting; accept a suggestion with Shift+Tab, Ctrl+R for fuzzy history)
+- Installs CLI tools: claude, codex, fnm, bun, pnpm, python, ripgrep, postgresql, pulumi, awscli
+- Installs apps: Chrome, iTerm2, VS Code, Docker, Zoom, Claude Desktop, Maccy, Hammerspoon
+- Makes VS Code the default opener for code/text files (so `file://` links from Claude open there)
+- Disables macOS press-and-hold so holding a key repeats it
+- Symlinks `.zshrc`, `.vimrc`, `.gitconfig`, Claude/Codex config, VS Code settings, Hammerspoon
+  config and `.terraformrc` into this repo, so a `git pull` updates them
+- Installs four launchd agents: weekly dotfiles pull, agent-reaper (lets Claude/Codex sessions
+  retire themselves), oom-guard (kills runaway agent processes), disk-sweep (hourly scratchpad and
+  Docker image cleanup)
 
-- Chrome
-- Hammerspoon (window management + hotkeys, config symlinked from this repo)
-  - Grant Accessibility permission (System Settings -> Privacy & Security -> Accessibility), then
-    enable "Launch Hammerspoon at login" in its preferences
-- Maccy (clipboard manager)
-  - Settings: Launch at login, change popup hotkey to Option+Command+C
-- Iterm2
-  - settings -> keys -> navigation shortcuts: command to select a tab, option to select a split
-    pane.
-  - launch on login and keep in dock
+# 3) App settings after install
 
-### What happens in install.sh?
-
-- Install Homebrew
-- Install fzf
-- Install ohmyzsh and add-ons (ie autocomplete suggestions)
-  - this gives nice things like a terminal that has git status and current repo, fuzzy finding old
-    bash commands, etc.
-- Make .zshrc a symlink to the one in this repo
-  - So that to update zshrc you can just pull from this repo.
-- Make Claude global settings and plugins symlinks to this repo
-  - Likewise about just pulling to update. Not sure if this works perfectly yet.
-  - Log in twice: `clp` then `/login` with the personal account, `clw` then `/login` with the
-    work account, `cls` then `/login` with the SPAR account. They live in `~/.claude`,
-    `~/.claude-work` and `~/.claude-spar` respectively.
-- Holding down keys works as you'd think, ie actually repeats the key (ran:
-  `defaults write -g ApplePressAndHoldEnabled -bool false`)
-- Install launchd agent that auto-pulls this repo weekly (catches up after sleep/shutdown)
+- Claude Code: log in once per account. `clp` then `/login` (personal, `~/.claude`), `clw`
+  (work, `~/.claude-work`), `cls` (SPAR, `~/.claude-spar`).
+- Hammerspoon: grant Accessibility (System Settings → Privacy & Security → Accessibility), then
+  enable "Launch Hammerspoon at login" in its preferences. Does window snapping and the hotkeys.
+- Maccy (clipboard history): Launch at login; popup hotkey Option+Command+C.
+- iTerm2: Settings → Keys → Navigation Shortcuts: Command selects a tab, Option selects a split
+  pane. Launch at login, keep in Dock. Profile settings sync via `iterm2/` (load from the plist).
+- Kinesis keyboard: see `kinesis/README.md`.

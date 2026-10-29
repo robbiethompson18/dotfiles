@@ -7,7 +7,7 @@ echo "  • codex"
 brew install codex
 echo "  • fnm (node version manager)"
 brew install fnm
-echo "  • bun (via bun.sh installer)"
+echo "  • bun (bun.sh installer, not brew)"
 curl -fsSL https://bun.sh/install | bash
 echo "  • pnpm"
 brew install pnpm
