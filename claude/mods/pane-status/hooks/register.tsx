@@ -13,6 +13,7 @@ const BANNERS: Record<string, { text: string; backgroundColor: string }> = {
   quiz: { text: 'QUIZ', backgroundColor: '#ff5fd7' },
   questions: { text: 'QUESTIONS', backgroundColor: 'claude' },
   blocked: { text: 'BLOCKED', backgroundColor: 'error' },
+  insta: { text: 'INSTA', backgroundColor: '#ffffff' },
 }
 const QUESTION_COLOR = '#ffaf5f'
 const SUBAGENT_COLOR = '#6c6c6c'
@@ -43,7 +44,7 @@ export const register: Register = on => {
       name: 'state',
       description: 'Set the workflow state shown in the banner above the prompt',
       argumentHint:
-        'coding | experiment | review-bots | review-robbie | intermediate-results | results | quiz | questions | blocked | clear',
+        'coding | experiment | review-bots | review-robbie | intermediate-results | results | quiz | questions | blocked | insta | clear',
       immediate: true,
     })
 

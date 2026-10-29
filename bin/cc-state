@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # cc-state — workflow state of the Claude Code session in this iTerm2 pane.
 #
-#   cc-state coding|experiment|review-bots|review-robbie|intermediate-results|results|quiz|questions|blocked
+#   cc-state coding|experiment|review-bots|review-robbie|intermediate-results|results|quiz|questions|blocked|insta
 #                                            set the state
 #   cc-state ask "<question>" ["<question>"...]
 #                                            show non-blocking questions, one row each
@@ -22,7 +22,7 @@ f="$HOME/.cache/cc-state/${ITERM_SESSION_ID#*:}.label"
 q="${f%.label}.question"
 
 case "${1:-}" in
-  coding | experiment | review-bots | review-robbie | intermediate-results | results | quiz | questions | blocked) echo "$1" >"$f" ;;
+  coding | experiment | review-bots | review-robbie | intermediate-results | results | quiz | questions | blocked | insta) echo "$1" >"$f" ;;
   ask)
     shift
     printf '%s\n' "${@//$'\n'/ }" >"$q"
@@ -37,7 +37,12 @@ case "${1:-}" in
         ;;
       UserPromptSubmit)
         # Hook stdout lands in the model's context.
-        [ -s "$f" ] && echo "Robbie's banner shows your state as \`$(cat "$f")\`. If that is no longer true, run \`cc-state <state>\`."
+        # insta is set by the /insta skill and only /discover or /go may replace it.
+        if [ "$(cat "$f" 2>/dev/null)" = insta ]; then
+          echo "Robbie's banner shows INSTA: you are still in /insta mode (no tools, no code). Only /discover or /go ends it; don't run \`cc-state\`."
+        elif [ -s "$f" ]; then
+          echo "Robbie's banner shows your state as \`$(cat "$f")\`. If that is no longer true, run \`cc-state <state>\`."
+        fi
         if [ -s "$q" ]; then
           echo "Your non-blocking questions are still in Robbie's banner:"
           sed 's/^/- /' "$q"
