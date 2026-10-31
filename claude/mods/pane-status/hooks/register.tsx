@@ -7,7 +7,6 @@ const BANNERS: Record<string, { text: string; backgroundColor: string }> = {
   coding: { text: 'CODING', backgroundColor: 'warning' },
   experiment: { text: 'MID EXPERIMENT', backgroundColor: '#af87ff' },
   'review-bots': { text: 'REVIEW (CI/bots)', backgroundColor: 'success' },
-  'review-robbie': { text: 'REVIEW (robbie)', backgroundColor: 'cyan' },
   'intermediate-results': { text: 'INTERMEDIATE RESULTS', backgroundColor: '#87d7ff' },
   results: { text: 'FINAL RESULTS', backgroundColor: 'blue' },
   quiz: { text: 'QUIZ', backgroundColor: '#ff5fd7' },
@@ -21,6 +20,8 @@ const MODES: Record<string, { text: string; backgroundColor: string }> = {
   implementing: { text: 'IMPLEMENTING', backgroundColor: '#5fd75f' },
 }
 const QUESTION_COLOR = '#ffaf5f'
+// One row per change waiting on Robbie, from the .review file; the text after the label should carry the PR link.
+const REVIEW_COLOR = 'cyan'
 const SUBAGENT_COLOR = '#6c6c6c'
 const MAX_SUBAGENT_ROWS = 5
 
@@ -43,6 +44,7 @@ export const register: Register = on => {
   let banner: string | undefined
   let mode: string | undefined
   let questions: string[] = []
+  let reviews: string[] = []
   let subagents: string[] = []
 
   on('session.start', async ($, e, next) => {
@@ -50,7 +52,7 @@ export const register: Register = on => {
       name: 'state',
       description: 'Set the workflow state shown in the banner above the prompt',
       argumentHint:
-        'coding | experiment | review-bots | review-robbie | intermediate-results | results | quiz | questions | blocked | mode insta|discovering|implementing | clear',
+        'coding | experiment | review-bots | intermediate-results | results | quiz | questions | blocked | review-robbie <PR url> | reviewed | mode insta|discovering|implementing | clear',
       immediate: true,
     })
 
@@ -61,6 +63,7 @@ export const register: Register = on => {
     const labelFile = `${await $.env.get('HOME')}/.cache/cc-state/${pane}.label`
     const questionFile = labelFile.replace(/\.label$/, '.question')
     const modeFile = labelFile.replace(/\.label$/, '.mode')
+    const reviewFile = labelFile.replace(/\.label$/, '.review')
     $.clock.every(POLL_MS, async () => {
       const label = (await $.fs.read(labelFile).catch(() => '')).trim()
       const wantedBanner = label in BANNERS ? label : undefined
@@ -82,6 +85,14 @@ export const register: Register = on => {
         questions = wantedQuestions
         $.ui.invalidate('ui.render')
       }
+      const wantedReviews = (await $.fs.read(reviewFile).catch(() => ''))
+        .split('\n')
+        .map(r => r.trim())
+        .filter(r => r !== '')
+      if (wantedReviews.join('\n') !== reviews.join('\n')) {
+        reviews = wantedReviews
+        $.ui.invalidate('ui.render')
+      }
       // Live subagents, one gray row each. Finished ones linger in the list for a while, hence the filter.
       const wantedSubagents = (await $.agent.list().catch(() => []))
         .filter(a => a.status === 'pending' || a.status === 'running' || a.status === 'waiting')
@@ -100,12 +111,17 @@ export const register: Register = on => {
     const below = await next(e)
     const state = banner === undefined ? undefined : BANNERS[banner]
     const modeBanner = mode === undefined ? undefined : MODES[mode]
-    if ((state === undefined && modeBanner === undefined && questions.length === 0 && subagents.length === 0) || e.props.hasSurvey) {
+    if (
+      (state === undefined && modeBanner === undefined && questions.length === 0 && reviews.length === 0 && subagents.length === 0) ||
+      e.props.hasSurvey
+    ) {
       return below
     }
     const { Box, Text } = $.ui.resolve(e)
     const width = e.props.bodyColumns
     const questionRows = questions.flatMap(q => wrapRows(`NON-BLOCKING QUESTION: ${q}`, width - 1))
+    // Wrapped, not truncated, so a URL stays whole and iTerm2 can still cmd-click it.
+    const reviewRows = reviews.flatMap(r => wrapRows(`REVIEW (robbie): ${r}`, width - 1))
     const subagentRows = subagents.length <= MAX_SUBAGENT_ROWS
       ? subagents
       : [...subagents.slice(0, MAX_SUBAGENT_ROWS - 1), `+${subagents.length - MAX_SUBAGENT_ROWS + 1} more`]
@@ -121,6 +137,11 @@ export const register: Register = on => {
         {subagentRows.map((row, i) => (
           <Text key={`subagent-${i}`} bold color="inverseText" backgroundColor={SUBAGENT_COLOR} wrap="truncate-end">
             {` SUB: ${row}`.padEnd(width)}
+          </Text>
+        ))}
+        {reviewRows.map((row, i) => (
+          <Text key={`review-${i}`} bold color="inverseText" backgroundColor={REVIEW_COLOR} wrap="truncate-end">
+            {row}
           </Text>
         ))}
         {modeBanner !== undefined && (
