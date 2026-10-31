@@ -3,7 +3,6 @@ name: dl
 description:
   Deeplink. Give Robbie the full local path to a file so he can click it open in his editor. Only
   when Robbie runs /dl.
-disable-model-invocation: true
 argument-hint: "[file or description]"
 ---
 
