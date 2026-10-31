@@ -80,6 +80,7 @@ Caddy-routed apps (have a `*.localhost` hostname):
 | 7103 | `stego.localhost`                           | `~/repos/cot-codenames` (`uv run python -m cot_codenames.stego.dash`) |
 | 7104 | `metamodeldash.localhost`                   | `~/repos/jlens-dashboard` (`python3 -m http.server 7104 --bind 127.0.0.1`; J-lens vs oracle lens vs NLA) |
 | 7105 | `neel-bench.localhost`                      | `~/repos/metamodel-socratic-quizzes` (`python3 -m http.server 7105 --bind 127.0.0.1 --directory viewers/neel-bench`; NCRI vs ECI) |
+| 7106 | `gepa-inspect.localhost`                    | `~/repos/gepa-inspect` (`uv run inspect view --log-dir logs --port 7106 --host 127.0.0.1`; GEPA rollouts + reflections) |
 | 7327 | `tinydiff.localhost`                        | `~/repos/tiny-diff`        |
 | 8765 | `cognitive.localhost`                       | `~/repos/cognitive-tests`  |
 | 8766 | `silkworm-aws-resource-dashboard.localhost` | `~/repos/silkworm`         |
