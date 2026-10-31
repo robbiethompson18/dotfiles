@@ -22,6 +22,8 @@ const MODES: Record<string, { text: string; backgroundColor: string }> = {
 const QUESTION_COLOR = '#ffaf5f'
 // One row per change waiting on Robbie, from the .review file; the text after the label should carry the PR link.
 const REVIEW_COLOR = 'cyan'
+// A GitHub PR or issue URL in a review row is drawn as `#<number>`, an OSC 8 hyperlink to the URL.
+const GITHUB_URL = /https:\/\/github\.com\/[^\s/]+\/[^\s/]+\/(?:pull|issues)\/(\d+)\S*/g
 const SUBAGENT_COLOR = '#6c6c6c'
 const MAX_SUBAGENT_ROWS = 5
 
@@ -117,11 +119,23 @@ export const register: Register = on => {
     ) {
       return below
     }
-    const { Box, Text } = $.ui.resolve(e)
+    const { Box, Text, Link } = $.ui.resolve(e)
     const width = e.props.bodyColumns
     const questionRows = questions.flatMap(q => wrapRows(`NON-BLOCKING QUESTION: ${q}`, width - 1))
-    // Wrapped, not truncated, so a URL stays whole and iTerm2 can still cmd-click it.
-    const reviewRows = reviews.flatMap(r => wrapRows(`REVIEW (robbie): ${r}`, width - 1))
+    // Wrapped, not truncated, so any other URL (or a branch name) stays whole and iTerm2 can still cmd-click it.
+    const reviewRows = reviews.flatMap(r => {
+      const links = new Map<string, string>()
+      const text = r.replace(GITHUB_URL, (url, number: string) => {
+        links.set(`#${number}`, url)
+        return `#${number}`
+      })
+      return wrapRows(`REVIEW (robbie): ${text}`, width - 1).map(row =>
+        row.split(/(#\d+)/).map((part, j) => {
+          const href = links.get(part)
+          return href === undefined ? part : <Link key={`link-${j}`} href={href}>{part}</Link>
+        }),
+      )
+    })
     const subagentRows = subagents.length <= MAX_SUBAGENT_ROWS
       ? subagents
       : [...subagents.slice(0, MAX_SUBAGENT_ROWS - 1), `+${subagents.length - MAX_SUBAGENT_ROWS + 1} more`]
