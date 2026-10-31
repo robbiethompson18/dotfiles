@@ -11,7 +11,7 @@ process, or process carrying Claude's CLAUDECODE=1 env tag, and SIGKILLs:
   3. the largest descendant over PRESSURE_FLOOR while the kernel reports critical memory pressure.
 
 The agent processes themselves are never killed, only their children. The agent sees exit 137.
-Runs as a LaunchAgent; see bin/install-oom-guard. Log: ~/Library/Logs/oom-guard.log.
+Runs as a LaunchAgent; see bin/install-launchd-agent. Log: ~/Library/Logs/oom-guard.log.
 """
 import ctypes
 import os

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Hourly disk sweep, run as a LaunchAgent (see bin/install-disk-sweep). Log: ~/Library/Logs/disk-sweep.log.
+# Hourly disk sweep, run as a LaunchAgent (see bin/install-launchd-agent). Log: ~/Library/Logs/disk-sweep.log.
 #
 # 1. Claude Code scratchpads, /tmp/claude-$UID/<project>/<session-uuid>. macOS 26 has no periodic /tmp
 #    cleanup, so these only cleared on reboot and reached ~70 GB after 40 h of uptime. A scratchpad goes

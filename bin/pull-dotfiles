@@ -1,5 +1,5 @@
 #!/bin/bash
-# Weekly pull for both dotfiles repos. Driven by com.robert.dotfiles-pull.plist.
+# Weekly pull for both dotfiles repos. Driven by launchd/com.robert.dotfiles-pull.plist.
 # dotfiles-private holds the Claude notes, so pulling only dotfiles would leave
 # them stale on every machine except the one they were written on.
 

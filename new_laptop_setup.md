@@ -17,9 +17,10 @@
 - Disables macOS press-and-hold so holding a key repeats it
 - Symlinks `.zshrc`, `.vimrc`, `.gitconfig`, Claude/Codex config, VS Code settings, Hammerspoon
   config and `.terraformrc` into this repo, so a `git pull` updates them
-- Installs four launchd agents: weekly dotfiles pull, agent-reaper (lets Claude/Codex sessions
-  retire themselves), oom-guard (kills runaway agent processes), disk-sweep (hourly scratchpad and
-  Docker image cleanup)
+- Installs four launchd agents (`launchd/`, via `bin/install-launchd-agent`): weekly dotfiles pull,
+  agent-reaper (lets Claude/Codex sessions retire themselves), oom-guard (kills runaway agent
+  processes), disk-sweep (hourly scratchpad and Docker image cleanup). A fifth, main-checkout-pull,
+  is installed by hand only on the Mac with the reference checkouts it keeps on origin/main
 
 # 3) App settings after install
 

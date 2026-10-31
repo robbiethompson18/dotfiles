@@ -42,17 +42,13 @@ fi
 # setup vim
 ./setup-vim.sh
 
-# Install launchd agent for weekly dotfiles pull
-./install-launchd-pull
-
-# Install launchd agent that lets Claude/Codex sessions request retirement
-./install-agent-reaper
-
-# Install launchd agent that kills runaway Claude/Codex child processes before they OOM the Mac
-./install-oom-guard
-
-# Install hourly launchd agent that deletes idle Claude scratchpads and stale Docker images
-./install-disk-sweep
+# Background agents (launchd on macOS, systemd on Linux; see bin/install-launchd-agent):
+# weekly dotfiles pull, agent-reaper (lets Claude/Codex sessions request retirement), oom-guard
+# (kills runaway agent processes before they OOM the Mac), disk-sweep (hourly scratchpad and Docker
+# image cleanup). main-checkout-pull is installed by hand on the Mac that has those checkouts.
+for agent in dotfiles-pull agent-reaper oom-guard disk-sweep; do
+    ./install-launchd-agent "$agent"
+done
 
 echo ""
 echo "✨ Installation complete!"
@@ -69,8 +65,7 @@ echo "  • Brew installed"
 echo "  • Common brew packages installed"
 echo "  • Common applications installed (Chrome, iTerm2, VS Code, Hammerspoon)"
 echo "  • macOS key repeat enabled (press-and-hold disabled)"
-echo "  • Weekly dotfiles auto-pull (launchd)"
-echo "  • Agent reaper for Claude/Codex session cleanup (launchd)"
+echo "  • Background agents: weekly dotfiles pull, agent-reaper, oom-guard, disk-sweep"
 echo ""
 echo "Note: See docs/claude-settings.md for info about Claude settings."
 echo ""

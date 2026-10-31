@@ -1,6 +1,7 @@
 #!/bin/bash
 # Every 5 minutes, fast-forwards reference-only main checkouts to origin/main. Driven by
-# com.robert.main-checkout-pull.plist. In these repos agents work in numbered pool checkouts
+# launchd/com.robert.main-checkout-pull.plist, installed by hand with
+# `install-launchd-agent main-checkout-pull`. In these repos agents work in numbered pool checkouts
 # (repo-N) and only read the main one, but sessions launched there load its CLAUDE.md, so it must
 # not go stale. A checkout that is missing, off main or has tracked changes is left alone with a
 # loud !!! line saying why: that is how drift shows up.

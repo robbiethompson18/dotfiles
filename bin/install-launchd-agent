@@ -1,0 +1,70 @@
+#!/bin/bash
+# install-launchd-agent <name>: installs (or reinstalls) one of the background agents in launchd/.
+# On macOS it copies launchd/com.robert.<name>.plist into ~/Library/LaunchAgents and (re)loads it.
+# Linux has no launchd: dotfiles-pull and agent-reaper get an equivalent systemd user unit, and the
+# macOS-only agents (oom-guard, disk-sweep, main-checkout-pull) are skipped.
+#
+# install.sh runs this for every agent except main-checkout-pull, which only makes sense on the Mac
+# that has those checkouts; install it by hand there.
+
+set -e
+
+name=${1:?usage: install-launchd-agent <name>}
+repo="$HOME/repos/dotfiles"
+plist="$repo/launchd/com.robert.$name.plist"
+[ -f "$plist" ] || { echo "no $plist" >&2; exit 2; }
+
+if [[ "$OSTYPE" != darwin* ]]; then
+    units="$HOME/.config/systemd/user"
+    mkdir -p "$units"
+    case $name in
+        dotfiles-pull)
+            cat >"$units/dotfiles-pull.service" <<EOF
+[Service]
+Type=oneshot
+ExecStart=/bin/bash $repo/bin/pull-dotfiles
+StandardOutput=append:/tmp/dotfiles-pull.log
+StandardError=append:/tmp/dotfiles-pull.log
+EOF
+            # Persistent=true catches up a run missed while the machine was off, like launchd's RunAtLoad.
+            cat >"$units/dotfiles-pull.timer" <<EOF
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=1w
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+EOF
+            unit=dotfiles-pull.timer
+            ;;
+        agent-reaper)
+            cat >"$units/agent-reaper.service" <<EOF
+[Service]
+ExecStart=$repo/bin/agent-reaper watch
+Restart=always
+StandardOutput=append:/tmp/agent-reaper-launchd.log
+StandardError=append:/tmp/agent-reaper-launchd.log
+
+[Install]
+WantedBy=default.target
+EOF
+            unit=agent-reaper.service
+            ;;
+        *)
+            echo "$name is macOS-only; skipping"
+            exit 0
+            ;;
+    esac
+    systemctl --user daemon-reload
+    systemctl --user enable --now "$unit"
+    echo "Installed $unit"
+    exit 0
+fi
+
+dest="$HOME/Library/LaunchAgents/com.robert.$name.plist"
+mkdir -p "${dest%/*}"
+launchctl unload "$dest" 2>/dev/null || true
+cp "$plist" "$dest"
+launchctl load "$dest"
+echo "Installed and loaded com.robert.$name"
