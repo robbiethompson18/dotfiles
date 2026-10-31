@@ -3,7 +3,7 @@
 #
 #   cc-state coding|experiment|review-bots|intermediate-results|results|quiz|questions|blocked
 #                                            set the state (the model's)
-#   cc-state review-robbie "<PR url> <what it does>" ["..."...]
+#   cc-state review-robbie "<PR url> +<added>/-<deleted> <what it does>" ["..."...]
 #                                            show changes waiting on Robbie's review, one row each, and
 #                                            drop the state; the rows outlive later states
 #   cc-state reviewed                        drop the review rows once nothing waits on Robbie

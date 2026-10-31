@@ -132,10 +132,14 @@ answer in your reply; while it's up, each prompt reminds you of it. If he didn't
 answer was insufficient, leave it up, and feel free to ask again or sharpen it. If you can't
 continue without the answer, that's `blocked` or `questions`, not this.
 
-When a change is ready for Robbie to review, run `cc-state review-robbie "<PR url> <what it does>"`.
-Each arg becomes its own cyan `REVIEW (robbie): ...` row, so pass one per PR, and always include the
-link so he can cmd-click it (a local branch name if there's no PR). It drops your state, but the rows
-stay up under whatever state you set next, so you can move on to other work. Each call replaces the
+When a change is ready for Robbie to review, run
+`cc-state review-robbie "<PR url> +<added>/-<deleted> <what it does>"`, e.g.
+`"https://github.com/o/r/pull/12 +84/-31 retry flaky uploads"`. Each arg becomes its own cyan
+`REVIEW (robbie): ...` row, so pass one per PR, and always include the link so he can cmd-click it
+(a local branch name if there's no PR). Take the line counts from
+`gh pr view <n> --json additions,deletions` (or `git diff --shortstat main...` without a PR). It
+drops your state, but the rows stay up under whatever state you set next, so you can move on to
+other work. Each call replaces the
 last set: re-run it with the ones still open when one merges, or `cc-state reviewed` when none are.
 
 `cc-state clear` drops your state, the questions and the review rows, not Robbie's mode. Only the
