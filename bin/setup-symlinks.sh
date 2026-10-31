@@ -58,7 +58,11 @@ fi
 # login, used via the clw/clwr aliases in shell/common.sh) and ~/.claude-spar (SPAR
 # login, cls/clsr). Claude Code keys the Keychain
 # credential, .claude.json and session history to CLAUDE_CONFIG_DIR, so each dir holds
-# its own account; everything else is the same files symlinked into both.
+# its own account; everything else is the same files symlinked into each.
+#
+# settings.json is the exception: each dir gets its own real file, because Claude Code
+# writes /model and /config choices into it and a symlink would share the default model
+# across profiles. The shared settings come in via `--settings` on the `claude` alias.
 #
 # Private companion repo (github.com/robbiethompson18/dotfiles-private).
 #
@@ -76,7 +80,11 @@ fi
 
 for CLAUDE_DIR in "$HOME/.claude" "$HOME/.claude-work" "$HOME/.claude-spar"; do
     mkdir -p "$CLAUDE_DIR"
-    create_symlink "$HOME/repos/dotfiles/claude/settings.json" "$CLAUDE_DIR/settings.json" "$CLAUDE_DIR/settings.json"
+    if [ -L "$CLAUDE_DIR/settings.json" ]; then
+        echo "⚠️  $CLAUDE_DIR/settings.json is a symlink - replacing with an empty per-profile file"
+        rm "$CLAUDE_DIR/settings.json"
+    fi
+    [ -e "$CLAUDE_DIR/settings.json" ] || echo '{}' > "$CLAUDE_DIR/settings.json"
     create_symlink "$HOME/repos/dotfiles/claude/CLAUDE.md" "$CLAUDE_DIR/CLAUDE.md" "$CLAUDE_DIR/CLAUDE.md"
     create_symlink "$HOME/repos/dotfiles/claude/personal-repo-rules.md" "$CLAUDE_DIR/personal-repo-rules.md" "$CLAUDE_DIR/personal-repo-rules.md"
     create_symlink "$HOME/repos/dotfiles/claude/skills" "$CLAUDE_DIR/skills" "$CLAUDE_DIR/skills"

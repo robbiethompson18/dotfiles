@@ -9,13 +9,17 @@ alias da="direnv allow"
 alias ls="ls -a"
 
 # Claude / Codex (launchers + short aliases, all in one place)
-alias claude="claude --dangerously-skip-permissions" #without chrome on the portable version
+# Shared Claude settings ride in via --settings (a layer above each profile's own
+# settings.json), so /model and /config write to the per-profile file instead of the
+# shared one. See docs/claude-settings.md. .zshrc redefines this alias on macOS to add
+# --chrome; keep the two in sync.
+alias claude="claude --dangerously-skip-permissions --settings \$HOME/repos/dotfiles/claude/settings.json" #without chrome on the portable version
 alias codex="codex --yolo --search"
 alias clp="claude"        # personal-account claude (~/.claude)
 alias clpr="claude --resume"
 # Work-account Claude. CLAUDE_CONFIG_DIR gives it its own login (Keychain entry is keyed
-# to the dir), .claude.json, and session history; setup-symlinks.sh links the shared
-# settings/CLAUDE.md/skills into it. `claude` here still expands to the alias above.
+# to the dir), .claude.json, session history and default model; setup-symlinks.sh links
+# the shared CLAUDE.md/skills into it. `claude` here still expands to the alias above.
 alias clw="CLAUDE_CONFIG_DIR=\$HOME/.claude-work claude"
 alias clwr="CLAUDE_CONFIG_DIR=\$HOME/.claude-work claude --resume"
 # SPAR-account Claude, same setup as clw.

@@ -21,7 +21,7 @@ must be re-cloned; `git pull --ff-only` will refuse to update it.
 (one dir per login; Claude Code keys the Keychain credential, `.claude.json` and session history to
 `CLAUDE_CONFIG_DIR`):
 
-- `settings.json` → `claude/settings.json`: permissions, env vars, hooks, model, plugins.
+- `settings.json` is **not** symlinked; see below.
 - `CLAUDE.md` → `claude/CLAUDE.md`: global instructions. Also linked as `AGENTS.md` into
   `~/.codex` and `~/.codex-work`.
 - `personal-repo-rules.md` → `claude/personal-repo-rules.md`: imported by personal repos' CLAUDE.md.
@@ -33,7 +33,24 @@ must be re-cloned; `git pull --ff-only` will refuse to update it.
   `~/.claude/plugins/` (`cache/`, `marketplaces/`, `installed_plugins.json`,
   `known_marketplaces.json`) is runtime state Claude Code regenerates per machine.
 
-`~/.claude/settings.local.json` is not symlinked; it holds machine-specific overrides.
+## settings.json: shared via `--settings`, not a symlink
+
+`claude/settings.json` (permissions, env vars, hooks, plugins, effort, theme) reaches every
+profile through `--settings $HOME/repos/dotfiles/claude/settings.json` on the `claude` alias
+(`shell/common.sh`, and the `--chrome` variant in `.zshrc`). Each `~/.claude*/settings.json` is a
+small real file that `setup-symlinks.sh` seeds with `{}`.
+
+Why: `/model` and `/config` write to the user settings file. When that file was a symlink into the
+repo, picking a default model in one profile changed it for all three (2026-10-31). `--settings`
+sits above user settings in the precedence stack, so the shared keys still win, while the `model`
+key is deliberately absent from the shared file and lives per profile.
+
+Costs: the shared layer also sits above a repo's `.claude/settings.json`, so a project can't
+override a shared scalar key (lists like `permissions.allow` still merge). Launches that bypass the
+alias (IDE extension, desktop app, scripts calling the binary) see only the per-profile file.
+
+`~/.claude/settings.local.json` exists on some machines but Claude Code does not read a user-scope
+local file (`settings.local.json` is project-scope only); anything in it is inert.
 
 ## Local mods
 

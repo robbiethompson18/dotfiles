@@ -24,7 +24,6 @@
     "deny": [],
     "defaultMode": "bypassPermissions"
   },
-  "model": "fable",
   "hooks": {
     "PreToolUse": [
       {
