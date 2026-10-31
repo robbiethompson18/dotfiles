@@ -27,3 +27,7 @@ claude/skills/synced/
 
 # Claude Code soft-deletes bundled skills here when it migrates them to the plugin namespace
 claude/skills/.trash/
+
+# Codex rewrites this in place with per-repo trust entries, hook hashes and TUI counters, so it is
+# machine-local; setup-symlinks.sh still links it into both Codex roots on the same machine.
+codex/config.toml

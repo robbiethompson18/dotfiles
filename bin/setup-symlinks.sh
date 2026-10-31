@@ -100,9 +100,12 @@ done
 # so the work ChatGPT seat and the personal plan never share a quota window.
 # Codex resolves all of this from $CODEX_HOME and errors if that path is missing,
 # so the mkdir has to happen before any `codex` invocation against the work root.
+# codex/config.toml is gitignored (Codex rewrites it with per-repo trust entries), so
+# it is shared between the two roots on one machine but not between machines.
 for CODEX_DIR in "$HOME/.codex" "$HOME/.codex-work"; do
     mkdir -p "$CODEX_DIR"
     create_symlink "$HOME/repos/dotfiles/claude/CLAUDE.md" "$CODEX_DIR/AGENTS.md" "$CODEX_DIR/AGENTS.md"
+    touch "$HOME/repos/dotfiles/codex/config.toml"
     create_symlink "$HOME/repos/dotfiles/codex/config.toml" "$CODEX_DIR/config.toml" "$CODEX_DIR/config.toml"
 done
 "$HOME/repos/dotfiles/bin/sync-codex-claude-skills"

@@ -26,6 +26,8 @@ must be re-cloned; `git pull --ff-only` will refuse to update it.
   `~/.codex` and `~/.codex-work`.
 - `personal-repo-rules.md` → `claude/personal-repo-rules.md`: imported by personal repos' CLAUDE.md.
 - `skills/` → `claude/skills/`. Mirrored into Codex by `bin/sync-codex-claude-skills`.
+- `codex/config.toml` → `~/.codex/config.toml` and `~/.codex-work/config.toml`, but gitignored:
+  Codex rewrites it in place with per-repo trust entries, so it is per machine, not synced.
 - `docs/` → `~/repos/dotfiles-private/claude-notes/` (private).
 - `plugins/blocklist.json`, `plugins/config.json` → `claude/plugins/`. The rest of
   `~/.claude/plugins/` (`cache/`, `marketplaces/`, `installed_plugins.json`,
