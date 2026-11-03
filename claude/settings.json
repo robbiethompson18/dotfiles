@@ -7,21 +7,6 @@
     "CLAUDE_CODE_PLUGIN_DIRS": "~/repos/dotfiles/claude/mods/pane-status"
   },
   "permissions": {
-    "allow": [
-      "Read(**)",
-      "Edit(**)",
-      "Task(*)",
-      "WebSearch",
-      "WebFetch(domain:*)",
-      "Grep(*)",
-      "LS(*)",
-      "NotebookRead(**)",
-      "TodoWrite(*)",
-      "ExitPlanMode(*)",
-      "Agent(**)",
-      "Skill(*)"
-    ],
-    "deny": [],
     "defaultMode": "bypassPermissions"
   },
   "hooks": {

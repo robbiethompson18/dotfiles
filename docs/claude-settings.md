@@ -49,8 +49,12 @@ Costs: the shared layer also sits above a repo's `.claude/settings.json`, so a p
 override a shared scalar key (lists like `permissions.allow` still merge). Launches that bypass the
 alias (IDE extension, desktop app, scripts calling the binary) see only the per-profile file.
 
-`~/.claude/settings.local.json` exists on some machines but Claude Code does not read a user-scope
-local file (`settings.local.json` is project-scope only); anything in it is inert.
+Claude Code does not read a user-scope `~/.claude/settings.local.json` (`settings.local.json` is
+project-scope only); anything in one is inert. Delete it if a machine grows one.
+
+`permissions.allow` is deliberately empty. Every session runs in `bypassPermissions`, so allow
+rules never fire, and stale ones (renamed tools, `Grep(*)`) only produce startup warnings
+(2026-11-03).
 
 ## Local mods
 
