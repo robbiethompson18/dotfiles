@@ -48,6 +48,11 @@ paper, a derivation, a proof step, or a multi-step calculation. He filters revie
 sessions skip the desk work, so get it right: a diffeq *theorem statement* is quick, *solving* a
 diffeq is sitdown.
 
+`difficulty` is 1 (easiest) to 5 (hardest), relative to the other items in the same unit, or to
+his unfiled items if you pass no course. Always set it: you just wrote the question, and if you
+leave it out the server spends a Fable call rating it. Plain recall of a definition or a number
+is 1 or 2; multi-step reasoning or a derivation is 4 or 5.
+
 `title` is 3 to 8 words. `notes` and `quote` (a verbatim excerpt) are optional.
 
 ## 3. Pick a course, or none
@@ -75,7 +80,8 @@ curl -s -X POST https://sapient.school/api/learning-items \
       "idealAnswer": "Forces every resolution of dompurify in the graph, including transitive ones, to a version satisfying >=3.4.17."
     }],
     "startingMastery": "new",
-    "format": "quick"
+    "format": "quick",
+    "difficulty": 1
   }'
 ```
 
