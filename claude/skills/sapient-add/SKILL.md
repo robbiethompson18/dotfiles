@@ -42,6 +42,12 @@ enough that a grader can tell right from wrong.
 `startingMastery` is `"new"` (default), `"familiar"`, or `"easy"`. Use familiar/easy only when
 Robbie said it's already easy; those still get a confirmation review tomorrow.
 
+`format` is `"quick"` (default) or `"sitdown"`. Quick: Robbie can answer it in his head in under a
+minute and type it on a phone (definitions, facts, one-step recall). Sitdown: it needs pen and
+paper, a derivation, a proof step, or a multi-step calculation. He filters review on this so phone
+sessions skip the desk work, so get it right: a diffeq *theorem statement* is quick, *solving* a
+diffeq is sitdown.
+
 `title` is 3 to 8 words. `notes` and `quote` (a verbatim excerpt) are optional.
 
 ## 3. Pick a course, or none
@@ -68,7 +74,8 @@ curl -s -X POST https://sapient.school/api/learning-items \
       "question": "In pnpm, what does a pnpm.overrides entry like \"dompurify\": \">=3.4.17\" do?",
       "idealAnswer": "Forces every resolution of dompurify in the graph, including transitive ones, to a version satisfying >=3.4.17."
     }],
-    "startingMastery": "new"
+    "startingMastery": "new",
+    "format": "quick"
   }'
 ```
 
