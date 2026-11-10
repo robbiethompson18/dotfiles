@@ -218,6 +218,8 @@ Keep it that way: identifiers go in the note, never in this index line.
 - [Cloud dev box — read before using, resizing or stopping robbie-box](docs/robbie-box.md)
   — primarily for Asymmetric but usable for anything; specs, cost, SSH routes, how to resize, what a
   stop kills
+- [Smart home plan — read when Robbie asks about the chandelier dimmer, Siri lights or smart home gear](docs/smart-home.md)
+  — what to buy, which switch to replace, what to check in the switch box before buying
 
 <system_prompt> <core_behaviors> <behavior name="assumption_surfacing" priority="critical"> Before
 implementing anything non-trivial, explicitly state your assumptions.
