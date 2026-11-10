@@ -75,6 +75,8 @@ Ruff, `prd`) apply without copying them into each repo.
    mkdir -p src && printf 'export {};\n' > src/index.ts
    pnpm check
    ```
+   `pnpm check` must exit 0 before step 9. Don't pipe it through `tail` or `head` in a `&&` chain:
+   the pipe's exit status is the last command's, so a failing check would still commit and push.
    For `--both`, the Prettier `overrides` block in `.prettierrc.json5` keeps Prettier off code so it
    never fights Biome; ruff owns Python.
 8. **direnv:** `cd ~/repos/<name> && direnv allow`.
@@ -247,18 +249,25 @@ Files that embed a big non-Python blob (e.g. an HTML/JS template string) should 
 
 ```json
 {
-  "$schema": "https://biomejs.dev/schemas/2.4.11/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.6.6/schema.json",
   "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
   "files": { "includes": ["**", "!**/.claude", "!**/dist"] },
   "formatter": { "enabled": true, "indentStyle": "space", "indentWidth": 2 },
-  "linter": { "enabled": true, "rules": { "recommended": true } },
+  "linter": { "enabled": true, "rules": { "preset": "recommended" } },
   "javascript": { "formatter": { "quoteStyle": "double" } },
-  "assist": { "enabled": true, "actions": { "source": { "organizeImports": "on" } } }
+  "assist": {
+    "enabled": true,
+    "actions": { "source": { "organizeImports": "on" } }
+  }
 }
 ```
 
 (Schema version: use whatever `pnpm add -D @biomejs/biome` installed; check
 `node_modules/@biomejs/biome/package.json` and update the `$schema` line to match.)
+
+If a newer Biome rejects this template, fix `biome.json` by hand and update the template here.
+Don't trust `biome migrate --write` blindly: on 2.6.6 it rewrote `"recommended": true` to
+`"preset": "none"`, which turns every lint rule off while `pnpm check` stays green.
 
 ## Don't
 
