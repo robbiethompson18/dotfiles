@@ -45,8 +45,9 @@ fi
 # Background agents (launchd on macOS, systemd on Linux; see bin/install-launchd-agent):
 # weekly dotfiles pull, agent-reaper (lets Claude/Codex sessions request retirement), oom-guard
 # (kills runaway agent processes before they OOM the Mac), disk-sweep (hourly scratchpad and Docker
-# image cleanup). main-checkout-pull is installed by hand on the Mac that has those checkouts.
-for agent in dotfiles-pull agent-reaper oom-guard disk-sweep; do
+# image cleanup), backlight-keys (F5/F6 dim/brighten the MacBook keyboard backlight).
+# main-checkout-pull is installed by hand on the Mac that has those checkouts.
+for agent in dotfiles-pull agent-reaper oom-guard disk-sweep backlight-keys; do
     ./install-launchd-agent "$agent"
 done
 

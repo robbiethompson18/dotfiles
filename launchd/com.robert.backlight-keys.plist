@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.robert.backlight-keys</string>
+
+    <!-- hidutil mappings are lost at reboot, so reapply at login. Src is what the built-in F5/F6
+         keys send on Apple Silicon MacBooks (dictation 0xC000000CF, Do Not Disturb 0x10000009B);
+         Dst is Apple's keyboard illumination down/up (0xFF00000009 / 0xFF00000008). fn+F5/F6 and
+         external keyboards still send plain F5/F6. -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/hidutil</string>
+        <string>property</string>
+        <string>--set</string>
+        <string>{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0xC000000CF,"HIDKeyboardModifierMappingDst":0xFF00000009},{"HIDKeyboardModifierMappingSrc":0x10000009B,"HIDKeyboardModifierMappingDst":0xFF00000008}]}</string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>

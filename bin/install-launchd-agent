@@ -2,7 +2,7 @@
 # install-launchd-agent <name>: installs (or reinstalls) one of the background agents in launchd/.
 # On macOS it copies launchd/com.robert.<name>.plist into ~/Library/LaunchAgents and (re)loads it.
 # Linux has no launchd: dotfiles-pull and agent-reaper get an equivalent systemd user unit, and the
-# macOS-only agents (oom-guard, disk-sweep, main-checkout-pull) are skipped.
+# macOS-only agents (oom-guard, disk-sweep, main-checkout-pull, backlight-keys) are skipped.
 #
 # install.sh runs this for every agent except main-checkout-pull, which only makes sense on the Mac
 # that has those checkouts; install it by hand there.
