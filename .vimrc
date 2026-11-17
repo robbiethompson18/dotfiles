@@ -248,6 +248,13 @@ augroup END
 " format lands.
 function! s:PrettierMarkdown() abort
   let l:view = winsaveview()
+  " personal-website posts (posts/<slug>/FINAL_POST.md, pages/<slug>/index.md): first move each
+  " footnote definition under the paragraph that cites it, with the repo's own place-notes.js.
+  let l:placer = expand('%:p:h:h:h') . '/place-notes.js'
+  if expand('%:t') =~# '^\(FINAL_POST\|index\)\.md$' && filereadable(l:placer)
+    silent execute '%!node ' . shellescape(l:placer) . ' --stdin'
+    if v:shell_error | silent undo | endif
+  endif
   silent %!prettier --stdin-filepath %:p --config-precedence prefer-file --print-width 100 --prose-wrap always
   if v:shell_error | silent undo | endif
   call winrestview(l:view)
