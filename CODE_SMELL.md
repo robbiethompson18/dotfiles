@@ -14,3 +14,7 @@ items. Fix: (1) port the hooks to ~/.codex/hooks.json (same schema; no StopFailu
 pkill-guard/oom-guard parse Codex's PreToolUse/PostToolUse payloads); (2) an iTerm2 Python API
 AutoLaunch script that watches ~/.cache/cc-state/ and sets each pane's badge/tab color, so banners
 work for both agents.
+
+Nov 18 1:20pm PST: cc-sessions re-reads every transcript on each launch (~6s for 3.4 GB, streamed into fzf
+so the picker opens at once). No cache. A queued prompt that was later merged into a typed one shows
+up as two rows, because both branches are in the transcript.

@@ -1,0 +1,134 @@
+#!/usr/bin/python3
+"""cc-sessions [query]: fzf over every prompt typed into Claude Code, on any profile, in any directory.
+
+Prints "<session id>\t<directory it was started in>\t<CLAUDE_CONFIG_DIR, empty for ~/.claude>" for
+the picked row. The `ccr` function in shell/common.sh resumes from that. Sessions live at
+<config dir>/projects/<cwd with non-alphanumerics as dashes>/<session id>.jsonl, and `claude --resume`
+only finds one from the directory it was started in, hence the directory.
+
+cc-sessions --preview <file> <timestamp> is what fzf calls to render the preview pane: the
+conversation from that prompt on.
+"""
+
+import json
+import re
+import subprocess
+import sys
+from datetime import datetime
+from pathlib import Path
+from zoneinfo import ZoneInfo
+
+PACIFIC = ZoneInfo("America/Los_Angeles")
+HOME = str(Path.home())
+# Text Claude Code injects as a user turn (command output, hook and task notices, interrupts, compaction).
+INJECTED = re.compile(
+    r"^(<(?!command-name|command-message)|\[Request interrupted|Caveat: |This session is being continued from)"
+)
+SLASH_COMMAND = re.compile(r"<command-name>(.*?)</command-name>(?:.*?<command-args>(.*?)</command-args>)?", re.DOTALL)
+
+
+def typed_text(record):
+    """The text a human typed in this transcript record, or None."""
+    if record.get("type") != "user" or record.get("isMeta") or record.get("isSidechain"):
+        return None
+    content = record["message"]["content"]
+    if not isinstance(content, str):
+        content = "\n".join(block["text"] for block in content if block.get("type") == "text")
+    content = content.strip()
+    if not content or INJECTED.match(content):
+        return None
+    slash = SLASH_COMMAND.search(content)
+    return f"{slash[1]} {slash[2] or ''}".strip() if slash else content
+
+
+def records(path, *needles):
+    """Parsed lines of a transcript that contain any needle. Most lines are huge tool output, so
+    the substring test is what keeps this fast."""
+    with open(path, errors="replace") as f:
+        for line in f:
+            if any(needle in line for needle in needles):
+                try:
+                    yield json.loads(line)
+                except json.JSONDecodeError:  # a session killed mid-write leaves a torn last line
+                    pass
+
+
+def local(timestamp):
+    # macOS's /usr/bin/python3 is 3.9, whose fromisoformat rejects the trailing Z.
+    return datetime.fromisoformat(timestamp.replace("Z", "+00:00")).astimezone(PACIFIC)  # noqa: FURB162
+
+
+def session_rows(path):
+    named, ai_title, prompts, dirs = "", "", [], []
+    for record in records(path, '"type":"user"', '"type":"ai-title"', '"type":"custom-title"'):
+        if record.get("type") == "custom-title":
+            named = record["customTitle"]
+        elif record.get("type") == "ai-title":
+            ai_title = record["aiTitle"]
+        elif text := typed_text(record):
+            prompts.append((record["timestamp"], " ".join(text.split())[:600]))
+            dirs.append(record["cwd"])
+    # The session may have cd'd around; the directory it started in is the one its folder is named for.
+    started_in = next((d for d in dirs if re.sub(r"[^A-Za-z0-9]", "-", d) == path.parent.name), dirs[0] if dirs else "")
+    profile = path.parents[2].name.removeprefix(".claude").lstrip("-")
+    where = (f"{profile}:" if profile else "") + started_in.replace(f"{HOME}/repos/", "").replace(HOME, "~")
+    for timestamp, text in reversed(prompts):
+        when = local(timestamp).strftime("%b %d %-I:%M%p").replace("AM", "am").replace("PM", "pm")
+        yield "\t".join(
+            [str(path), timestamp, started_in, f"{when:<15}", f"{where:<28}", f"{named or ai_title:<40}", text]
+        )
+
+
+def preview(path, since):
+    for record in records(path, '"type":"user"', '"type":"assistant"'):
+        if record.get("timestamp", "") < since or record.get("isSidechain"):
+            continue
+        if text := typed_text(record):
+            print(f"\033[1;36m> {text}\033[0m\n")
+        elif record["type"] == "assistant":
+            for block in record["message"]["content"]:
+                if block.get("type") == "text" and block["text"].strip():
+                    print(block["text"].strip() + "\n")
+
+
+def main():
+    if sys.argv[1:2] == ["--preview"]:
+        return preview(Path(sys.argv[2]), sys.argv[3])
+    transcripts = [p for config in Path.home().glob(".claude*") for p in config.glob("projects/*/*.jsonl")]
+    transcripts.sort(key=lambda p: p.stat().st_mtime, reverse=True)
+    fzf = subprocess.Popen(
+        [
+            "fzf",
+            "--delimiter=\t",
+            "--with-nth=4..",
+            "--exact",
+            "--no-sort",
+            "--layout=reverse",
+            "--query",
+            " ".join(sys.argv[1:]),
+            "--preview",
+            f"{sys.argv[0]} --preview {{1}} {{2}}",
+            "--preview-window=down,60%,wrap",
+        ],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        text=True,
+    )
+    # Reading every transcript takes ~6s, so feed fzf as we go, most recently active session first.
+    try:
+        for path in transcripts:
+            for row in session_rows(path):
+                fzf.stdin.write(row + "\n")
+        fzf.stdin.close()
+    except BrokenPipeError:  # picked or quit before the older sessions were read
+        pass
+    picked = fzf.stdout.read()
+    if fzf.wait():
+        sys.exit(fzf.returncode)
+    path, _, started_in = picked.split("\t")[:3]
+    config = Path(path).parents[2]
+    print(f"{Path(path).stem}\t{started_in}\t{'' if config.name == '.claude' else config}")
+
+
+if __name__ == "__main__":
+    main()

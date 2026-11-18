@@ -25,6 +25,15 @@ alias clwr="CLAUDE_CONFIG_DIR=\$HOME/.claude-work claude --resume"
 # SPAR-account Claude, same setup as clw.
 alias cls="CLAUDE_CONFIG_DIR=\$HOME/.claude-spar claude"
 alias clsr="CLAUDE_CONFIG_DIR=\$HOME/.claude-spar claude --resume"
+# ccr [query]: fzf over every prompt you've typed, on any profile, in any directory, then resume
+# the picked session where it was started. Your shell stays where it is.
+ccr() {
+    local pick id dir config_dir
+    pick=$(cc-sessions "$@") || return
+    IFS=$'\t' read -r id dir config_dir <<<"$pick"
+    # eval, so `claude` expands to the alias as it is now: .zshrc redefines it after this file loads.
+    (cd "$dir" && eval "${config_dir:+CLAUDE_CONFIG_DIR=$config_dir }claude --resume $id")
+}
 # Codex mirrors the Claude split: `co` + p/w, never a bare `co`, so the account is
 # always explicit. CODEX_HOME gives the work root its own auth.json and session
 # history; setup-symlinks.sh links the shared config.toml/AGENTS.md/skills into
