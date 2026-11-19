@@ -138,6 +138,7 @@ Static apps served directly via Caddy's `file_server` (no port, no backend proce
 | --------------------- | ---------------------------------------------- |
 | `shire.localhost`     | `~/repos/whimsy-projects/neighborhood-map`     |
 | `app.localhost`       | `~/repos/dotfiles/caddy/app-localhost` (landing page, see below) |
+| `redwood-faces.localhost` | `~/repos/job-search-2026/redwood/faces` (names-and-faces flashcards for Redwood colleagues) |
 
 ## Landing page
 
