@@ -76,4 +76,10 @@ Two separate pieces make sessions on this machine reachable from claude.ai/code 
   script header).
 
 Both run the Claude process on this machine; the app is only the screen and keyboard. Nothing is
-reachable while the Mac sleeps.
+reachable while the Mac sleeps, so the `caffeinate` launchd agent (`caffeinate -dimsu`, installed by
+hand) stops idle sleep. A closed lid still sleeps.
+
+Remote Control is one connection per session id. `claude --resume <id>` on a session that is still
+open elsewhere starts without it ("another Claude Code on this machine already has Remote Control
+for this conversation"). Fork instead (`clpf`, i.e. `--resume --fork-session`): the copy gets a new
+session id and its own connection, and forks can be forked.
