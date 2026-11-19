@@ -16,29 +16,27 @@ alias ls="ls -a"
 alias claude="claude --dangerously-skip-permissions --settings \$HOME/repos/dotfiles/claude/settings.json" #without chrome on the portable version
 alias codex="codex --yolo --search"
 alias clp="claude"        # personal-account claude (~/.claude)
-alias clpr="claude --resume"
-# Fork: resume a copy under a new session id. Use this, not clpr, on a session that is still open
-# in another tab. Two terminals on one session id share a transcript, and only one of them gets
-# Remote Control. Add -n <name> to name the fork.
+# Fork: pick a session and continue a copy of it under a new session id. Add -n <name> to name it.
+# There is deliberately no plain `--resume` alias: resuming a session that is still open in another
+# tab puts two terminals on one session id, sharing a transcript, and only one gets Remote Control.
 alias clpf="claude --resume --fork-session"
 # Work-account Claude. CLAUDE_CONFIG_DIR gives it its own login (Keychain entry is keyed
 # to the dir), .claude.json, session history and default model; setup-symlinks.sh links
 # the shared CLAUDE.md/skills into it. `claude` here still expands to the alias above.
 alias clw="CLAUDE_CONFIG_DIR=\$HOME/.claude-work claude"
-alias clwr="CLAUDE_CONFIG_DIR=\$HOME/.claude-work claude --resume"
 alias clwf="CLAUDE_CONFIG_DIR=\$HOME/.claude-work claude --resume --fork-session"
 # SPAR-account Claude, same setup as clw.
 alias cls="CLAUDE_CONFIG_DIR=\$HOME/.claude-spar claude"
-alias clsr="CLAUDE_CONFIG_DIR=\$HOME/.claude-spar claude --resume"
 alias clsf="CLAUDE_CONFIG_DIR=\$HOME/.claude-spar claude --resume --fork-session"
-# ccr [query]: fzf over every prompt you've typed, on any profile, in any directory, then resume
-# the picked session where it was started. Your shell stays where it is.
+# ccr [query]: fzf over every prompt you've typed, on any profile, in any directory, then continue
+# the picked session where it was started: forked if it is still open somewhere, resumed if not.
+# Your shell stays where it is.
 ccr() {
-    local pick id dir config_dir
+    local pick resume_args dir config_dir
     pick=$(cc-sessions "$@") || return
-    IFS=$'\t' read -r id dir config_dir <<<"$pick"
+    IFS=$'\t' read -r resume_args dir config_dir <<<"$pick"
     # eval, so `claude` expands to the alias as it is now: .zshrc redefines it after this file loads.
-    (cd "$dir" && eval "${config_dir:+CLAUDE_CONFIG_DIR=$config_dir }claude --resume $id")
+    (cd "$dir" && eval "${config_dir:+CLAUDE_CONFIG_DIR=$config_dir }claude $resume_args")
 }
 # Codex mirrors the Claude split: `co` + p/w, never a bare `co`, so the account is
 # always explicit. CODEX_HOME gives the work root its own auth.json and session

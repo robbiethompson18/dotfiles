@@ -55,8 +55,8 @@ if ! command -v claude &> /dev/null; then
 fi
 
 # Claude config. Three config dirs: ~/.claude (personal login), ~/.claude-work (work
-# login, used via the clw/clwr aliases in shell/common.sh) and ~/.claude-spar (SPAR
-# login, cls/clsr). Claude Code keys the Keychain
+# login, used via the clw/clwf aliases in shell/common.sh) and ~/.claude-spar (SPAR
+# login, cls/clsf). Claude Code keys the Keychain
 # credential, .claude.json and session history to CLAUDE_CONFIG_DIR, so each dir holds
 # its own account; everything else is the same files symlinked into each.
 #

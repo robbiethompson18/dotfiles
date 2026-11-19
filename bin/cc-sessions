@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 """cc-sessions [query]: fzf over every prompt typed into Claude Code, on any profile, in any directory.
 
-Prints "<session id>\t<directory it was started in>\t<CLAUDE_CONFIG_DIR, empty for ~/.claude>" for
-the picked row. The `ccr` function in shell/common.sh resumes from that. Sessions live at
+Prints "<claude args>\t<directory it was started in>\t<CLAUDE_CONFIG_DIR, empty for ~/.claude>" for
+the picked row, where the args are `--resume <session id>`, plus `--fork-session` if a running
+Claude Code has that session open (two processes on one session id share a transcript and only one
+gets Remote Control). The `ccr` function in shell/common.sh runs claude from that. Sessions live at
 <config dir>/projects/<cwd with non-alphanumerics as dashes>/<session id>.jsonl, and `claude --resume`
 only finds one from the directory it was started in, hence the directory.
 
@@ -11,6 +13,7 @@ conversation from that prompt on.
 """
 
 import json
+import os
 import re
 import subprocess
 import sys
@@ -91,6 +94,19 @@ def preview(path, since):
                     print(block["text"].strip() + "\n")
 
 
+def is_open(config, session_id):
+    """Whether a running Claude Code on this profile has the session open. Each one keeps a
+    <config dir>/sessions/<pid>.json."""
+    for entry in (config / "sessions").glob("*.json"):
+        if json.loads(entry.read_text()).get("sessionId") == session_id:
+            try:
+                os.kill(int(entry.stem), 0)
+                return True
+            except OSError:  # that process is gone and left its file behind
+                pass
+    return False
+
+
 def main():
     if sys.argv[1:2] == ["--preview"]:
         return preview(Path(sys.argv[2]), sys.argv[3])
@@ -127,7 +143,9 @@ def main():
         sys.exit(fzf.returncode)
     path, _, started_in = picked.split("\t")[:3]
     config = Path(path).parents[2]
-    print(f"{Path(path).stem}\t{started_in}\t{'' if config.name == '.claude' else config}")
+    session_id = Path(path).stem
+    fork = " --fork-session" if is_open(config, session_id) else ""
+    print(f"--resume {session_id}{fork}\t{started_in}\t{'' if config.name == '.claude' else config}")
 
 
 if __name__ == "__main__":
