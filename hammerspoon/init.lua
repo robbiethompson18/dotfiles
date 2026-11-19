@@ -180,6 +180,7 @@ local appBindings = {
   V = "Visual Studio Code",
   G = "Google Chrome",
   S = "Slack",
+  L = "Signal",
   M = "Messages",
   N = "Notes",
   W = "WhatsApp",
