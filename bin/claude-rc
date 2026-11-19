@@ -1,0 +1,25 @@
+#!/bin/bash
+# claude-rc: the Remote Control server for ~/repos, kept alive by launchd (com.robert.claude-rc).
+# While it runs, claude.ai/code and the phone app can start Claude Code sessions on this machine.
+# Each one is a child process of this server, working in ~/repos. Flags mirror the `claude` alias.
+#
+# Installed by hand with `install-launchd-agent claude-rc`, on a machine where you have already run
+# `claude remote-control` in a terminal once to answer its "Enable Remote Control?" prompt.
+# Restart: launchctl kickstart -k gui/$(id -u)/com.robert.claude-rc (this ends the running sessions).
+
+set -e
+
+# launchd starts us with a bare PATH and sessions inherit ours, so take the interactive shell's.
+PATH=$(zsh -lic 'print -r -- "$PATH"' 2>/dev/null | tail -1)
+export PATH
+
+# Remote Control reads --settings once and stops starting sessions if the file changes afterwards.
+# The shared settings change every few days, so hand it a copy. Edits apply on the next restart.
+settings=$HOME/.cache/claude-rc-settings.json
+mkdir -p "${settings%/*}"
+cp "$HOME/repos/dotfiles/claude/settings.json" "$settings"
+
+cd "$HOME/repos"
+# No pre-created session: nobody is at a terminal to type into it.
+exec claude remote-control --settings "$settings" --permission-mode bypassPermissions --chrome \
+    --no-create-session-in-dir
