@@ -60,3 +60,20 @@ rules never fire, and stale ones (renamed tools, `Grep(*)`) only produce startup
 
 `claude/mods/` holds local plugins (`pane-status`), loaded via
 `CLAUDE_CODE_PLUGIN_DIRS` in `claude/settings.json`.
+
+## Remote Control
+
+Two separate pieces make sessions on this machine reachable from claude.ai/code and the phone app
+(set up 2026-11-18):
+
+- `"remoteControlAtStartup": true` in `claude/settings.json` connects every interactive session you
+  start in a terminal, on all three profiles. It is the `/config` item "Enable Remote Control for all
+  sessions". Claude Code ignores this key in a repo's `.claude/settings.json`; only user-level
+  sources can turn it on. `/rc` inside a session disconnects that one session.
+- `bin/claude-rc`, kept alive by the `claude-rc` launchd agent, is the server that lets the app
+  start new sessions in `~/repos`. It hands Remote Control a copy of `claude/settings.json` taken at
+  start, so shared-settings edits reach app-started sessions only after a restart (command in the
+  script header).
+
+Both run the Claude process on this machine; the app is only the screen and keyboard. Nothing is
+reachable while the Mac sleeps.

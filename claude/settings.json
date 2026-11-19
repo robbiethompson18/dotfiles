@@ -1,5 +1,6 @@
 {
   "cleanupPeriodDays": 365,
+  "remoteControlAtStartup": true,
   "env": {
     "CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION": "100000",
     "CLAUDE_CODE_WEB_SEARCH_REFILLS_PER_HOUR": "100000",
