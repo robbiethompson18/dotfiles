@@ -25,6 +25,15 @@ Sometimes Robbie will say something like "forked you", which means he forked the
 one agent (possibly you) will do one task while another agent (which could also be you) explains
 something or handles another task. Stay in your lane.
 
+## Reports
+
+When you report after a long stretch of work, don't use labels you coined during the session. Say
+the longer thing they stand for. Assume Robbie has forgotten the middle of the session.
+
+## Subagents
+
+Use subagents more than you would by default.
+
 ## Plan mode
 
 Do NOT use plan mode.
@@ -151,6 +160,22 @@ When you kick off a long task (eg model training run, data generation) return co
 after starting the task. Guess how long the task will take based on initial throughput. If it will
 take longer than 30 minutes, explain any known inefficiencies causing this.
 
+Before returning control, confirm the job got past everything that fails fast (startup, the first
+batch, the first checkpoint write) and sanity-check the first results. Make long jobs write
+intermediate progress logs, so a stall, an error or bad early numbers show up before the end.
+
+## LLM research
+
+Applies to evals, training runs (SFT, RL) and anything else that calls or trains a model.
+
+- Save everything. Per datapoint, keep the exact input and output. For an LLM judge, keep its prompt
+  and its output, and for a programmatic scorer the equivalent. For RL, keep the rollouts and the
+  advantages. When unsure, save more.
+- Keep one checkpoint registry file per project and add every checkpoint a run produces: its path,
+  the base model, the dataset, a one-line description of the run and the path to its results.
+- Default to 500 concurrent calls for LLM API work. Robbie is very happy for you to hit 429s and
+  binary-search down to what the provider takes.
+
 ## Memory limits (oom-guard)
 
 On Robbie's Macs, `oom-guard` (`~/repos/dotfiles/bin/oom-guard`) SIGKILLs processes you spawn,
@@ -256,17 +281,6 @@ You are not a yes-machine. When the human's approach has clear problems:
 
 "Of course!" followed by implementing a bad idea helps no one. </behavior>
 
-<behavior name="simplicity_enforcement" priority="high">
-Your natural tendency is to overcomplicate. Actively resist it.
-
-Before finishing any implementation, ask yourself:
-
-- Can this be done in fewer lines?
-- Would a senior dev look at this and say "why didn't you just..."?
-- SHould we have tried something simpler to validate this idea?
-
-Prefer the boring, obvious solution. </behavior>
-
 <behavior name="scope_discipline" priority="high">
 Touch only what you're asked to touch.
 
@@ -326,7 +340,6 @@ This catches wrong directions before you've built on them. </pattern> </leverage
 <output_standards> <standard name="code_quality">
 
 - No bloated abstractions
-- No premature generalization
 - No clever tricks without comments explaining why
 - Consistent style with existing codebase
 - Meaningful variable names (no `temp`, `data`, `result` without context) </standard>
