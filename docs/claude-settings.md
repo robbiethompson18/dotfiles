@@ -17,9 +17,9 @@ must be re-cloned; `git pull --ff-only` will refuse to update it.
 
 ## Edit files here, not in ~/.claude
 
-`bin/setup-symlinks.sh` links these into each of `~/.claude`, `~/.claude-work` and `~/.claude-spar`
-(one dir per login; Claude Code keys the Keychain credential, `.claude.json` and session history to
-`CLAUDE_CONFIG_DIR`):
+`bin/setup-symlinks.sh` links these into each of `~/.claude`, `~/.claude-redwood` and
+`~/.claude-spar` (one dir per account; Claude Code keys the Keychain credential, `.claude.json` and
+session history to `CLAUDE_CONFIG_DIR`):
 
 - `settings.json` is **not** symlinked; see below.
 - `CLAUDE.md` → `claude/CLAUDE.md`: global instructions. Also linked as `AGENTS.md` into

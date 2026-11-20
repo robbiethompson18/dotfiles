@@ -26,8 +26,9 @@
 
 # 3) App settings after install
 
-- Claude Code: log in once per account. `clp` then `/login` (personal, `~/.claude`), `clw`
-  (work, `~/.claude-work`), `cls` (SPAR, `~/.claude-spar`).
+- Claude Code: log in once per account. `clp` then `/login` (personal, `~/.claude`), `cls` (SPAR,
+  `~/.claude-spar`). `clr` (Redwood, `~/.claude-redwood`) has no login: paste a Redwood Console API
+  key into `~/.config/redwood/anthropic-api-key` (mode 600).
 - Hammerspoon: grant Accessibility (System Settings → Privacy & Security → Accessibility), then
   enable "Launch Hammerspoon at login" in its preferences. Does window snapping and the hotkeys.
 - Maccy (clipboard history): Launch at login; popup hotkey Option+Command+C.
