@@ -4,6 +4,8 @@
 - Mouse speed to fourth from max
 - Caps Lock mapped to Escape
 - Dock: auto-hide, small, allowed on every monitor
+- Never idle-sleep but turn the display off after 5 min, so Claude sessions keep running with the
+  screen locked: `sudo pmset -a sleep 0 displaysleep 5`
 
 # 2) Run install.sh
 
