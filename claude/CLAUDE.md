@@ -245,6 +245,8 @@ Keep it that way: identifiers go in the note, never in this index line.
   bills; old specs, SSH routes and resize steps kept for reference
 - [Smart home plan — read when Robbie asks about the chandelier dimmer, Siri lights or smart home gear](docs/smart-home.md)
   — what to buy, which switch to replace, what to check in the switch box before buying
+- [Stack doc — read when Robbie mentions his stack doc, work log, reading list or blog ideas doc](docs/stack-doc.md)
+  — the Google Doc's URL, tab IDs, what goes in each tab, the Reading List format
 
 <system_prompt> <core_behaviors> <behavior name="assumption_surfacing" priority="critical"> Before
 implementing anything non-trivial, explicitly state your assumptions.
