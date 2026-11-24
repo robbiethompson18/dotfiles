@@ -42,12 +42,29 @@ function wrapRows(text: string, width: number): string[] {
   return [...rows, row].map(r => ` ${r}`.padEnd(width + 1))
 }
 
+// Elapsed time as the engine's own agent list writes it: `44s`, `2m 44s`, `1h 2m`.
+function formatElapsed(ms: number): string {
+  const seconds = Math.max(0, Math.floor(ms / 1000))
+  if (seconds < 60) {
+    return `${seconds}s`
+  }
+  const minutes = Math.floor(seconds / 60)
+  return minutes < 60 ? `${minutes}m ${seconds % 60}s` : `${Math.floor(minutes / 60)}h ${minutes % 60}m`
+}
+
+function formatTokens(count: number): string {
+  if (count < 1_000) {
+    return `${count}`
+  }
+  return count < 1_000_000 ? `${(count / 1_000).toFixed(1)}k` : `${(count / 1_000_000).toFixed(1)}M`
+}
+
 export const register: Register = on => {
   let banner: string | undefined
   let mode: string | undefined
   let questions: string[] = []
   let reviews: string[] = []
-  let subagents: string[] = []
+  let subagents: { name: string; stats: string }[] = []
   // False outside iTerm2, where nothing polls and no gray rows are drawn.
   let drawsSubagentRows = false
 
@@ -99,10 +116,16 @@ export const register: Register = on => {
         $.ui.invalidate('ui.render')
       }
       // Live subagents, one gray row each. Finished ones linger in the list for a while, hence the filter.
+      // The elapsed time is part of the row, so while any subagent lives this redraws every second.
+      const now = await $.clock.now()
       const wantedSubagents = (await $.agent.list().catch(() => []))
         .filter(a => a.status === 'pending' || a.status === 'running' || a.status === 'waiting')
-        .map(a => (a.type === 'general-purpose' || a.type === 'claude' ? a.description : `${a.description} (${a.type})`))
-      if (wantedSubagents.join('\n') !== subagents.join('\n')) {
+        .map(a => ({
+          name: a.type === 'general-purpose' || a.type === 'claude' ? a.description : `${a.description} (${a.type})`,
+          // tokenCount is 0 until the agent's first request is answered.
+          stats: [formatElapsed(now - a.startTime), ...(a.tokenCount > 0 ? [`${formatTokens(a.tokenCount)} tokens`] : [])].join(' · '),
+        }))
+      if (JSON.stringify(wantedSubagents) !== JSON.stringify(subagents)) {
         subagents = wantedSubagents
         $.ui.invalidate('ui.render')
       }
@@ -139,9 +162,16 @@ export const register: Register = on => {
         }),
       )
     })
-    const subagentRows = subagents.length <= MAX_SUBAGENT_ROWS
+    const shownSubagents = subagents.length <= MAX_SUBAGENT_ROWS
       ? subagents
-      : [...subagents.slice(0, MAX_SUBAGENT_ROWS - 1), `+${subagents.length - MAX_SUBAGENT_ROWS + 1} more`]
+      : [...subagents.slice(0, MAX_SUBAGENT_ROWS - 1), { name: `+${subagents.length - MAX_SUBAGENT_ROWS + 1} more`, stats: '' }]
+    // Name on the left, stats flush right with a one-column margin; a long name is cut so the stats always fit.
+    const subagentRows = shownSubagents.map(({ name, stats }) => {
+      const nameColumns = width - stats.length - 2
+      return stats === ''
+        ? ` SUB: ${name}`.padEnd(width)
+        : `${` SUB: ${name}`.slice(0, nameColumns).padEnd(nameColumns)} ${stats} `
+    })
 
     return (
       <Box flexDirection="column">
@@ -153,7 +183,7 @@ export const register: Register = on => {
         ))}
         {subagentRows.map((row, i) => (
           <Text key={`subagent-${i}`} bold color="inverseText" backgroundColor={SUBAGENT_COLOR} wrap="truncate-end">
-            {` SUB: ${row}`.padEnd(width)}
+            {row}
           </Text>
         ))}
         {reviewRows.map((row, i) => (
