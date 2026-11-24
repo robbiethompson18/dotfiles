@@ -48,6 +48,8 @@ export const register: Register = on => {
   let questions: string[] = []
   let reviews: string[] = []
   let subagents: string[] = []
+  // False outside iTerm2, where nothing polls and no gray rows are drawn.
+  let drawsSubagentRows = false
 
   on('session.start', async ($, e, next) => {
     await $.command.register({
@@ -66,6 +68,7 @@ export const register: Register = on => {
     const questionFile = labelFile.replace(/\.label$/, '.question')
     const modeFile = labelFile.replace(/\.label$/, '.mode')
     const reviewFile = labelFile.replace(/\.label$/, '.review')
+    drawsSubagentRows = true
     $.clock.every(POLL_MS, async () => {
       const label = (await $.fs.read(labelFile).catch(() => '')).trim()
       const wantedBanner = label in BANNERS ? label : undefined
@@ -180,6 +183,12 @@ export const register: Register = on => {
       .filter(segment => !/^\d+ [a-z]+$/.test(segment) && segment !== '↓ to manage')
     return next({ ...e, props: { ...e.props, hint: kept.join(' · ') } })
   })
+
+  // The engine's agent list under the prompt shows the same agents as the gray rows, so hide its rows.
+  // A hidden row leaves that list's drawing, count and keys; the agent stays in the background-tasks dialog.
+  on('ui.render', { component: 'AgentRow' }, async ($, e, next) =>
+    next(drawsSubagentRows ? { ...e, props: { ...e.props, isHidden: true } } : e),
+  )
 
   on('command.run', { command: 'state' }, async ($, e) => {
     const state = e.args.trim()
