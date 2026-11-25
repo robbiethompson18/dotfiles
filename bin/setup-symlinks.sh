@@ -54,9 +54,9 @@ if ! command -v claude &> /dev/null; then
     exit 1
 fi
 
-# Claude config. Three config dirs: ~/.claude (personal login), ~/.claude-work (work
-# login, used via the clw/clwr aliases in shell/common.sh) and ~/.claude-spar (SPAR
-# login, cls/clsr). Claude Code keys the Keychain
+# Claude config. Three config dirs: ~/.claude (personal login), ~/.claude-redwood (no
+# login: the clr/clrr aliases in shell/common.sh pass the Redwood API key) and
+# ~/.claude-spar (SPAR login, cls/clsr). Claude Code keys the Keychain
 # credential, .claude.json and session history to CLAUDE_CONFIG_DIR, so each dir holds
 # its own account; everything else is the same files symlinked into each.
 #
@@ -78,7 +78,7 @@ if [ ! -d "$PRIVATE_DIR/.git" ]; then
     echo "ℹ️  No access to dotfiles-private - skipping global notes. Everything else works."
 fi
 
-for CLAUDE_DIR in "$HOME/.claude" "$HOME/.claude-work" "$HOME/.claude-spar"; do
+for CLAUDE_DIR in "$HOME/.claude" "$HOME/.claude-redwood" "$HOME/.claude-spar"; do
     mkdir -p "$CLAUDE_DIR"
     if [ -L "$CLAUDE_DIR/settings.json" ]; then
         echo "⚠️  $CLAUDE_DIR/settings.json is a symlink - replacing with an empty per-profile file"

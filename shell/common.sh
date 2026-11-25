@@ -21,13 +21,16 @@ alias clpr="claude --resume"
 # Use this, not clpr, on a session that is still open in another tab: resuming it puts two terminals
 # on one session id, sharing a transcript, and only one gets Remote Control.
 alias clpf="claude --resume --fork-session"
-# Work-account Claude. CLAUDE_CONFIG_DIR gives it its own login (Keychain entry is keyed
-# to the dir), .claude.json, session history and default model; setup-symlinks.sh links
-# the shared CLAUDE.md/skills into it. `claude` here still expands to the alias above.
-alias clw="CLAUDE_CONFIG_DIR=\$HOME/.claude-work claude"
-alias clwr="CLAUDE_CONFIG_DIR=\$HOME/.claude-work claude --resume"
-alias clwf="CLAUDE_CONFIG_DIR=\$HOME/.claude-work claude --resume --fork-session"
-# SPAR-account Claude, same setup as clw.
+# Redwood-org Claude: billed to the Redwood API key instead of a login. The key lives only in
+# ~/.config/redwood/anthropic-api-key (not in any repo). ANTHROPIC_API_KEY is set inline so it beats
+# a repo-local key that direnv exported, for Claude and for everything Claude launches.
+# CLAUDE_CONFIG_DIR gives the profile its own .claude.json, session history and default model;
+# setup-symlinks.sh links the shared CLAUDE.md/skills into it. `claude` here still expands to the
+# alias above.
+alias clr="ANTHROPIC_API_KEY=\$(<\$HOME/.config/redwood/anthropic-api-key) CLAUDE_CONFIG_DIR=\$HOME/.claude-redwood claude"
+alias clrr="ANTHROPIC_API_KEY=\$(<\$HOME/.config/redwood/anthropic-api-key) CLAUDE_CONFIG_DIR=\$HOME/.claude-redwood claude --resume"
+alias clrf="ANTHROPIC_API_KEY=\$(<\$HOME/.config/redwood/anthropic-api-key) CLAUDE_CONFIG_DIR=\$HOME/.claude-redwood claude --resume --fork-session"
+# SPAR-account Claude. CLAUDE_CONFIG_DIR gives it its own login (Keychain entry is keyed to the dir).
 alias cls="CLAUDE_CONFIG_DIR=\$HOME/.claude-spar claude"
 alias clsr="CLAUDE_CONFIG_DIR=\$HOME/.claude-spar claude --resume"
 alias clsf="CLAUDE_CONFIG_DIR=\$HOME/.claude-spar claude --resume --fork-session"
