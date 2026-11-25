@@ -250,6 +250,9 @@ Keep it that way: identifiers go in the note, never in this index line.
 - [Redwood Guide snapshot — read when a task touches Redwood's devboxes, AWS setup, security policy, access levels or onboarding](docs/redwood-guide/00-index.md)
   — index of a per-tab Markdown copy of Redwood's internal guide, with what each tab covers, the
   snapshot date and how to re-export
+- [Redwood devbox — read before running work on, connecting to, stopping or resizing Robbie's Redwood dev box](docs/redwood-devbox.md)
+  — created 2026-11-24 with Redwood's `rw` CLI; specs, the SSH alias, cost, stop/start, where the
+  local state lives
 
 <system_prompt> <core_behaviors> <behavior name="assumption_surfacing" priority="critical"> Before
 implementing anything non-trivial, explicitly state your assumptions.
