@@ -192,7 +192,6 @@ Platform stack — each clone of `~/repos/platform*` claims one slot in each row
 | Vite            | 5173     | 5177              |
 | Vite AgentDrive | (n/a)    | 5178              |
 | Vite Chrome ext | 5174     | 5180              |
-| OpenClaw local  | (n/a)    | 18793             |
 
 Other reservations:
 
@@ -204,7 +203,6 @@ Other reservations:
 | 5435–5436 | Postgres, one per sapient checkout (see Sapient stack table above) |
 | 5443  | Postgres, `~/repos/deepresponse-core` (compose override; repo default is 5432) |
 | 5444–5462 | Postgres, one per `~/repos/deepresponse-core-N` checkout (N=2…20) (compose override; see deepresponse-core stack table) |
-| 18789 | OpenClaw gateway (bastion-forwarded)     |
 | 18443 | Bitcoin Core regtest RPC, llm-provider-canaries (loopback only; integration tests) |
 | 19443–19462 | Dev ClickHouse SSM tunnel, one per `deepresponse-core*` checkout (`CLICKHOUSE_TUNNEL_PORT` in `.envrc.local`, read by `projects/dev_serving_tier/tunnel.sh` and `development/local_serving.py`; see deepresponse-core stack table) |
 
