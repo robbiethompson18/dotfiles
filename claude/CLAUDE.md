@@ -240,6 +240,9 @@ Keep it that way: identifiers go in the note, never in this index line.
   — which carrier the plan is actually with, payment status and open items, how to reach the pay page
 - [Retirement accounts — read when Robbie asks about his 401(k)s/IRAs or the pending 401(k) rollover check](docs/retirement-accounts.md)
   — which providers hold what, the in-flight rollover and how to finish it
+- [Bank accounts — read when Robbie invoices a client, gets paid as a contractor or asks for his bank details](docs/bank-accounts.md)
+  — which account contractor pay goes to, routing numbers, where the account number lives (1Password,
+  never git), W-9 and invoice files, and who has paid
 - [Cloud dev box (retired) — read before starting robbie-box or proposing work on it](docs/robbie-box.md)
   — stopped since 2026-11-02 and Robbie said on 2026-11-18 not to use it anymore; the disk still
   bills; old specs, SSH routes and resize steps kept for reference
