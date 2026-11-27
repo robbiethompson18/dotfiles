@@ -249,7 +249,8 @@ Keep it that way: identifiers go in the note, never in this index line.
 - [Smart home plan — read when Robbie asks about the chandelier dimmer, Siri lights or smart home gear](docs/smart-home.md)
   — what to buy, which switch to replace, what to check in the switch box before buying
 - [Stack doc — read when Robbie mentions his stack doc, work log, reading list or blog ideas doc](docs/stack-doc.md)
-  — the Google Doc's URL, tab IDs, what goes in each tab, the Reading List format
+  — the Google Doc's URL, tab IDs, what goes in each tab, the Reading List format and how to add a
+  link, and the dead standalone "Reading List" doc to ignore
 - [Redwood Guide snapshot — read when a task touches Redwood's devboxes, AWS setup, security policy, access levels or onboarding](docs/redwood-guide/00-index.md)
   — index of a per-tab Markdown copy of Redwood's internal guide, with what each tab covers, the
   snapshot date and how to re-export
