@@ -289,6 +289,18 @@ hs.hotkey.bind({}, "f16", typer("robbiethompson2018@gmail.com"))  -- hk1
 hs.hotkey.bind({}, "f17", typer("rob0the0nerd@gmail.com"))        -- hk2
 hs.hotkey.bind({}, "f18", typer("robbie@asymmetricsecurity.com")) -- hk3
 hs.hotkey.bind({}, "f19", openCounterfactualPR)                   -- hk4
+-- This repo is public, so the home address lives in dotfiles-private and is read on each press.
+local function privateFileTyper(path)
+  return function()
+    local file = io.open(os.getenv("HOME") .. "/repos/dotfiles-private/" .. path)
+    if not file then return hs.alert.show("missing dotfiles-private/" .. path) end
+    local text = file:read("*a"):gsub("%s+$", "")
+    file:close()
+    hs.eventtap.keyStrokes(text)
+  end
+end
+
+hs.hotkey.bind({}, "f14", privateFileTyper("hammerspoon/address.txt")) -- hk5
 hs.hotkey.bind({}, "f13", typer("🔮-lens"))                        -- hk6
 -- hk7 is Wispr push-to-talk. Wispr's event tap still sees F20; this no-op just swallows it so
 -- iTerm doesn't type F20's escape sequence into the terminal.
